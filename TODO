@@ -1,0 +1,3 @@
+functions - module where putting htmlspecialchars, deBrand and fuctions like them
+
+Conf - class that parse configuration files
