@@ -1,0 +1,2 @@
+To run this application using Python3.1, replace every occurences
+of anydbm with dbm in conf.py.

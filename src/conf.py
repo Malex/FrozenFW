@@ -59,5 +59,14 @@ class Conf:
 		k,v = matchObj.groups()
 		self.conf[k] = eval(v)
 
-	def compile_dict(self):
-		pass
+	@staticmethod
+	def compile_dict(conf):
+		"""Compiles the configuration hash into a
+		fastest form for further uses """
+		with anydbm.open("./conf.db",'n') as db:
+			for i in conf.keys():
+				db[i] = conf[i]
+
+	def query(self,key):
+		""" Returs a configuration value """
+		return self.conf[key]
