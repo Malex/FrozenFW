@@ -1,17 +1,7 @@
 import re
-from os import getenv
-from platform import system
 from datetime import date
 import anydbm
-
-def parse(f):
-	""" Converts the File string. Replace ~ with Home Directory """
-	if re.search(r".*/~/.*",f):
-		folder = os.getenv("HOME")
-		re.sub(r"(.*)/~/(.*)","\1"+folder+"\2",f)
-	if system() == "Windows":
-		f.replace("/","\\")
-	return f
+from stdio import File
 
 class Conf:
 
@@ -28,7 +18,7 @@ class Conf:
 		""" Open the configuration file and save its values
 		in a dictionary. It is run by the constructor, you
 		don't need to call this method """
-		with open(parse(self.fconf),"r") as f:
+		with open(File.parse(self.fconf),"r") as f:
 			C=0
 			for i in f.readlines():
 				C+=1

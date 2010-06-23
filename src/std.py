@@ -2,6 +2,7 @@ from os import getenv
 from sys import stdin
 from functions import *
 from conf import Conf
+from stdio import File
 
 class Data:
 
@@ -79,3 +80,5 @@ class Data:
 			self.rSERVER()
 
 
+del stdin
+del getenv

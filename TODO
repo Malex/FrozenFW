@@ -1,1 +1,2 @@
 Output - class to replace the stdout
+Errors - class to handle errors
