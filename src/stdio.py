@@ -29,7 +29,8 @@ class File:
 		return f
 
 	def read(self,size=-1):
-		""" Read the file (if possible). Optional paramether chars specify how many characters read """
+		""" Read the file (if possible). Optional
+		paramether chars specify how many characters read """
 		if '+' in self._mode or self._mode == 'r':
 			return self._handle.read(size)
 		else:
