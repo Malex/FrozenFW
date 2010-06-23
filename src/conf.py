@@ -2,6 +2,7 @@ import re
 from os import getenv
 from platform import system
 from datetime import date
+import anydbm
 
 def parse(f):
 	""" Converts the File string. Replace ~ with Home Directory """
@@ -15,7 +16,8 @@ def parse(f):
 class Conf:
 
 	fconf = "~/.frozenrc"
-	errors = "Log of {}".format(date.today().isoformat())
+	errors = "Log of {}\n".format(date.today().ctime())
+	conf = {}
 
 	def __init__(self,conf="~/.frozenrc"):
 
@@ -37,11 +39,24 @@ class Conf:
 					self.errors += "Error on line {} : Not matched".format(C-1)
 					continue
 				else:
-					pass #//TODO
+					self.to_diz(t)
 
 	def write_log(self):
+		""" Write errors into log file """
 		if len(self.errors.readlines())>1:
-			a = open("/var/log/frozen.log",'a') #put choice capability
-			a.write(self.errors)
-			a.close()
+			with a=open("/var/log/frozen.log",'a'): #put choice capability
+				a.write(self.errors)
+				self.errors = "Log of {}\n".format(date.today().ctime())
 
+
+	def to_diz(self,matchObj):
+		""" It puts parsed values into conf dictionary.
+		You should not use this method """
+		if not matchObj:
+			self.errors += "Fatal error {to_diz}"
+			return
+
+		k,v = matchObj.groups()
+		self.conf[k] = eval(v)
+
+	def compile_dict(self):
