@@ -13,8 +13,8 @@ def htmlspecialchars(s):
 	diz = { "\"" : "quot",
             "<" : "lt",
             ">" : "gt",
-            "'" : "#039"
-            "&" : "amp",
+            "'" : "#039",
+            "&" : "amp"
             }
 
 	for i in diz.keys()[::-1]:

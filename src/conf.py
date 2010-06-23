@@ -28,9 +28,9 @@ class Conf:
 		""" Open the configuration file and save its values
 		in a dictionary. It is run by the constructor, you
 		don't need to call this method """
-		with self.file = open(parse(self.fconf),"r"):
+		with open(parse(self.fconf),"r") as f:
 			C=0
-			for i in self.file.readlines():
+			for i in f.readlines():
 				C+=1
 				if i[0] == '#':
 					continue
@@ -44,7 +44,7 @@ class Conf:
 	def write_log(self):
 		""" Write errors into log file """
 		if len(self.errors.readlines())>1:
-			with a=open("/var/log/frozen.log",'a'): #put choice capability
+			with open("/var/log/frozen.log",'a') as a: #put choice capability
 				a.write(self.errors)
 				self.errors = "Log of {}\n".format(date.today().ctime())
 
@@ -60,3 +60,4 @@ class Conf:
 		self.conf[k] = eval(v)
 
 	def compile_dict(self):
+		pass

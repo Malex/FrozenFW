@@ -56,8 +56,8 @@ class Data:
 		in SERVER dictionary """
 
 		for i in self.server_varList:
-			k = getenv(i):
-				SERVER[i] = k
+			k = getenv(i)
+			SERVER[i] = k
 
 	def __init__(self,conf = "~/.frozenrc"):
 		""" conf in your configuration file (if any).
