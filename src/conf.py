@@ -9,8 +9,8 @@ def parse(f):
 	if re.search(r".*/~/.*",f):
 		folder = os.getenv("HOME")
 		re.sub(r"(.*)/~/(.*)","\1"+folder+"\2",f)
-		if system() == "Windows":
-			f.replace("/","\\")
+	if system() == "Windows":
+		f.replace("/","\\")
 	return f
 
 class Conf:
