@@ -38,7 +38,7 @@ class File:
 
 	def write(self,data):
 		if '+' in self._mode or self._mode in ['w','a','wb','ab']:
-			self._handle(data)
+			self._handle.write(data)
 		else:
 			raise IOError("Writing not allowed")
 
