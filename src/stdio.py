@@ -36,6 +36,17 @@ class File:
 		else:
 			raise IOError("Reading not allowed")
 
+	def write(self,data):
+		if '+' in self._mode or self._mode in ['w','a','wb','ab']:
+			self._handle(data)
+		else:
+			raise IOError("Writing not allowed")
+
+	@staticmethod
+	def get_contents(path):
+		t = File(path)
+		return t.read()
+
 
 
 
