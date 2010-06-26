@@ -1,0 +1,7 @@
+query_string_enabled = True #needed for GET
+stdin_support_enabled = True #needed for POST
+allow_cookies = True
+verbose_server = True #needed for SERVER
+template_file = "~/www/template.html"
+std_content_type = "text/html"
+path_range = ["~/www/"]

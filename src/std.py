@@ -84,6 +84,12 @@ class Data:
 		if self.conf.query("verbose_server"):
 			self.rSERVER()
 
+data = Data()
+
+##TODO: configuration path limit
+#class File(File):
+#	def __init__(self,filename,mode):
+#		if data.conf.query(
 
 class Output(Output):
 
@@ -96,6 +102,9 @@ class Output(Output):
 		else:
 			self.data = File.get_contents(path)
 
+	def set_template(self,path):
+		self.data = File.get_contents(path)
+
 	def write(self,key,value):
 		rep[key] = value
 
@@ -104,9 +113,7 @@ class Output(Output):
 		self._handle.write(self.data.format(**rep))
 
 
-
-
-stdout = Output()
+stdout = Output(data.conf.query("template_file"))
 
 del stdin
 del getenv
