@@ -1,6 +1,7 @@
 from os import getenv
 from sys import stdin, stdout, stderr
 from stdio import Errors, Output
+import atexit
 
 stderr = Errors()
 
@@ -98,7 +99,8 @@ class Output(Output):
 	def write(self,key,value):
 		rep[key] = value
 
-	def __del__(self):
+	@atexit.register
+	def do(self):
 		self._handle.write(self.data.format(**rep)
 
 
