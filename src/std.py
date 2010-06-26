@@ -1,10 +1,12 @@
 from os import getenv
-from sys import stdin,sterr
+from sys import stdin, stdout, stderr
+from stdio import Errors, Output
+
+stderr = Errors()
+
 from functions import *
 from conf import Conf
-from stdio import File,Errors
-
-sys.stderr = Errors()
+from stdio import File
 
 class Data:
 
@@ -81,6 +83,28 @@ class Data:
 		if self.conf.query("verbose_server"):
 			self.rSERVER()
 
+
+class Output(Output):
+
+	rep = {}
+	_handle = stdout
+
+	def __init__(self,path="template.html"):
+		if not os.access(path,os.R_OK):
+			raise IOError("Not valid template")
+		else:
+			self.data = File.get_contents(path)
+
+	def write(self,key,value):
+		rep[key] = value
+
+	def __del__(self):
+		self._handle.write(self.data.format(**rep)
+
+
+
+
+stdout = Output()
 
 del stdin
 del getenv

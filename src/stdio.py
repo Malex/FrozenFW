@@ -57,11 +57,6 @@ class File:
 		self._handle.close()
 
 
-
-
-
-
-
 class Errors:
 
 	path = "/var/log/frozen/"
@@ -90,3 +85,5 @@ class Errors:
 		self._handle.write(self.log)
 		self._handle.close()
 
+class Output:
+	pass
