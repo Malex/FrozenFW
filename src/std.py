@@ -101,7 +101,7 @@ class Output(Output):
 
 	@atexit.register
 	def do(self):
-		self._handle.write(self.data.format(**rep)
+		self._handle.write(self.data.format(**rep))
 
 
 
