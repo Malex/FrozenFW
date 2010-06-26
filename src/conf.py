@@ -1,12 +1,11 @@
 import re
-from datetime import date
 import anydbm
-from stdio import File
+from stdio import File, Errors
 
 class Conf:
 
 	fconf = "~/.frozenrc"
-	errors = "Log of {}\n".format(date.today().ctime())
+	errors = Errors()
 	conf = {}
 
 	def __init__(self,conf="~/.frozenrc"):
@@ -30,14 +29,6 @@ class Conf:
 					continue
 				else:
 					self.to_diz(t)
-
-	def write_log(self):
-		""" Write errors into log file """
-		if len(self.errors.readlines())>1:
-			with open("/var/log/frozen.log",'a') as a: #put choice capability
-				a.write(self.errors)
-				self.errors = "Log of {}\n".format(date.today().ctime())
-
 
 	def to_diz(self,matchObj):
 		""" It puts parsed values into conf dictionary.

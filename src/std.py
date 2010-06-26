@@ -1,8 +1,10 @@
 from os import getenv
-from sys import stdin
+from sys import stdin,sterr
 from functions import *
 from conf import Conf
-from stdio import File
+from stdio import File,Errors
+
+sys.stderr = Errors()
 
 class Data:
 

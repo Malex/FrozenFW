@@ -1,6 +1,7 @@
 import os
 import re
 from platform import system
+from datetime import date
 
 class File:
 
@@ -44,11 +45,48 @@ class File:
 
 	@staticmethod
 	def get_contents(path):
+		""" Returns the file contents very fast """
 		t = File(path)
 		return t.read()
 
+	##TO IMPROVE
+	def __enter__(self):
+		pass
+
+	def __exit__(self):
+		self._handle.close()
 
 
 
 
+
+
+
+class Errors:
+
+	path = "/var/log/frozen/"
+	log = ""
+
+	def __init__(self,path="/var/log/frozen"):
+		if not os.access(path,os.F_OK):
+			os.mkdir(path)
+		self.path = path
+
+		self.dt = date.today().ctime().replace(" ",".")
+		if not os.access(self.dt+".log",os.F_OK):
+			self._mode = 'w'
+		else:
+			self._mode = 'a'
+
+	def __add__(self,s):
+		self.log += (s+'\n')
+		return self
+
+	def write(self,s):
+		self.log += (s+'\n')
+
+	def __del__(self):
+		self._handle = open(self.dt+".log",self._mode)
+		self._handle.write(self.log)
+		self._handle.close()
 
