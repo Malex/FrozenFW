@@ -24,7 +24,7 @@ class File:
 		""" Converts the File string. Replace ~ with Home Directory """
 		if re.search(r"~/.*",f):
 			folder = os.getenv("HOME")
-			re.sub(r"(.*)/~/(.*)","\1"+folder+"\2",f)
+			re.sub(r"~/(.*)",folder+"\1",f)
 		if system() == "Windows":
 			f.replace("/","\\")
 		return f
