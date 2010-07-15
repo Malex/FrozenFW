@@ -2,6 +2,7 @@ import os
 import re
 from platform import system
 from datetime import date
+import atexit
 
 class File:
 
@@ -59,7 +60,7 @@ class File:
 
 class Errors:
 
-	path = "/var/log/frozen/"
+	path = ""
 	log = ""
 
 	def __init__(self,path="/var/log/frozen"):
@@ -85,5 +86,25 @@ class Errors:
 		self._handle.write(self.log)
 		self._handle.close()
 
-class Output:
-	pass
+class Output(Output):
+
+	rep = {}
+	_handle = stdout
+
+	def __init__(self,path="template.html"):
+		if not os.access(path,os.R_OK):
+			raise IOError("Not valid template")
+		else:
+			self.data = File.get_contents(path)
+
+	def set_template(self,path):
+		self.data = File.get_contents(path)
+
+	def write(self,key,value):
+		rep[key] = value
+
+	@atexit.register
+	def do(self):
+		self._handle.write(self.data.format(**rep))
+
+

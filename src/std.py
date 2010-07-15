@@ -1,13 +1,13 @@
 from os import getenv
 from sys import stdin, stdout, stderr
 from stdio import Errors, Output
-import atexit
-
-stderr = Errors()
-
 from functions import *
 from conf import Conf
 from stdio import File
+
+conf = Conf()
+
+stderr = Errors(conf.query("logfile"))
 
 class Data:
 
@@ -70,7 +70,10 @@ class Data:
 		~ is a special character (accepted on Windows too)
 		to indicate your home directory"""
 
-		self.conf = Conf(conf)
+		if "conf" in globals().keys():
+			self.conf = globals()['conf']
+		else:
+			self.conf = Conf(conf)
 
 		if self.conf.query("query_string_enabled"):
 			self.rGET()
@@ -90,28 +93,6 @@ data = Data()
 #class File(File):
 #	def __init__(self,filename,mode):
 #		if data.conf.query(
-
-class Output(Output):
-
-	rep = {}
-	_handle = stdout
-
-	def __init__(self,path="template.html"):
-		if not os.access(path,os.R_OK):
-			raise IOError("Not valid template")
-		else:
-			self.data = File.get_contents(path)
-
-	def set_template(self,path):
-		self.data = File.get_contents(path)
-
-	def write(self,key,value):
-		rep[key] = value
-
-	@atexit.register
-	def do(self):
-		self._handle.write(self.data.format(**rep))
-
 
 stdout = Output(data.conf.query("template_file"))
 
