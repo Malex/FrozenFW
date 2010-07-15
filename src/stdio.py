@@ -81,7 +81,8 @@ class Errors:
 	def write(self,s):
 		self.log += (s+'\n')
 
-	def __del__(self):
+	@atexit.register
+	def do(self):
 		self._handle = open(self.dt+".log",self._mode)
 		self._handle.write(self.log)
 		self._handle.close()
