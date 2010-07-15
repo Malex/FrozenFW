@@ -4,6 +4,7 @@ from stdio import Errors, Output
 from functions import *
 from conf import Conf
 from stdio import File
+from database import *
 
 conf = Conf()
 
@@ -94,7 +95,10 @@ data = Data()
 #	def __init__(self,filename,mode):
 #		if data.conf.query(
 
-stdout = Output(data.conf.query("template_file"))
+stdout = Output(conf.query("template_file"))
+
+if conf.query("use_db"):
+	database = DB(conf.query("db_type"),conf.query("db_file"))
 
 del stdin
 del getenv
