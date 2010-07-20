@@ -34,6 +34,11 @@ class SQLite(SQL):
 		self._conn.commit()
 		self.db.close()
 
+"""class Query:
+
+	def __init__(self,db_driver):
+		self.query =
+"""
 
 class DB:
 
@@ -43,6 +48,27 @@ class DB:
 		self.driver.query(string)
 
 	def __init__(self,db_type,filename="./data.db"):
-		self.driver = globals()[self.db_hash[db_type]](File.parse(filename))
+		self.driver = globals()[db_type](File.parse(filename))
 
-	#def __getitem__ <= how to do multi-level?
+"""	def __getitem__(self,*args):
+		i = 0
+		tmp =self.db_hash
+		while i<len(args):
+			try:
+				old = tmp
+				tmp = tmp[args[i]]
+			except IndexError:
+				raise IOError("Key not in database")
+			if type(tmp)==str or type(tmp)==list:
+				return tmp
+			elif type(tmp)==dict:
+				i+=1
+			else:
+				try:
+					if tmp.__name__ == "Query":
+						old[args[i]] = tmp.do_query()
+				except:
+					raise TypeError("not valid type in class")
+
+
+"""
