@@ -1,4 +1,4 @@
-from stdio import File
+from frozen.stdio import File
 import sqlite3
 import atexit
 import re
