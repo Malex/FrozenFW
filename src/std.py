@@ -6,7 +6,7 @@ from conf import Conf
 from stdio import File
 from database import *
 
-conf = Conf()
+conf = Conf("~/maCMS/.miaorc")
 
 stderr = Errors(conf.query("logfile"))
 

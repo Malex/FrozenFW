@@ -29,7 +29,7 @@ class SQLite(SQL):
 		self.db.execute(SQL.addslashes(q))
 		return self.db
 
-	@atexit
+	@atexit.register
 	def do(self):
 		self._conn.commit()
 		self.db.close()
@@ -42,7 +42,7 @@ class SQLite(SQL):
 
 class DB:
 
-	self.db_hash = {}
+	db_hash = {}
 
 	def raw_query(self,string):
 		self.driver.query(string)

@@ -93,7 +93,7 @@ class Errors:
 		self._handle.write(self.log)
 		self._handle.close()
 
-class Output(Output):
+class Output():
 
 	rep = {}
 	_handle = stdout
