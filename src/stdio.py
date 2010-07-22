@@ -28,9 +28,9 @@ class File:
 	@staticmethod
 	def parse(f):
 		""" Converts the File string. Replace ~ with Home Directory """
-		if re.search(r"~/.*",f):
+		if re.match(r"~/.*",f):
 			folder = os.getenv("HOME")
-			re.sub(r"~/(.*)",folder+"\1",f)
+			f = re.sub(r"~(/.*)",lambda m : folder+m.groups()[0],f)
 		if system() == "Windows":
 			f.replace("/","\\")
 		return f
