@@ -3,7 +3,6 @@ import re
 from platform import system
 from datetime import date
 from sys import stdout
-import atexit
 
 class File:
 
@@ -87,8 +86,7 @@ class Errors:
 	def write(self,s):
 		self.log += (s+'\n')
 
-	@atexit.register
-	def do(self):
+	def exit(self):
 		self._handle = open(self.dt+".log",self._mode)
 		self._handle.write(self.log)
 		self._handle.close()
@@ -110,8 +108,7 @@ class Output():
 	def write(self,key,value):
 		rep[key] = value
 
-	@atexit.register
-	def do(self):
+	def exit(self):
 		self._handle.write(self.data.format(**rep))
 
 

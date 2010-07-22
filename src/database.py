@@ -1,6 +1,5 @@
 from frozen.stdio import File
 import sqlite3
-import atexit
 import re
 
 class SQL:
@@ -29,8 +28,7 @@ class SQLite(SQL):
 		self.db.execute(SQL.addslashes(q))
 		return self.db
 
-	@atexit.register
-	def do(self):
+	def exit(self):
 		self._conn.commit()
 		self.db.close()
 

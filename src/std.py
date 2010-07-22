@@ -1,5 +1,7 @@
 from os import getenv
 from sys import stdin, stdout, stderr
+import atexit
+
 from frozen.stdio import Errors, Output
 from frozen.functions import *
 from frozen.conf import Conf
@@ -102,3 +104,12 @@ if conf.query("use_db"):
 
 del stdin
 del getenv
+
+@atexit.register
+def __do():
+	try:
+		stdout.exit()
+		stderr.exit()
+		database.exit()
+	except:
+		pass
