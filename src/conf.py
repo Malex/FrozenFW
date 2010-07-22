@@ -21,9 +21,9 @@ class Conf:
 			C=0
 			for i in f.readlines():
 				C+=1
-				if i[0] == '#':
+				if i[0] == '#' or i=="\n":
 					continue
-				t = re.match(r"(\w)+\s*=\s*(\w)+?(?<=#).*",i)
+				t = re.match(r"(\w+?)\s*=\s*(.+?)\s*(?:#.*)?$",i)
 				if not t:
 					self.errors += "Error on line {} : Not matched".format(C-1)
 					continue
