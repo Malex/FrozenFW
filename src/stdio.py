@@ -68,7 +68,7 @@ class Errors:
 	path = ""
 	log = ""
 
-	def __init__(self,path="/var/log/frozen"):
+	def __init__(self,path="./conf.log"):
 		if not os.access(path,os.F_OK):
 			os.mkdir(path)
 		self.path = path
