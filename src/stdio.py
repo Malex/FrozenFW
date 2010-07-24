@@ -21,7 +21,7 @@ class File:
 		if not os.access(filename,os.F_OK):
 			raise FileError("{} : Not such file/Directory".format(filename))
 
-		if ( not re.match(self.valid_path,filename) and not filter(lambda x : re.match(x),self.whitelist) ) or filter(lambda x : re.match(x),self.blacklist):
+		if ( not re.match(self.valid_path,filename) and not any([re.match(a,filename) for a in self.whitelist])  ) or any([re.match(a,filename) for a in self.blacklist]):
 			raise FileError("File out of limit")
 
 		try:
@@ -105,9 +105,8 @@ class Output():
 	def __init__(self,path="template.html"):
 		try:
 			self.data = File.get_contents(path)
-		except FileError as e:
-			e.args[0] = "Not Valid Template {}".format(path)
-			raise e
+		except FileError:
+			raise FileError("Not Valid Template {}".format(path))
 
 	def set_template(self,path):
 		self.data = File.get_contents(path)
