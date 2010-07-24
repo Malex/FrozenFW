@@ -2,11 +2,11 @@ from os import getenv
 from sys import stdin, stdout, stderr
 import atexit
 
-from frozen.stdio import Errors, Output
-from frozen.functions import *
-from frozen.conf import Conf
-from frozen.stdio import File
-from frozen.database import *
+from .stdio import Errors, Output
+from .functions import *
+from .conf import Conf
+from .stdio import File
+from .database import *
 
 conf = Conf("~/maCMS/.miaorc")
 

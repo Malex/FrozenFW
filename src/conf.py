@@ -1,6 +1,6 @@
 import re
 import anydbm
-from frozen.stdio import File, Errors
+from .stdio import File, Errors
 
 class Conf:
 
