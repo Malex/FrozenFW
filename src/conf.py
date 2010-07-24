@@ -1,5 +1,6 @@
 import re
 import anydbm
+import os
 from .stdio import File, Errors
 
 class ConfError(Exception):
@@ -15,7 +16,16 @@ class Conf:
 	def __init__(self,conf="~/.frozenrc"):
 
 		self.fconf = conf
-		self.parse()
+		if os.access("conf.db",os.R_OK):
+			if os.stat(File.parse(conf)).st_mtime > os.stat("conf.db").st_mtime:
+				self.parse()
+			else:
+				f = anydbm.open("conf.db")
+				for k,v in f.items():
+					self.conf[k]=v
+		else:
+			self.parse()
+			Conf.compile_dict(self.conf)
 
 	def parse(self):
 		""" Open the configuration file and save its values
