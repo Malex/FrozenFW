@@ -4,24 +4,30 @@ from platform import system
 from datetime import date
 from sys import stdout
 
+class FileError(Exception):
+	pass
+
 class File:
 
-	### ???????????????????????
-	def set_re(cls,limit="~/*"):
-		cls.reg = re.compile(File.parse(limit).replace("*",".*"))
-	### ???????????????????????
+	valid_path = None
+	blacklist = []
+	whitelist = []
 
 	def __init__(self,filename,mode):
 		if mode not in ['r','w','a','rb','wb','ab','r+','w+','a+']:
-			raise ValueError("Not supported filemode {}".format(mode))
+			raise FileError("Not supported filemode \"{}\"".format(mode))
 
 		filename = File.parse(filename)
 		if not os.access(filename,os.F_OK):
-			raise IOError("{} : Not such file/Directory".format(filename))
+			raise FileError("{} : Not such file/Directory".format(filename))
+
+		if ( not re.match(self.valid_path,filename) and not filter(lambda x : re.match(x),self.whitelist) ) or filter(lambda x : re.match(x),self.blacklist):
+			raise FileError("File out of limit")
+
 		try:
 			self._handle = open(filename,mode)
 		except:
-			raise IOError("{0} : Not correct privileges ({1})".format(filename,mode))
+			raise FileError("{0} : Not correct privileges ({1})".format(filename,mode))
 		self._mode = mode
 		self._filename = filename
 
@@ -41,13 +47,13 @@ class File:
 		if '+' in self._mode or self._mode == 'r':
 			return self._handle.read(size)
 		else:
-			raise IOError("Reading not allowed")
+			raise FileError("Reading not allowed")
 
 	def write(self,data):
 		if '+' in self._mode or self._mode in ['w','a','wb','ab']:
 			self._handle.write(data)
 		else:
-			raise IOError("Writing not allowed")
+			raise FileError("Writing not allowed")
 
 	@staticmethod
 	def get_contents(path):
@@ -97,10 +103,11 @@ class Output():
 	_handle = stdout
 
 	def __init__(self,path="template.html"):
-		if not os.access(path,os.R_OK):
-			raise IOError("Not valid template")
-		else:
+		try:
 			self.data = File.get_contents(path)
+		except FileError as e:
+			e.args[0] = "Not Valid Template {}".format(path)
+			raise e
 
 	def set_template(self,path):
 		self.data = File.get_contents(path)

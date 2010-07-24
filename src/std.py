@@ -36,7 +36,7 @@ class Data:
 		if tmp:
 			for i in tmp.split("&"):
 				k,v = i.strip().split("=")
-				GET[deBrand(k)] = deBrand(v) #//TODO : inserire deBrand in functions
+				GET[deBrand(k)] = deBrand(v)
 
 	def rPOST(self):
 		""" This function insert POST values (if any)
@@ -92,10 +92,9 @@ class Data:
 
 data = Data()
 
-##TODO: configuration path limit
-#class File(File):
-#	def __init__(self,filename,mode):
-#		if data.conf.query(
+File.valid_path = conf.query("allowed_dir")
+File.whitelist = conf.query("whitelist")
+File.blacklist = conf.query("blacklist")
 
 stdout = Output(conf.query("template_file"))
 

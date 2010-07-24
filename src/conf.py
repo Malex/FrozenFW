@@ -2,6 +2,10 @@ import re
 import anydbm
 from .stdio import File, Errors
 
+class ConfError(Exception):
+	pass
+
+
 class Conf:
 
 	fconf = "~/.frozenrc"
@@ -50,4 +54,7 @@ class Conf:
 
 	def query(self,key):
 		""" Returs a configuration value """
-		return self.conf[key]
+		try:
+			return self.conf[key]
+		except KeyError:
+			raise ConfError("Incomplete configuration: {} key not found".format(key)
