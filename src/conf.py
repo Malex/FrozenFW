@@ -29,7 +29,7 @@ class Conf:
 					continue
 				t = re.match(r"(\w+?)\s*=\s*(.+?)\s*(?:#.*)?$",i)
 				if not t:
-					self.errors += "Error on line {} : Not matched".format(C-1)
+					self.errors.write("Error on line {} : Not matched".format(C-1))
 					continue
 				else:
 					self.to_diz(t)
@@ -38,7 +38,7 @@ class Conf:
 		""" It puts parsed values into conf dictionary.
 		You should not use this method """
 		if not matchObj:
-			self.errors += "Fatal error {to_diz}"
+			self.errors.write("Fatal error {to_diz}")
 			return
 
 		k,v = matchObj.groups()

@@ -85,10 +85,6 @@ class Errors:
 		else:
 			self._mode = 'a'
 
-	def __add__(self,s):
-		self.log += (s+'\n')
-		return self
-
 	def write(self,s):
 		self.log += (s+'\n')
 
@@ -112,9 +108,9 @@ class Output():
 		self.data = File.get_contents(path)
 
 	def write(self,key,value):
-		rep[key] = value
+		self.rep[key] = value
 
 	def exit(self):
-		self._handle.write(self.data.format(**rep))
+		self._handle.write(self.data.format(**self.rep))
 
 
