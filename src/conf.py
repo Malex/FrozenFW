@@ -67,4 +67,4 @@ class Conf:
 		try:
 			return self.conf[key]
 		except KeyError:
-			raise ConfError("Incomplete configuration: {} key not found".format(key)
+			raise ConfError("Incomplete configuration: {} key not found".format(key))
