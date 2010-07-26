@@ -1,5 +1,5 @@
 import re
-import anydbm
+import shelve
 import os
 from .stdio import File, Errors
 
@@ -20,9 +20,8 @@ class Conf:
 			if os.stat(File.parse(conf)).st_mtime > os.stat("conf.db").st_mtime:
 				self.parse()
 			else:
-				f = anydbm.open("conf.db")
-				for k,v in f.items():
-					self.conf[k]=v
+				f = shelve.open("conf.db")
+				self.conf = f
 		else:
 			self.parse()
 			Conf.compile_dict(self.conf)
@@ -52,19 +51,20 @@ class Conf:
 			return
 
 		k,v = matchObj.groups()
-		self.conf[k] = eval(v)
+		self.conf[k] = v
 
 	@staticmethod
 	def compile_dict(conf,filename="./conf.db"):
 		"""Compiles the configuration hash into a
 		fastest form for further uses """
-		with anydbm.open(File.parse(filename),'n') as db:
-			for i in conf.keys():
-				db[i] = conf[i]
+		db = shelve.open(File.parse(filename),writeback=True)
+		for i in conf.keys():
+			db[i] = conf[i]
+		db.close()
 
 	def query(self,key):
 		""" Returs a configuration value """
 		try:
-			return self.conf[key]
+			return eval(self.conf[key])
 		except KeyError:
 			raise ConfError("Incomplete configuration: {} key not found".format(key))
