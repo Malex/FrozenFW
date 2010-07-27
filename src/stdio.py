@@ -106,8 +106,8 @@ class Output():
 	def set_template(self,path):
 		self.data = File.get_contents(path)
 
-	def write(self,key,value):
-		self.rep[key] = value
+	def write(self,*args,**kwargs):
+		self.rep.update(**kwargs)
 
 	def exit(self):
 		sys.__stdout__.write(self.data.format(**self.rep))

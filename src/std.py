@@ -103,6 +103,9 @@ if conf.query("use_db"):
 
 del getenv
 
+def print(*args,**kwargs):
+	sys.stdout.write(*args,**kwargs)
+
 @atexit.register
 def __do():
 	try:

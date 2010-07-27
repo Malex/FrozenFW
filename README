@@ -9,5 +9,4 @@ application will run in all webserver.
 Besides it wraps the database server (if any), by clear
 functions.
 
-It requires Python >= 2.6 (for using Python3.x, run make update
-before make install) 
+It requires Python >= 2.6 (best using Python 3.1)
