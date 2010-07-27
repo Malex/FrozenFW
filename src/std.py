@@ -1,6 +1,7 @@
 from os import getenv
 import sys
 import atexit
+from __future__ import print_function
 
 from .stdio import Errors, Output
 from .functions import *
