@@ -1,5 +1,5 @@
 from os import getenv
-from sys import stdin, stdout, stderr
+import sys
 import atexit
 
 from .stdio import Errors, Output
@@ -10,7 +10,7 @@ from .database import *
 
 conf = Conf("~/maCMS/.miaorc")
 
-stderr = Errors(conf.query("logfile"))
+sys.stderr = Errors(conf.query("logfile"))
 
 class Data:
 
@@ -36,7 +36,7 @@ class Data:
 		if tmp:
 			for i in tmp.split("&"):
 				k,v = i.strip().split("=")
-				GET[deBrand(k)] = deBrand(v)
+				self.GET[deBrand(k)] = deBrand(v)
 
 	def rPOST(self):
 		""" This function insert POST values (if any)
@@ -45,9 +45,9 @@ class Data:
 		tmp = int(getenv("CONTENT_LENGTH"))
 
 		if tmp>=1:
-			for i in stdin.read()[:tmp].split("&"):
+			for i in sys.stdin.read()[:tmp].split("&"):
 				k,v = i.strip().split("=")
-				POST[deBrand(k)] = deBrand(v)
+				self.POST[deBrand(k)] = deBrand(v)
 
 	def rCOOKIE(self):
 		""" This function insert COOKIEs values (if any)
@@ -58,7 +58,7 @@ class Data:
 		if tmp:
 			for i in tmp.split(";"):
 				k,v = i.strip().split("=")
-				COOKIE[deBrand(k)] = deBrand(v)
+				self.COOKIE[deBrand(k)] = deBrand(v)
 
 	def rSERVER(self):
 		""" This function insert SERVER vars values (if any)
@@ -66,7 +66,7 @@ class Data:
 
 		for i in self.server_varList:
 			k = getenv(i)
-			SERVER[i] = k
+			self.SERVER[i] = k
 
 	def __init__(self,conf = "~/.frozenrc"):
 		""" conf in your configuration file (if any).
@@ -96,19 +96,18 @@ File.valid_path = conf.query("allowed_dir")
 File.whitelist = conf.query("whitelist")
 File.blacklist = conf.query("blacklist")
 
-stdout = Output(conf.query("template_file"))
+sys.stdout = Output(conf.query("template_file"))
 
 if conf.query("use_db"):
 	database = DB(conf.query("db_type"),conf.query("db_file"))
 
-del stdin
 del getenv
 
 @atexit.register
 def __do():
 	try:
-		stdout.exit()
-		stderr.exit()
+		sys.stdout.exit()
+		sys.stderr.exit()
 		database.exit()
 	except:
 		pass

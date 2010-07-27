@@ -2,7 +2,7 @@ import os
 import re
 from platform import system
 from datetime import date
-from sys import stdout
+import sys
 
 class FileError(Exception):
 	pass
@@ -13,7 +13,7 @@ class File:
 	blacklist = []
 	whitelist = []
 
-	def __init__(self,filename,mode):
+	def __init__(self,filename,mode="r"):
 		if mode not in ['r','w','a','rb','wb','ab','r+','w+','a+']:
 			raise FileError("Not supported filemode \"{}\"".format(mode))
 
@@ -96,7 +96,6 @@ class Errors:
 class Output():
 
 	rep = {}
-	_handle = stdout
 
 	def __init__(self,path="template.html"):
 		try:
@@ -111,6 +110,6 @@ class Output():
 		self.rep[key] = value
 
 	def exit(self):
-		self._handle.write(self.data.format(**self.rep))
+		sys.__stdout__.write(self.data.format(**self.rep))
 
 
