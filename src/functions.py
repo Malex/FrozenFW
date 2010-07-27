@@ -35,5 +35,6 @@ def htmlentities(s):
 	return s
 
 def nl2br(s):
+	""" Replace \n char with <br /> string """
 	return s.replace("\n","<br />")
 

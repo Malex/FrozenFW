@@ -93,10 +93,9 @@ class Data:
 
 data = Data()
 
-File.valid_path = conf.query("allowed_dir")
-File.whitelist = conf.query("whitelist")
-File.blacklist = conf.query("blacklist")
+File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
+Output.set_headers(*tuple(conf.query("headers")))
 sys.stdout = Output(conf.query("template_file"))
 
 if conf.query("use_db"):

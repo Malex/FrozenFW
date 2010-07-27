@@ -13,6 +13,12 @@ class File:
 	blacklist = []
 	whitelist = []
 
+	@classmethod
+	def set_limits(cls,valid_path,blacklist,whitelist):
+		cls.valid_path = valid_path
+		cls.blacklist = blacklist
+		cls.whitelist = whitelist
+
 	def __init__(self,filename,mode="r"):
 		if mode not in ['r','w','a','rb','wb','ab','r+','w+','a+']:
 			raise FileError("Not supported filemode \"{}\"".format(mode))
@@ -96,12 +102,18 @@ class Errors:
 class Output():
 
 	rep = {}
+	headers = ["Content-Type: text/html"]
 
 	def __init__(self,path="template.html"):
 		try:
 			self.data = File.get_contents(path)
 		except FileError:
 			raise FileError("Not Valid Template {}".format(path))
+
+	@classmethod
+	def set_headers(cls, *args):
+		for i in args:
+			cls.headers.append(i)
 
 	def set_template(self,path):
 		self.data = File.get_contents(path)
@@ -110,6 +122,9 @@ class Output():
 		self.rep.update(**kwargs)
 
 	def exit(self):
+		for i in self.headers:
+			sys.__stdout__.write(self.headers+"\r\n")
+		sys.__stdout__.write("\r\n")
 		sys.__stdout__.write(self.data.format(**self.rep))
 
 
