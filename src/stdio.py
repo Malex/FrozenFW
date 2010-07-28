@@ -123,7 +123,7 @@ class Output():
 
 	def exit(self):
 		for i in self.headers:
-			sys.__stdout__.write(self.headers+"\r\n")
+			sys.__stdout__.write(self.i+"\r\n")
 		sys.__stdout__.write("\r\n")
 		sys.__stdout__.write(self.data.format(**self.rep))
 
