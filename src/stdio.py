@@ -1,8 +1,8 @@
 import os
 import re
-from platform import system
 from datetime import date
 import sys
+from os.path import expanduser,normcase
 from __future__ import print_function
 
 class FileError(Exception):
@@ -29,13 +29,8 @@ class File:
 
 	@staticmethod
 	def parse(f):
-		""" Converts the File string. Replace ~ with Home Directory """
-		if re.match(r"~/.*",f):
-			folder = os.getenv("HOME")
-			f = re.sub(r"~(/.*)",lambda m : folder+m.groups()[0],f)
-		if system() == "Windows":
-			f.replace("/","\\")
-		return f
+		""" Converts the File string. Replace ~ with Home Directory (use ~user for different user) and on Windows replace / with \\"""
+		return normcase(expanduser(f))
 
 	@staticmethod
 	def get_contents(path):
