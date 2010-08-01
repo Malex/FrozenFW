@@ -21,7 +21,8 @@ class Conf:
 				self.parse()
 			else:
 				f = shelve.open("conf.db")
-				self.conf = f
+				for i in f.iterkeys():
+					self.conf[i] = f[i]
 		else:
 			self.parse()
 			Conf.compile_dict(self.conf)
@@ -58,7 +59,7 @@ class Conf:
 		"""Compiles the configuration hash into a
 		fastest form for further uses """
 		db = shelve.open(File.parse(filename),writeback=True)
-		for i in conf.keys():
+		for i in conf.iterkeys():
 			db[i] = conf[i]
 		db.close()
 

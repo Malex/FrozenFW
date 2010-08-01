@@ -22,7 +22,7 @@ class File():
 	
 	@staticmethod
 	def check(filename):
-		if ( not re.match(self.valid_path,filename) and not any([re.match(a,filename) for a in self.whitelist])  ) or any([re.match(a,filename) for a in self.blacklist]):
+		if ( not self.valid_path.match(filename) and not any([a.match(filename) for a in self.whitelist])  ) or any([a.match(filename) for a in self.blacklist]):
 			return False
 		else:
 			return True
@@ -72,6 +72,7 @@ class Errors():
 class Output():
 
 	rep = {}
+	arg = []
 	headers = ["Content-Type: text/html"]
 
 	def __init__(self,path="template.html"):
@@ -89,13 +90,14 @@ class Output():
 		self.data = File.get_contents(path)
 
 	def write(self,*args,**kwargs):
-		self.rep.update(**kwargs)
+		self.arg.extend(list(args))
+		self.rep.update(kwargs)
 
 	def exit(self):
 		for i in self.headers:
 			sys.__stdout__.write(self.i+"\r\n")
 		sys.__stdout__.write("\r\n")
-		sys.__stdout__.write(self.data.format(**self.rep))
+		sys.__stdout__.write(self.data.format(*tuple(self.arg),**self.rep))
 
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
