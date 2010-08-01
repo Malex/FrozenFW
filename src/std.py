@@ -1,17 +1,37 @@
 from os import getenv
 import sys
-import atexit
-from __future__ import print_function
+import urllib
+from cgi import escape
 
-from .stdio import Errors, Output
-from .functions import *
-from .conf import Conf
-from .stdio import File
-from .database import *
+def unquote(s):
+	""" Converts string %xx (where xx is the hex value)
+	into their respective chars. Besides it converts + with spaces """
+	return urllib.unquote_plus(s)
 
-conf = Conf("~/maCMS/.miaorc")
+def htmlspecialchars(s):
+	""" Replace common special chars with their
+	iso-8859-1 equivalent sequences """
 
-sys.stderr = Errors(conf.query("logfile"))
+	diz = { "\"" : "quot",
+            "<" : "lt",
+            ">" : "gt",
+            "'" : "#039",
+            "&" : "amp"
+            }
+
+	for i in diz.keys()[::-1]:
+		s.replace(i,"&"+diz[i]+";")
+
+	return s
+
+def htmlentities(s):
+	""" Replace ALL special chars with their equivalent """
+	return escape(s,True)
+
+def nl2br(s):
+	""" Replace \n char with <br /> string """
+	return s.replace("\n","<br />")
+
 
 class Data:
 
@@ -37,7 +57,7 @@ class Data:
 		if tmp:
 			for i in tmp.split("&"):
 				k,v = i.strip().split("=")
-				self.GET[deBrand(k)] = deBrand(v)
+				self.GET[unquote(k)] = unquote(v)
 
 	def rPOST(self):
 		""" This function insert POST values (if any)
@@ -48,7 +68,7 @@ class Data:
 		if tmp>=1:
 			for i in sys.stdin.read()[:tmp].split("&"):
 				k,v = i.strip().split("=")
-				self.POST[deBrand(k)] = deBrand(v)
+				self.POST[unquote(k)] = unquote(v)
 
 	def rCOOKIE(self):
 		""" This function insert COOKIEs values (if any)
@@ -59,7 +79,7 @@ class Data:
 		if tmp:
 			for i in tmp.split(";"):
 				k,v = i.strip().split("=")
-				self.COOKIE[deBrand(k)] = deBrand(v)
+				self.COOKIE[unquote(k)] = unquote(v)
 
 	def rSERVER(self):
 		""" This function insert SERVER vars values (if any)
@@ -69,48 +89,29 @@ class Data:
 			k = getenv(i)
 			self.SERVER[i] = k
 
-	def __init__(self,conf = "~/.frozenrc"):
+	def __init__(self,conf=None):
 		""" conf in your configuration file (if any).
 		~ is a special character (accepted on Windows too)
 		to indicate your home directory"""
 
-		if "conf" in globals().keys():
-			self.conf = globals()['conf']
+		if self.conf:
+			self.conf = conf
+
+			if self.conf.query("query_string_enabled"):
+				self.rGET()
+
+			if self.conf.query("stdin_support_enabled"):
+				self.rPOST()
+
+			if self.conf.query("allow_cookies"):
+				self.rCOOKIE()
+
+			if self.conf.query("verbose_server"):
+				self.rSERVER()
 		else:
-			self.conf = Conf(conf)
-
-		if self.conf.query("query_string_enabled"):
 			self.rGET()
-
-		if self.conf.query("stdin_support_enabled"):
 			self.rPOST()
-
-		if self.conf.query("allow_cookies"):
 			self.rCOOKIE()
-
-		if self.conf.query("verbose_server"):
 			self.rSERVER()
 
-data = Data()
-
-File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
-
-Output.set_headers(*tuple(conf.query("headers")))
-sys.stdout = Output(conf.query("template_file"))
-
-if conf.query("use_db"):
-	database = DB(conf.query("db_type"),conf.query("db_file"))
-
 del getenv
-
-def print(*args,**kwargs):
-	sys.stdout.write(*args,**kwargs)
-
-@atexit.register
-def __do():
-	try:
-		sys.stdout.exit()
-		sys.stderr.exit()
-		database.exit()
-	except:
-		pass

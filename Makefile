@@ -1,8 +1,8 @@
 DIR="${HOME}/maCMS/frozen/"
 
 update:
-	cat src/std.py | sed s/from\ __future__\ import\ print_function// > tmp.tmp
-	cat tmp.tmp > src/std.py
+	cat src/stdio.py | sed s/from\ __future__\ import\ print_function// > tmp.tmp
+	cat tmp.tmp > src/stdio.py
 	rm -f tmp.tmp
 
 install:

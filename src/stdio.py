@@ -3,11 +3,13 @@ import re
 from platform import system
 from datetime import date
 import sys
+from io import TextIOWrapper
+from __future__ import print_function
 
 class FileError(Exception):
 	pass
 
-class File:
+class File(file):
 
 	valid_path = None
 	blacklist = []
@@ -20,20 +22,12 @@ class File:
 		cls.whitelist = whitelist
 
 	def __init__(self,filename,mode="r"):
-		if mode not in ['r','w','a','rb','wb','ab','r+','w+','a+']:
-			raise FileError("Not supported filemode \"{}\"".format(mode))
-
 		filename = File.parse(filename)
-		if not os.access(filename,os.F_OK):
-			raise FileError("{} : Not such file/Directory".format(filename))
 
+		super( File, __init__
 		if ( not re.match(self.valid_path,filename) and not any([re.match(a,filename) for a in self.whitelist])  ) or any([re.match(a,filename) for a in self.blacklist]):
 			raise FileError("File out of limit")
 
-		try:
-			self._handle = open(filename,mode)
-		except:
-			raise FileError("{0} : Not correct privileges ({1})".format(filename,mode))
 		self._mode = mode
 		self._filename = filename
 
@@ -47,33 +41,11 @@ class File:
 			f.replace("/","\\")
 		return f
 
-	def read(self,size=-1):
-		""" Read the file (if possible). Optional
-		paramether chars specify how many characters read """
-		if '+' in self._mode or self._mode == 'r':
-			return self._handle.read(size)
-		else:
-			raise FileError("Reading not allowed")
-
-	def write(self,data):
-		if '+' in self._mode or self._mode in ['w','a','wb','ab']:
-			self._handle.write(data)
-		else:
-			raise FileError("Writing not allowed")
-
 	@staticmethod
 	def get_contents(path):
 		""" Returns the file contents very fast """
 		t = File(path)
 		return t.read()
-
-	##TO IMPROVE
-	def __enter__(self):
-		pass
-
-	def __exit__(self):
-		self._handle.close()
-
 
 class Errors:
 
@@ -127,4 +99,5 @@ class Output():
 		sys.__stdout__.write("\r\n")
 		sys.__stdout__.write(self.data.format(**self.rep))
 
-
+def print(*args,**kwargs):
+	sys.stdout.write(*args,**kwargs)
