@@ -1,14 +1,14 @@
 import sys
 import atexit
 
-from .std import Data
-from .stdio import Errors, Output
-from .std import unquote,nl2br,htmlspecialchars,htmlentities
-from .conf import Conf,ConfError
-from .stdio import File,open,print,FileError
-from .database import *
+from std import Data
+from stdio import Errors, Output
+from std import unquote,nl2br,htmlspecialchars,htmlentities
+from conf import Conf,ConfError
+from stdio import File,open,print,FileError
+from database import *
 
-conf = Conf("~/maCMS/.miaorc")
+conf = Conf("~/.frozenrc")
 
 sys.stderr = Errors(conf.query("logfile"))
 

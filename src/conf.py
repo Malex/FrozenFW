@@ -1,7 +1,7 @@
 import re
 import shelve
 import os
-from .stdio import File, Errors
+from stdio import File, Errors
 
 class ConfError(Exception):
 	pass

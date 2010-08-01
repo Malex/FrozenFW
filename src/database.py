@@ -1,4 +1,4 @@
-from .stdio import File
+from stdio import File
 import sqlite3
 import re
 

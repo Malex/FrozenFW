@@ -1,9 +1,9 @@
+from __future__ import print_function
 import os
 import re
 from datetime import date
 import sys
 from os.path import expanduser,normcase
-from __future__ import print_function
 
 class FileError(Exception):
 	pass
