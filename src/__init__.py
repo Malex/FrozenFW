@@ -4,8 +4,8 @@ import atexit
 from .std import Data
 from .stdio import Errors, Output
 from .std import unquote,nl2br,htmlspecialchars,htmlentities
-from .conf import Conf
-from .stdio import File
+from .conf import Conf,ConfError
+from .stdio import File,open,print,FileError
 from .database import *
 
 conf = Conf("~/maCMS/.miaorc")

@@ -3,13 +3,12 @@ import re
 from platform import system
 from datetime import date
 import sys
-from io import TextIOWrapper
 from __future__ import print_function
 
 class FileError(Exception):
 	pass
 
-class File(file):
+class File:
 
 	valid_path = None
 	blacklist = []
@@ -20,16 +19,13 @@ class File(file):
 		cls.valid_path = valid_path
 		cls.blacklist = blacklist
 		cls.whitelist = whitelist
-
-	def __init__(self,filename,mode="r"):
-		filename = File.parse(filename)
-
-		super( File, __init__
+	
+	@staticmethod
+	def check(filename):
 		if ( not re.match(self.valid_path,filename) and not any([re.match(a,filename) for a in self.whitelist])  ) or any([re.match(a,filename) for a in self.blacklist]):
-			raise FileError("File out of limit")
-
-		self._mode = mode
-		self._filename = filename
+			return False
+		else:
+			return True
 
 	@staticmethod
 	def parse(f):
@@ -44,7 +40,7 @@ class File(file):
 	@staticmethod
 	def get_contents(path):
 		""" Returns the file contents very fast """
-		t = File(path)
+		t = File.open(path)
 		return t.read()
 
 class Errors:
@@ -101,3 +97,14 @@ class Output():
 
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
+
+def open(filename,mode='r',*args,**kwargs):
+	__doc__ = __builtin__.open.__doc__
+	filename = File.parse(filename)
+	_handle = __builtin__.open(filename,mode,*args,**kwargs)
+	if File.check(filename):
+		return _handle
+	else:
+		raise FileError("File not in limits")
+
+File.open = open

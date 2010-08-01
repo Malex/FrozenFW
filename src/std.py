@@ -113,5 +113,3 @@ class Data:
 			self.rPOST()
 			self.rCOOKIE()
 			self.rSERVER()
-
-del getenv
