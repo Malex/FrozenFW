@@ -77,7 +77,7 @@ class Output():
 
 	def __init__(self,path="template.html"):
 		try:
-			self.data = File.get_contents(path)
+			Output.set_template(path)
 		except FileError:
 			raise FileError("Not Valid Template {}".format(path))
 
@@ -85,9 +85,10 @@ class Output():
 	def set_headers(cls, *args):
 		for i in args:
 			cls.headers.append(i)
-
-	def set_template(self,path):
-		self.data = File.get_contents(path)
+	
+	@classmethod
+	def set_template(cls,path):
+		cls.data = File.get_contents(path)
 
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))

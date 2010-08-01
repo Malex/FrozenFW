@@ -1,0 +1,20 @@
+Templates are the most useful (and the only reason for I developed
+it) feature.
+
+You should set your basic template in your frozenrc, and set
+different templates by using the classmethod Output.set_template
+
+Templates file should be xhtml1.1 standard compliant, even though
+the framework don't check it (it's only a suggestion).
+
+In template you can put everything you want, thinking that the string
+will be formatted via str.format method. So you can use what format
+syntax allow you (putting {} or {n} where n is a integer number, will
+be replaced with the indicated non-keyword arg printed).
+For keyword arguments, put {kw}, where kw is the name of your printed
+var (via print(kw=something) ).
+Another feature is looping: you can write something like this:
+@!loop#my_list(this is one of my list element: {my_list})
+The iterable written after the # will be looped, and all occurences
+of the same name in ( ) content will be replaced with the element of
+the iterable.
