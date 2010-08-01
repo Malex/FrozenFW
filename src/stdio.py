@@ -8,17 +8,17 @@ from __future__ import print_function
 class FileError(Exception):
 	pass
 
-class File:
+class File():
 
-	valid_path = None
+	valid_path = re.compile(r"\./") 
 	blacklist = []
 	whitelist = []
 
 	@classmethod
 	def set_limits(cls,valid_path,blacklist,whitelist):
-		cls.valid_path = valid_path
-		cls.blacklist = blacklist
-		cls.whitelist = whitelist
+		cls.valid_path = re.compile(valid_path)
+		cls.blacklist = [re.compile(a) for a in blacklist]
+		cls.whitelist = [re.compile(b) for b in whitelist]
 	
 	@staticmethod
 	def check(filename):
@@ -38,18 +38,19 @@ class File:
 		t = File.open(path)
 		return t.read()
 
-class Errors:
+class Errors():
 
 	path = ""
 	log = ""
 
 	def __init__(self,path="./conf.log"):
+		path = File.parse(path)
 		if not os.access(path,os.F_OK):
 			os.mkdir(path)
 		self.path = path
 
 		self.dt = date.today().ctime().replace(" ",".")
-		if not os.access(self.dt+".log",os.F_OK):
+		if not os.access(os.path.join(path,self.dt+".log"),os.F_OK):
 			self._mode = 'w'
 		else:
 			self._mode = 'a'
@@ -57,8 +58,14 @@ class Errors:
 	def write(self,s):
 		self.log += (s+'\n')
 
+	def flush(self):
+		pass #trying to fix
+
+	def writelines(self,s):
+		self.write("\n".join(s)) #implementation suggested
+
 	def exit(self):
-		self._handle = open(self.dt+".log",self._mode)
+		self._handle = open(os.path.join(self.path,self.dt+".log"),self._mode)
 		self._handle.write(self.log)
 		self._handle.close()
 
