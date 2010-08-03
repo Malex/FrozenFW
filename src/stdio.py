@@ -75,11 +75,16 @@ class Output():
 	arg = []
 	headers = ["Content-Type: text/html"]
 
+	templ_reg = re.compile(r"@!([\w_]+)\s*#(.+?)#\s*(.+)@!end\s+\1\s*#\2#",re.S)
+	f_hash = {}
+	sep = '\n'
+
 	def __init__(self,path="template.html"):
 		try:
 			Output.set_template(path)
 		except FileError:
 			raise FileError("Not Valid Template {}".format(path))
+		self.f_hash['loop'] = self.loop_exec
 
 	@classmethod
 	def set_headers(cls, *args):
@@ -90,6 +95,26 @@ class Output():
 	def set_template(cls,path):
 		cls.data = File.get_contents(path)
 
+	def loop_exec(self,s,t):
+		if not t:
+			raise FileError("Fatal Error during templating")
+		else:
+			try:
+				it = rep[t.group(2)]
+			except KeyError:
+				raise FileError("Template Var not found {}".format(t.group(2))
+			else:
+				ret = [t.group(3)] * len(it)
+				ret = list(map(lambda a : a.format(**{t.group(2) :it[ret.index(a)]}),ret)) 
+				s = s.replace(t.group(0),'\n'.join(ret))
+				return s
+
+	def templ_exec(self,s):
+		t = self.templ_reg.search(s)
+		while t:
+			s = self.f_hash[t.group(1)](s,t)
+			t = self.templ_reg.search(s)
+
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
@@ -98,6 +123,7 @@ class Output():
 		for i in self.headers:
 			sys.__stdout__.write(self.i+"\r\n")
 		sys.__stdout__.write("\r\n")
+		self.data = Output.loop_exec(self.data)
 		sys.__stdout__.write(self.data.format(*tuple(self.arg),**self.rep))
 
 def print(*args,**kwargs):
