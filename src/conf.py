@@ -1,7 +1,7 @@
 import re
 import shelve
 import os
-from stdio import File, Errors
+from .stdio import File, Errors
 
 class ConfError(Exception):
 	pass
@@ -21,7 +21,7 @@ class Conf:
 				self.parse()
 			else:
 				f = shelve.open("conf.db")
-				for i in f.iterkeys():
+				for i in f.keys():
 					self.conf[i] = f[i]
 		else:
 			self.parse()
@@ -59,7 +59,7 @@ class Conf:
 		"""Compiles the configuration hash into a
 		fastest form for further uses """
 		db = shelve.open(File.parse(filename),writeback=True)
-		for i in conf.iterkeys():
+		for i in conf.keys():
 			db[i] = conf[i]
 		db.close()
 
