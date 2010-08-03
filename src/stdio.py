@@ -102,7 +102,7 @@ class Output():
 			try:
 				it = rep[t.group(2)]
 			except KeyError:
-				raise FileError("Template Var not found {}".format(t.group(2))
+				raise FileError("Template Var not found {}".format(t.group(2)))
 			else:
 				ret = [t.group(3)] * len(it)
 				ret = list(map(lambda a : a.format(**{t.group(2) : it[ret.index(a)]}),ret)) 
