@@ -2,6 +2,14 @@ query_string_enabled = True #needed for GET
 stdin_support_enabled = True #needed for POST
 allow_cookies = True
 verbose_server = True #needed for SERVER
-template_file = "~/www/template.html"
-std_content_type = "text/html"
-path_range = ["~/www/"]
+template_file = "~/www/template.html" #Template File
+headers = ["Content-Type : text/html"] #Headers to send
+allowed_path = r"~/www/" #Standard dir
+blacklist = [r"/\..+"] #Don't allow linux hidden files ;)
+whitelist = [r".*\.bashrc"] #But i want to allow .bashrc files
+
+use_db = True
+db_type = "SQLite"
+db_file = "./mydb"
+
+logfile = "/var/log/frozen/"
