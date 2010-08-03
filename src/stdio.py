@@ -105,8 +105,8 @@ class Output():
 				raise FileError("Template Var not found {}".format(t.group(2))
 			else:
 				ret = [t.group(3)] * len(it)
-				ret = list(map(lambda a : a.format(**{t.group(2) :it[ret.index(a)]}),ret)) 
-				s = s.replace(t.group(0),'\n'.join(ret))
+				ret = list(map(lambda a : a.format(**{t.group(2) : it[ret.index(a)]}),ret)) 
+				s = s.replace(t.group(0),self.sep.join(ret))
 				return s
 
 	def templ_exec(self,s):
