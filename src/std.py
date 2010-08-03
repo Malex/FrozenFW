@@ -94,7 +94,7 @@ class Data:
 		~ is a special character (accepted on Windows too)
 		to indicate your home directory"""
 
-		if self.conf:
+		if conf:
 			self.conf = conf
 
 			if self.conf.query("query_string_enabled"):

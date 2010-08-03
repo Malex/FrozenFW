@@ -3,6 +3,7 @@ import os
 import re
 from datetime import date
 import sys
+import __builtin__
 from os.path import expanduser,normcase
 
 class FileError(Exception):
@@ -20,9 +21,9 @@ class File():
 		cls.blacklist = [re.compile(a) for a in blacklist]
 		cls.whitelist = [re.compile(b) for b in whitelist]
 	
-	@staticmethod
-	def check(filename):
-		if ( not self.valid_path.match(filename) and not any([a.match(filename) for a in self.whitelist])  ) or any([a.match(filename) for a in self.blacklist]):
+	@classmethod
+	def check(cls,filename):
+		if ( not cls.valid_path.match(filename) and not any([a.match(filename) for a in cls.whitelist])  ) or any([a.match(filename) for a in cls.blacklist]):
 			return False
 		else:
 			return True
@@ -130,9 +131,9 @@ def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
 
 def open(filename,mode='r',*args,**kwargs):
-	__doc__ = __builtin__.open.__doc__
+	__doc__ = __builtins__['open'].__doc__
 	filename = File.parse(filename)
-	_handle = __builtin__.open(filename,mode,*args,**kwargs)
+	_handle = __builtins__['open'](filename,mode,*args,**kwargs)
 	if File.check(filename):
 		return _handle
 	else:
