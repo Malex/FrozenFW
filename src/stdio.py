@@ -101,12 +101,12 @@ class Output():
 			raise FileError("Fatal Error during templating")
 		else:
 			try:
-				it = rep[t.group(2)]
+				it = self.rep[t.group(2)]
 			except KeyError:
 				raise FileError("Template Var not found {}".format(t.group(2)))
 			else:
 				ret = [t.group(3)] * len(it)
-				ret = list(map(lambda a : a.format(**{t.group(2) : it[ret.index(a)]}),ret)) 
+				ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
 				s = s.replace(t.group(0),self.sep.join(ret))
 				return s
 
