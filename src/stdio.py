@@ -113,7 +113,10 @@ class Output():
 	def templ_exec(self,s):
 		t = self.templ_reg.search(s)
 		while t:
-			s = self.f_hash[t.group(1)](s,t)
+			try:
+				s = self.f_hash[t.group(1)](s,t)
+			except KeyError:
+				s = s.replace(t.group(0),t.group(0).replace('@','&at;'))
 			t = self.templ_reg.search(s)
 		return s	
 
