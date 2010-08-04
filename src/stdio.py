@@ -17,9 +17,9 @@ class File():
 
 	@classmethod
 	def set_limits(cls,valid_path,blacklist,whitelist):
-		cls.valid_path = re.compile(valid_path)
-		cls.blacklist = [re.compile(a) for a in blacklist]
-		cls.whitelist = [re.compile(b) for b in whitelist]
+		cls.vialid_path = re.compile(File.parse(valid_path))
+		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
+		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
 	
 	@classmethod
 	def check(cls,filename):
@@ -115,6 +115,7 @@ class Output():
 		while t:
 			s = self.f_hash[t.group(1)](s,t)
 			t = self.templ_reg.search(s)
+		return s	
 
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))
@@ -122,9 +123,9 @@ class Output():
 
 	def exit(self):
 		for i in self.headers:
-			sys.__stdout__.write(self.i+"\r\n")
+			sys.__stdout__.write(i+"\r\n")
 		sys.__stdout__.write("\r\n")
-		self.data = Output.loop_exec(self.data)
+		self.data = self.templ_exec(self.data)
 		sys.__stdout__.write(self.data.format(*tuple(self.arg),**self.rep))
 
 def print(*args,**kwargs):
