@@ -2,7 +2,7 @@ from .stdio import File
 import re
 from sqlobject import *
 
-class SQL:
+class SQL():
 	"Parent Class for SQL common operations"
 	
 	tables = {}
@@ -19,17 +19,17 @@ class SQL:
 		kwargs should contain the query column(s)"""
 		return self.tables[table_name].selectBy(*args,**kwargs)
 
-class XML:
+class XML():
 	def __init__(self,filename):
 		pass
 
 class SQLite(SQL):
 	def __init__(self,path):
-		sqlhub.connection = connectionForURI("sqlite://"+path)
+		sqlhub.processConnection = connectionForURI("sqlite://"+path)
 
 class MySQL(SQL):
 	def __init__(self,path):
-		sqlhub.connection = connectionForURI("mysql://"+path)
+		sqlhub.processConnection = connectionForURI("mysql://"+path)
 
 
 class DB:
