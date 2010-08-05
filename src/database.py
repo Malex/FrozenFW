@@ -1,72 +1,40 @@
 from .stdio import File
-import sqlite3
 import re
+from sqlobject import *
 
 class SQL:
-	""" Parent class for generic SQL support """
+	"Parent Class for SQL common operations"
+	
+	tables = {}
 
 	@staticmethod
 	def addslashes(s):
 		return re.sub("([\\\"\'\0)","\\\1",s)
 
-
-class MySQL(SQL):
-	def __init__(self,filename):
-		pass
+	def createTable(self,table_name,*str_cols,**other_cols):
+		self.tables[table_name] = type(table_name,(SQLObject,),zip(str_cols,(StringCol(),)*len(str_cols)).update(other_cols))
+	
+	def select(self,table_name,*args,**kwargs):
+		"""*args could be empty, unless you know what you are doing.
+		kwargs should contain the query column(s)"""
+		return self.tables[table_name].selectBy(*args,**kwargs)
 
 class XML:
 	def __init__(self,filename):
 		pass
 
 class SQLite(SQL):
+	def __init__(self,path):
+		sqlhub.connection = connectionForURI("sqlite://"+path)
 
-	def __init__(self,filename):
-		self._conn = sqlite3.connect(filename)
-		self.db = self._conn.cursor()
+class MySQL(SQL):
+	def __init__(self,path):
+		sqlhub.connection = connectionForURI("mysql://"+path)
 
-	def raw_query(self,q):
-		self.db.execute(SQL.addslashes(q))
-		return self.db
-
-	def exit(self):
-		self._conn.commit()
-		self.db.close()
-
-"""class Query:
-
-	def __init__(self,db_driver):
-		self.query =
-"""
 
 class DB:
 
-	db_hash = {}
+	db_hash = {"SQLite" : SQLite, "MySQL" : MySQL, "XML" : XML}
 
-	def raw_query(self,string):
-		self.driver.query(string)
-
-	def __init__(self,db_type,filename="./data.db"):
-		self.driver = globals()[db_type](File.parse(filename))
-
-"""	def __getitem__(self,*args):
-		i = 0
-		tmp =self.db_hash
-		while i<len(args):
-			try:
-				old = tmp
-				tmp = tmp[args[i]]
-			except IndexError:
-				raise IOError("Key not in database")
-			if type(tmp)==str or type(tmp)==list:
-				return tmp
-			elif type(tmp)==dict:
-				i+=1
-			else:
-				try:
-					if tmp.__name__ == "Query":
-						old[args[i]] = tmp.do_query()
-				except:
-					raise TypeError("not valid type in class")
-
-
-"""
+	def __new__(cls,db_type,path):
+		return type("DB",(cls.db_hash[db_type],),{}).__init__(path)

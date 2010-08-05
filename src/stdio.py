@@ -3,7 +3,6 @@ import os
 import re
 from datetime import date
 import sys
-import __builtin__
 from os.path import expanduser,normcase
 
 class FileError(Exception):
@@ -38,37 +37,6 @@ class File():
 		""" Returns the file contents very fast """
 		t = File.open(path)
 		return t.read()
-
-class Errors():
-
-	path = ""
-	log = ""
-
-	def __init__(self,path="./conf.log"):
-		path = File.parse(path)
-		if not os.access(path,os.F_OK):
-			os.mkdir(path)
-		self.path = path
-
-		self.dt = date.today().ctime().replace(" ",".")
-		if not os.access(os.path.join(path,self.dt+".log"),os.F_OK):
-			self._mode = 'w'
-		else:
-			self._mode = 'a'
-
-	def write(self,s):
-		self.log += (s+'\n')
-
-	def flush(self):
-		pass #trying to fix
-
-	def writelines(self,s):
-		self.write("\n".join(s)) #implementation suggested
-
-	def exit(self):
-		self._handle = open(os.path.join(self.path,self.dt+".log"),self._mode)
-		self._handle.write(self.log)
-		self._handle.close()
 
 class Output():
 

@@ -10,8 +10,6 @@ from .database import *
 
 conf = Conf("~/.frozenrc")
 
-sys.stderr = Errors(conf.query("logfile"))
-
 data = Data(conf)
 
 File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
@@ -26,7 +24,6 @@ if conf.query("use_db"):
 def __do():
 	try:
 		sys.stdout.exit()
-		sys.stderr.exit()
 		database.exit()
 	except:
 		pass
