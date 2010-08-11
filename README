@@ -4,9 +4,13 @@ Its purpose is to provide to the webmaster simple functions
 for his/her work, by having a low-level but simple configuration,
 (x)html templates.
 
-It is interfaced directly to the webserver, so your web
+It is interfaced to the webserver via wsgi, so your web
 application will run in all webserver.
 Besides it wraps the database server (if any), by clear
 functions.
 
-It requires Python >= 2.6 (best using Python 3.1)
+It requires Python >=3.1
+
+Python2.6 backwards compability has been gone since it doesn't allow 
+function annotations and other good features.
+FrozenFW 0.1 is still py2.6 compatible.
