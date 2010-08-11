@@ -1,4 +1,0 @@
-1 - Improve sqlobject Wrapping
-2 - XML driver
-3 - Plugin system (exec_source ? )
-4 - Improve template system (transfer loop_exec in plugin, add include, var and if statement)
