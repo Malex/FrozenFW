@@ -6,7 +6,6 @@ from .stdio import Output
 from .std import unquote,nl2br,htmlspecialchars,htmlentities
 from .conf import Conf,ConfError
 from .stdio import File,open,print,FileError
-from .database import *
 
 conf = Conf("~/.frozenrc")
 
@@ -18,6 +17,7 @@ Output.set_headers(*tuple(conf.query("headers")))
 sys.stdout = Output(conf.query("template_file"))
 
 if conf.query("use_db"):
+	from .database import *
 	database = DB(conf.query("db_type"),conf.query("db_file"))
 
 @atexit.register

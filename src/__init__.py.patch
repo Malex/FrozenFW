@@ -9,7 +9,6 @@
  from .std import unquote,nl2br,htmlspecialchars,htmlentities
 @@ -8,22 +5,13 @@
  from .stdio import File,open,print,FileError
- from .database import *
  
 -conf = Conf("~/.frozenrc")
 -
@@ -23,6 +22,7 @@
 +output = Output(conf.query("template_file"))
  
  if conf.query("use_db"):
+	from .database import *
  	database = DB(conf.query("db_type"),conf.query("db_file"))
  
 -@atexit.register

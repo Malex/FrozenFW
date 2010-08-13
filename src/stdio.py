@@ -16,7 +16,7 @@ class File():
 
 	@classmethod
 	def set_limits(cls,valid_path :str,blacklist :str,whitelist :str):
-		cls.vialid_path = re.compile(File.parse(valid_path))
+		cls.valid_path = re.compile(File.parse(valid_path))
 		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
 		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
 	
