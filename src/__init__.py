@@ -2,7 +2,7 @@ import sys
 import atexit
 
 from .std import Data
-from .stdio import Errors, Output
+from .stdio import Output
 from .std import unquote,nl2br,htmlspecialchars,htmlentities
 from .conf import Conf,ConfError
 from .stdio import File,open,print,FileError

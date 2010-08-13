@@ -48,7 +48,7 @@ class Output():
 	f_hash = {}
 	sep = '\n'
 
-	def __init__(self,path="template.html" :str):
+	def __init__(self,path :str="template.html"):
 		try:
 			Output.set_template(path)
 		except FileError:
@@ -107,7 +107,7 @@ class Output():
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
 
-def open(filename :str,mode='r' :chr,*args,**kwargs):
+def open(filename :str,mode :chr='r',*args,**kwargs):
 	__doc__ = __builtins__['open'].__doc__
 	filename = File.parse(filename)
 	_handle = __builtins__['open'](filename,mode,*args,**kwargs)

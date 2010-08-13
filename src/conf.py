@@ -11,7 +11,6 @@ class ConfError(Exception):
 class Conf:
 
 	fconf = "/etc/frozenrc"
-	errors = 
 	conf = {}
 
 	def __init__(self,conf="~/etc/frozenrc"):
@@ -62,7 +61,7 @@ class Conf:
 		self.conf[k] = v
 
 	@staticmethod
-	def compile_dict(conf :Conf,filename :str ="./conf.db"):
+	def compile_dict(conf :dict,filename :str ="./conf.db"):
 		"""Compiles the configuration hash into a
 		fastest form for further uses """
 		db = shelve.open(File.parse(filename),writeback=True)
