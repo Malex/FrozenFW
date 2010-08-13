@@ -8,27 +8,27 @@ class SQL():
 	tables = {}
 
 	@staticmethod
-	def addslashes(s):
+	def addslashes(s :str) -> str:
 		return re.sub("([\\\"\'\0)","\\\1",s)
 
-	def createTable(self,table_name,*str_cols,**other_cols):
+	def createTable(self,table_name :str,*str_cols,**other_cols):
 		self.tables[table_name] = type(table_name,(SQLObject,),zip(str_cols,(StringCol(),)*len(str_cols)).update(other_cols))
 	
-	def select(self,table_name,*args,**kwargs):
+	def select(self,table_name :str,*args,**kwargs):
 		"""*args could be empty, unless you know what you are doing.
 		kwargs should contain the query column(s)"""
 		return self.tables[table_name].selectBy(*args,**kwargs)
 
 class XML():
-	def __init__(self,filename):
+	def __init__(self,filename :str):
 		pass
 
 class SQLite(SQL):
-	def __init__(self,path):
+	def __init__(self,path :str):
 		sqlhub.processConnection = connectionForURI("sqlite://"+path)
 
 class MySQL(SQL):
-	def __init__(self,path):
+	def __init__(self,path :str):
 		sqlhub.processConnection = connectionForURI("mysql://"+path)
 
 
@@ -36,5 +36,5 @@ class DB:
 
 	db_hash = {"SQLite" : SQLite, "MySQL" : MySQL, "XML" : XML}
 
-	def __new__(cls,db_type,path):
+	def __new__(cls,db_type :str,path :str):
 		return type("DB",(cls.db_hash[db_type],),{}).__init__(path)

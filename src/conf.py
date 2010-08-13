@@ -1,7 +1,8 @@
 import re
 import shelve
 import os
-from .stdio import File, Errors
+import sys
+from .stdio import File
 
 class ConfError(Exception):
 	pass
@@ -9,11 +10,11 @@ class ConfError(Exception):
 
 class Conf:
 
-	fconf = "~/.frozenrc"
-	errors = Errors()
+	fconf = "/etc/frozenrc"
+	errors = 
 	conf = {}
 
-	def __init__(self,conf="~/.frozenrc"):
+	def __init__(self,conf="~/etc/frozenrc"):
 
 		self.fconf = conf
 		if os.access("conf.db",os.R_OK):
@@ -25,6 +26,12 @@ class Conf:
 					self.conf[i] = f[i]
 		else:
 			self.parse()
+			
+			try:
+				self.update_conf(self.query("conf_chain"))
+			except ConfError:
+				pass
+
 			Conf.compile_dict(self.conf)
 
 	def parse(self):
@@ -39,7 +46,7 @@ class Conf:
 					continue
 				t = re.match(r"(\w+?)\s*=\s*(.+?)\s*(?:#.*)?$",i)
 				if not t:
-					self.errors.write("Error on line {} : Not matched".format(C-1))
+					sys.stderr.write("Error on line {} : Not matched".format(C-1))
 					continue
 				else:
 					self.to_diz(t)
@@ -48,14 +55,14 @@ class Conf:
 		""" It puts parsed values into conf dictionary.
 		You should not use this method """
 		if not matchObj:
-			self.errors.write("Fatal error {to_diz}")
+			sys.stderr.write("Fatal error {to_diz}")
 			return
 
 		k,v = matchObj.groups()
 		self.conf[k] = v
 
 	@staticmethod
-	def compile_dict(conf,filename="./conf.db"):
+	def compile_dict(conf :Conf,filename :str ="./conf.db"):
 		"""Compiles the configuration hash into a
 		fastest form for further uses """
 		db = shelve.open(File.parse(filename),writeback=True)
@@ -63,9 +70,15 @@ class Conf:
 			db[i] = conf[i]
 		db.close()
 
-	def query(self,key):
+	def query(self,key :str):
 		""" Returs a configuration value """
 		try:
 			return eval(self.conf[key])
-		except KeyError:
-			raise ConfError("Incomplete configuration: {} key not found".format(key))
+		except KeyError as e:
+			raise ConfError("Incomplete configuration: {} key not found".format(key)) from e
+
+	def update_conf(self,path :str):
+		""" Add Conf values from another conf file. Note that values may be overridden """
+		t = Conf(path)
+		self.conf.update(t.conf)
+		del t

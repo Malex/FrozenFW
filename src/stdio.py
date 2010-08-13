@@ -15,25 +15,25 @@ class File():
 	whitelist = []
 
 	@classmethod
-	def set_limits(cls,valid_path,blacklist,whitelist):
+	def set_limits(cls,valid_path :str,blacklist :str,whitelist :str):
 		cls.vialid_path = re.compile(File.parse(valid_path))
 		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
 		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
 	
 	@classmethod
-	def check(cls,filename):
+	def check(cls,filename :str) -> bool:
 		if ( not cls.valid_path.match(filename) and not any([a.match(filename) for a in cls.whitelist])  ) or any([a.match(filename) for a in cls.blacklist]):
 			return False
 		else:
 			return True
 
 	@staticmethod
-	def parse(f):
+	def parse(f :str) -> str:
 		""" Converts the File string. Replace ~ with Home Directory (use ~user for different user) and on Windows replace / with \\"""
 		return normcase(expanduser(f))
 
 	@staticmethod
-	def get_contents(path):
+	def get_contents(path :str) -> str:
 		""" Returns the file contents very fast """
 		t = File.open(path)
 		return t.read()
@@ -42,17 +42,17 @@ class Output():
 
 	rep = {}
 	arg = []
-	headers = ["Content-Type: text/html"]
+	headers = [("Content-Type","text/html")] ##TODO: update using property
 
 	templ_reg = re.compile(r"@!([\w_]+)\s*#(.+?)#\s*(.+)@!end\s+\1\s*#\2#",re.S)
 	f_hash = {}
 	sep = '\n'
 
-	def __init__(self,path="template.html"):
+	def __init__(self,path="template.html" :str):
 		try:
 			Output.set_template(path)
 		except FileError:
-			raise FileError("Not Valid Template {}".format(path))
+			raise FileError("Not Valid Template {}".format(path)) from FileError
 		self.f_hash['loop'] = self.loop_exec
 
 	@classmethod
@@ -61,24 +61,24 @@ class Output():
 			cls.headers.append(i)
 	
 	@classmethod
-	def set_template(cls,path):
+	def set_template(cls,path :str):
 		cls.data = File.get_contents(path)
 
-	def loop_exec(self,s,t):
+	def loop_exec(self,s :str,t) -> str:
 		if not t:
 			raise FileError("Fatal Error during templating")
 		else:
 			try:
 				it = self.rep[t.group(2)]
 			except KeyError:
-				raise FileError("Template Var not found {}".format(t.group(2)))
+				raise FileError("Template Var not found {}".format(t.group(2))) from KeyError
 			else:
 				ret = [t.group(3)] * len(it)
 				ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
 				s = s.replace(t.group(0),self.sep.join(ret))
 				return s
 
-	def templ_exec(self,s):
+	def templ_exec(self,s :str) -> str:
 		t = self.templ_reg.search(s)
 		while t:
 			try:
@@ -92,17 +92,22 @@ class Output():
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
+	def get_headers(self):
+		return self.headers
+
+	def get_body(self):
+		return self.templ_exec(self.data)
+
 	def exit(self):
-		for i in self.headers:
-			sys.__stdout__.write(i+"\r\n")
+		for i in self.get_headers():
+			sys.__stdout__.write(":".join(i)+"\r\n")
 		sys.__stdout__.write("\r\n")
-		self.data = self.templ_exec(self.data)
-		sys.__stdout__.write(self.data.format(*tuple(self.arg),**self.rep))
+		sys.__stdout__.write(self.get_body().format(*tuple(self.arg),**self.rep))
 
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
 
-def open(filename,mode='r',*args,**kwargs):
+def open(filename :str,mode='r' :chr,*args,**kwargs):
 	__doc__ = __builtins__['open'].__doc__
 	filename = File.parse(filename)
 	_handle = __builtins__['open'](filename,mode,*args,**kwargs)

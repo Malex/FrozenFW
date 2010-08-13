@@ -1,10 +1,7 @@
-DIR="${HOME}/maCMS/frozen/"
+DIR="/usr/lib/python3.1/site-package/"
 
-update:
-	cat src/stdio.py | sed s/from\ __future__\ import\ print_function// > tmp.tmp
-	cat tmp.tmp > src/stdio.py
-	rm -f tmp.tmp
 
 install:
+	patch < src/__init__.py.patch
 	mkdir -p $(DIR)
 	cp -R src/* $(DIR)

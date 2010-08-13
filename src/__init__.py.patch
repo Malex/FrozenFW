@@ -1,0 +1,34 @@
+--- __init__.py	2010-08-11 23:54:31.418000144 +0200
++++ __init__.py.diff	2010-08-13 17:37:37.834000003 +0200
+@@ -1,6 +1,3 @@
+-import sys
+-import atexit
+-
+ from .std import Data
+ from .stdio import Errors, Output
+ from .std import unquote,nl2br,htmlspecialchars,htmlentities
+@@ -8,22 +5,13 @@
+ from .stdio import File,open,print,FileError
+ from .database import *
+ 
+-conf = Conf("~/.frozenrc")
+-
+-data = Data(conf)
++conf = Conf("/etc/frozenrc")
+ 
+ File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
+ 
+ Output.set_headers(*tuple(conf.query("headers")))
+-sys.stdout = Output(conf.query("template_file"))
++output = Output(conf.query("template_file"))
+ 
+ if conf.query("use_db"):
+ 	database = DB(conf.query("db_type"),conf.query("db_file"))
+ 
+-@atexit.register
+-def __do():
+-	try:
+-		sys.stdout.exit()
+-		database.exit()
+-	except:
+-		pass

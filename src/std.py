@@ -1,14 +1,14 @@
-from os import getenv
+import os
 import sys
 import urllib
 from cgi import escape
 
-def unquote(s):
+def unquote(s :str) -> str:
 	""" Converts string %xx (where xx is the hex value)
 	into their respective chars. Besides it converts + with spaces """
 	return urllib.unquote_plus(s)
 
-def htmlspecialchars(s):
+def htmlspecialchars(s :str) -> str:
 	""" Replace common special chars with their
 	iso-8859-1 equivalent sequences """
 
@@ -24,11 +24,11 @@ def htmlspecialchars(s):
 
 	return s
 
-def htmlentities(s):
+def htmlentities(s :str) -> str:
 	""" Replace ALL special chars with their equivalent """
 	return escape(s,True)
 
-def nl2br(s):
+def nl2br(s :str) -> str:
 	""" Replace \n char with <br /> string """
 	return s.replace("\n","<br />")
 
@@ -46,13 +46,13 @@ class Data:
 'AUTH_TYPE','REMOTE_USER','REMOTE_IDENT','CONTENT_TYPE',
 'HTTP_USER_AGENT','HTTP_ACCEPT','HTTP_ACCEPT_ENCODING',
 'HTTP_ACCEPT_LANGUAGE','HTTP_USER_AGENT','HTTP_ACCEPT_CHARSET',
-'HTTP_CONNECTION','HTTP_HOST','HTTP_REFERER']
+'HTTP_CONNECTION','HTTP_HOST','HTTP_REFERER', ]
 
 	def rGET(self):
 		""" This function insert GET values (if any)
 		in GET dictionary """
 
-		tmp = getenv("QUERY_STRING")
+		tmp = os.getenv("QUERY_STRING")
 
 		if tmp:
 			for i in tmp.split("&"):
@@ -63,10 +63,18 @@ class Data:
 		""" This function insert POST values (if any)
 		in POST dictionary """
 
-		tmp = int(getenv("CONTENT_LENGTH"))
+		try:
+			tmp = int(os.getenv("CONTENT_LENGTH",0))
+		except ValueError: #to prevent bad headers
+			tmp = 0
 
 		if tmp>=1:
-			for i in sys.stdin.read()[:tmp].split("&"):
+			if self.wsgi:
+				buf = os.getenv("wsgi.input")
+			else:
+				buf = sys.stdin
+
+			for i in sys.stdin.read(tmp).split("&"):
 				k,v = i.strip().split("=")
 				self.POST[unquote(k)] = unquote(v)
 
@@ -74,7 +82,7 @@ class Data:
 		""" This function insert COOKIEs values (if any)
 		in COOKIE dictionary """
 
-		tmp = getenv("HTTP_COOKIE")
+		tmp = os.getenv("HTTP_COOKIE")
 
 		if tmp:
 			for i in tmp.split(";"):
@@ -86,30 +94,26 @@ class Data:
 		in SERVER dictionary """
 
 		for i in self.server_varList:
-			k = getenv(i)
+			k = os.getenv(i)
 			self.SERVER[i] = k
 
-	def __init__(self,conf=None):
+	def __init__(self,conf,env :dict={}, wsgi :bool=False):
 		""" conf in your configuration file (if any).
 		~ is a special character (accepted on Windows too)
-		to indicate your home directory"""
+		to indicate your home directory  """
+		
+		self.wsgi = wsgi
+		if env:
+			os.environ = env
 
-		if conf:
-			self.conf = conf
-
-			if self.conf.query("query_string_enabled"):
-				self.rGET()
-
-			if self.conf.query("stdin_support_enabled"):
-				self.rPOST()
-
-			if self.conf.query("allow_cookies"):
-				self.rCOOKIE()
-
-			if self.conf.query("verbose_server"):
-				self.rSERVER()
-		else:
+		if self.conf.query("query_string_enabled"):
 			self.rGET()
+
+		if self.conf.query("stdin_support_enabled"):
 			self.rPOST()
+
+		if self.conf.query("allow_cookies"):
 			self.rCOOKIE()
+
+		if self.conf.query("verbose_server"):
 			self.rSERVER()
