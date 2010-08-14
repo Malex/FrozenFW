@@ -1,0 +1,4 @@
++ WSGI compatibility
++ Function Annotations
++ Improved Makefile
+- Python 2.X support
