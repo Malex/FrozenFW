@@ -106,6 +106,8 @@ class Data:
 		if env:
 			os.environ = env
 
+		self.conf = conf
+
 		if self.conf.query("query_string_enabled"):
 			self.rGET()
 

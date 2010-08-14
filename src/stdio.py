@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os
 import re
 from datetime import date
@@ -10,7 +9,7 @@ class FileError(Exception):
 
 class File():
 
-	valid_path = re.compile(r"\./") 
+	valid_path = re.compile(r".+") 
 	blacklist = []
 	whitelist = []
 
@@ -93,16 +92,17 @@ class Output():
 		self.rep.update(kwargs)
 
 	def get_headers(self):
+		print(self.headers)
 		return self.headers
 
 	def get_body(self):
-		return self.templ_exec(self.data)
+		return self.templ_exec(self.data).format(*tuple(self.arg),**self.rep)
 
 	def exit(self):
 		for i in self.get_headers():
 			sys.__stdout__.write(":".join(i)+"\r\n")
 		sys.__stdout__.write("\r\n")
-		sys.__stdout__.write(self.get_body().format(*tuple(self.arg),**self.rep))
+		sys.__stdout__.write(self.get_body())
 
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)

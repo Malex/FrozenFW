@@ -2,6 +2,7 @@ from frozen import *
 
 def app(environ,print_rep):
 	data = Data(conf,environ,True)
+	output = sys.stdout
 	try:
 		with open((conf.query("base_dir")+data.SERVER['PATH_INFO']).replace("//","/")) as f:
 			rep_status = "200 OK"
