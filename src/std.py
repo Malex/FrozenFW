@@ -1,37 +1,29 @@
 import os
 import sys
-import urllib
-from cgi import escape
+from .functions import unquote,quote
+from datetime import datetime
 
-def unquote(s :str) -> str:
-	""" Converts string %xx (where xx is the hex value)
-	into their respective chars. Besides it converts + with spaces """
-	return urllib.unquote_plus(s)
+class COOKIE:
+	domain = ""
+	expiration = ""
 
-def htmlspecialchars(s :str) -> str:
-	""" Replace common special chars with their
-	iso-8859-1 equivalent sequences """
+	out_handle = None
 
-	diz = { "\"" : "quot",
-            "<" : "lt",
-            ">" : "gt",
-            "'" : "#039",
-            "&" : "amp"
-            }
+	@classmethod
+	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httponly :bool=False):
+		if not domain:
+			domain = cls.domain
+		else:
+			domain = "domain={};".format(domain)
+		
+		if not expiration:
+			expiration = cls.expiration
+		else:
+			if type(expiration) is int:
+				expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration))
 
-	for i in diz.keys()[::-1]:
-		s.replace(i,"&"+diz[i]+";")
-
-	return s
-
-def htmlentities(s :str) -> str:
-	""" Replace ALL special chars with their equivalent """
-	return escape(s,True)
-
-def nl2br(s :str) -> str:
-	""" Replace \n char with <br /> string """
-	return s.replace("\n","<br />")
-
+		
+		
 
 class Data:
 

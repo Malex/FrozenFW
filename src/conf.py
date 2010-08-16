@@ -7,7 +7,6 @@ from .stdio import File
 class ConfError(Exception):
 	pass
 
-
 class Conf:
 
 	fconf = "/etc/frozenrc"

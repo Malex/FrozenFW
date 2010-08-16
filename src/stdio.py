@@ -9,7 +9,7 @@ class FileError(Exception):
 
 class File():
 
-	valid_path = re.compile(r".+") 
+	valid_path = re.compile(r".+")
 	blacklist = []
 	whitelist = []
 
@@ -50,8 +50,8 @@ class Output():
 	def __init__(self,path :str="template.html"):
 		try:
 			Output.set_template(path)
-		except FileError:
-			raise FileError("Not Valid Template {}".format(path)) from FileError
+		except FileError as e:
+			raise FileError("Not Valid Template {}".format(path)) from e
 		self.f_hash['loop'] = self.loop_exec
 
 	@classmethod
@@ -69,8 +69,8 @@ class Output():
 		else:
 			try:
 				it = self.rep[t.group(2)]
-			except KeyError:
-				raise FileError("Template Var not found {}".format(t.group(2))) from KeyError
+			except KeyError as e:
+				raise FileError("Template Var not found {}".format(t.group(2))) from e
 			else:
 				ret = [t.group(3)] * len(it)
 				ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
@@ -85,7 +85,7 @@ class Output():
 			except KeyError:
 				s = s.replace(t.group(0),t.group(0).replace('@','&at;'))
 			t = self.templ_reg.search(s)
-		return s	
+		return s
 
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))
