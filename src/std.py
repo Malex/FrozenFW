@@ -1,36 +1,47 @@
 import os
 import sys
-import urllib
-from cgi import escape
+from .functions import unquote,quote
+from datetime import datetime
 
-def unquote(s :str) -> str:
-	""" Converts string %xx (where xx is the hex value)
-	into their respective chars. Besides it converts + with spaces """
-	return urllib.unquote_plus(s)
+class CookieError(Exception):
+	pass
 
-def htmlspecialchars(s :str) -> str:
-	""" Replace common special chars with their
-	iso-8859-1 equivalent sequences """
+class COOKIE:
+	domain = ""
+	expiration = ""
 
-	diz = { "\"" : "quot",
-            "<" : "lt",
-            ">" : "gt",
-            "'" : "#039",
-            "&" : "amp"
-            }
+	out_handle = None
 
-	for i in diz.keys()[::-1]:
-		s.replace(i,"&"+diz[i]+";")
+	@classmethod
+	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httponly :bool=False):
+		if not domain:
+			domain = cls.domain
+		else:
+			domain = "domain={};".format(domain)
+		
+		if not expiration:
+			expiration = cls.expiration
+		else:
+			try:
+				if type(expiration) is int:
+					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration))
+				elif type(expiration) is str:
+					t = datetime.strptime(expiration,"%a, %d-%b-%Y %H:%M:%S UTC")
+					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(t)
+				else:
+					raise CookieError("Not valid type for expiration: {!r}".format(expiration))
+			except Exception as e:
+				raise CookieError("An error has occured while processing expiration time") from e
+		if secure:
+			sec_str = "secure ;"
+		else:
+			sec_str = ""
+		if httponly:
+			hto_str = "HttpOnly ;"
+		else:
+			hto_str = ""
 
-	return s
-
-def htmlentities(s :str) -> str:
-	""" Replace ALL special chars with their equivalent """
-	return escape(s,True)
-
-def nl2br(s :str) -> str:
-	""" Replace \n char with <br /> string """
-	return s.replace("\n","<br />")
+		out_handle.set_headers("Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str))
 
 
 class Data:

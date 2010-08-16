@@ -12,6 +12,7 @@ def app(environ,print_rep):
 	except (FileError,IOError):
 		rep_status = "404 Not Found"
 		headers = [("Content-Type: text/plain")]
+		body = "404 Not Found"
 	print_rep(rep_status,headers)
 	return [body]
 

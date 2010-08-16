@@ -9,18 +9,20 @@ class FileError(Exception):
 
 class File():
 
-	valid_path = re.compile(r".+") 
+	valid_path = re.compile(r".+")
 	blacklist = []
 	whitelist = []
 
 	@classmethod
 	def set_limits(cls,valid_path :str,blacklist :str,whitelist :str):
+	""" Set limits for open function """
 		cls.valid_path = re.compile(File.parse(valid_path))
 		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
 		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
 	
 	@classmethod
 	def check(cls,filename :str) -> bool:
+	""" Check if given filename is into limits. Used by open"""
 		if ( not cls.valid_path.match(filename) and not any([a.match(filename) for a in cls.whitelist])  ) or any([a.match(filename) for a in cls.blacklist]):
 			return False
 		else:
@@ -41,7 +43,7 @@ class Output():
 
 	rep = {}
 	arg = []
-	headers = [("Content-Type","text/html")] ##TODO: update using property
+	headers = [("Content-Type","text/html")] ##TODO: use property .
 
 	templ_reg = re.compile(r"@!([\w_]+)\s*#(.+?)#\s*(.+)@!end\s+\1\s*#\2#",re.S)
 	f_hash = {}
@@ -50,17 +52,17 @@ class Output():
 	def __init__(self,path :str="template.html"):
 		try:
 			Output.set_template(path)
-		except FileError:
-			raise FileError("Not Valid Template {}".format(path)) from FileError
+		except FileError as e:
+			raise FileError("Not Valid Template {}".format(path)) from e
 		self.f_hash['loop'] = self.loop_exec
 
-	@classmethod
-	def set_headers(cls, *args):
-		for i in args:
-			cls.headers.append(i)
-	
-	@classmethod
-	def set_template(cls,path :str):
+	def set_headers(self, *args):
+		""" Appends headers in args to the default headers list. """
+		for k,v in [a.split(":") for a in args]:
+			headers.append(tuple(k.strip(),v.strip()))
+
+	def set_template(self,path :str):
+		""" Set template file. This file must be in File limits (use whitelist if you need """
 		cls.data = File.get_contents(path)
 
 	def loop_exec(self,s :str,t) -> str:
@@ -69,8 +71,8 @@ class Output():
 		else:
 			try:
 				it = self.rep[t.group(2)]
-			except KeyError:
-				raise FileError("Template Var not found {}".format(t.group(2))) from KeyError
+			except KeyError as e:
+				raise FileError("Template Var not found {}".format(t.group(2))) from e
 			else:
 				ret = [t.group(3)] * len(it)
 				ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
@@ -85,14 +87,13 @@ class Output():
 			except KeyError:
 				s = s.replace(t.group(0),t.group(0).replace('@','&at;'))
 			t = self.templ_reg.search(s)
-		return s	
+		return s
 
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
 	def get_headers(self):
-		print(self.headers)
 		return self.headers
 
 	def get_body(self):

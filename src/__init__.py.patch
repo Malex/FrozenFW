@@ -1,10 +1,10 @@
---- src/__init__.py	2010-08-13 19:01:59.675000287 +0200
-+++ src/__init__.py.diff	2010-08-14 15:32:03.591999770 +0200
+--- __init__.py	2010-08-16 23:26:29.829001183 +0200
++++ __init__.py.diff	2010-08-16 23:27:39.017000045 +0200
 @@ -1,5 +1,4 @@
  import sys
 -import atexit
  
- from .std import Data
+ from .std import Data,Cookie
  from .stdio import Output
 @@ -7,9 +6,7 @@
  from .conf import Conf,ConfError
