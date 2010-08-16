@@ -3,6 +3,9 @@ import sys
 from .functions import unquote,quote
 from datetime import datetime
 
+class CookieError(Exception):
+	pass
+
 class COOKIE:
 	domain = ""
 	expiration = ""
@@ -19,11 +22,27 @@ class COOKIE:
 		if not expiration:
 			expiration = cls.expiration
 		else:
-			if type(expiration) is int:
-				expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration))
+			try:
+				if type(expiration) is int:
+					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration))
+				elif type(expiration) is str:
+					t = datetime.strptime(expiration,"%a, %d-%b-%Y %H:%M:%S UTC")
+					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(t)
+				else:
+					raise CookieError("Not valid type for expiration: {!r}".format(expiration))
+			except Exception as e:
+				raise CookieError("An error has occured while processing expiration time") from e
+		if secure:
+			sec_str = "secure ;"
+		else:
+			sec_str = ""
+		if httponly:
+			hto_str = "HttpOnly ;"
+		else:
+			hto_str = ""
 
-		
-		
+		out_handle.set_headers("Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str))
+
 
 class Data:
 
