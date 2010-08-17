@@ -19,7 +19,7 @@ class File():
 		cls.valid_path = re.compile(File.parse(valid_path))
 		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
 		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
-	
+
 	@classmethod
 	def check(cls,filename :str) -> bool:
 	""" Check if given filename is into limits. Used by open"""
@@ -67,6 +67,7 @@ class Output():
 
 	def loop_exec(self,s :str,t) -> str:
 		assert t, "loop_exec should not be called if match fails. Are you calling it directly? Tell me why..."
+
 		try:
 			it = self.rep[t.group(2)]
 		except KeyError as e:
