@@ -66,18 +66,16 @@ class Output():
 		cls.data = File.get_contents(path)
 
 	def loop_exec(self,s :str,t) -> str:
-		if not t:
-			raise FileError("Fatal Error during templating")
+		assert t, "loop_exec should not be called if match fails. Are you calling it directly? Tell me why..."
+		try:
+			it = self.rep[t.group(2)]
+		except KeyError as e:
+			raise FileError("Template Var not found {}".format(t.group(2))) from e
 		else:
-			try:
-				it = self.rep[t.group(2)]
-			except KeyError as e:
-				raise FileError("Template Var not found {}".format(t.group(2))) from e
-			else:
-				ret = [t.group(3)] * len(it)
-				ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
-				s = s.replace(t.group(0),self.sep.join(ret))
-				return s
+			ret = [t.group(3)] * len(it)
+			ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
+			s = s.replace(t.group(0),self.sep.join(ret))
+			return s
 
 	def templ_exec(self,s :str) -> str:
 		t = self.templ_reg.search(s)
