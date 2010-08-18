@@ -1,16 +1,16 @@
 FrozenFW is a web framework written in Python.
 
-Its purpose is to provide to the webmaster simple functions
-for his/her work, by having a low-level but simple configuration,
-(x)html templates.
+Its purpose is to provide to the webmaster simple functions and classes
+for his/her work, by having a low-level but simple configuration
+and (x)html templates.
 
-It is interfaced to the webserver via wsgi, so your web
-application will run in all webserver.
+It is interfaced to the webserver via wsgi or cgi, so your web
+application will run in almost all webservers.
 Besides it wraps the database server (if any), by clear
-functions.
+class methods.
 
 It requires Python >=3.1
 
-Python2.6 backwards compability has been gone since it doesn't allow 
+Python2.6 backward compability has been gone since it doesn't allow
 function annotations and other good features.
 FrozenFW 0.1 is still py2.6 compatible.
