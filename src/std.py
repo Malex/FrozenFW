@@ -11,6 +11,7 @@ class COOKIE:
 	expiration = ""
 
 	out_handle = None
+	list = []
 
 	@classmethod
 	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
@@ -42,9 +43,37 @@ class COOKIE:
 			hto_str = ""
 
 		out_handle.set_headers("Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str))
+		cls.list.append(Cookie(name,value,expiration,restriction,domain,secure,httpOnly))
 
-	def __init__(self,name :str, value :str="", expiration :int=0, restriction :str="/", domain :str="", secure :bool=False, httpOnly :bool=False):
-		pass ##TODO
+	def __init__(self,name :str, value :str, expiration :int=0, restriction :str="/", domain :str="", secure :bool=False, httpOnly :bool=False):
+		self.name = name
+		self.value = value
+		self.exp = expiration
+		self.path = restriction
+		self.dom = domain
+		self.https = secure
+		self.no_client = httpOnly
+
+	def __get__(self):
+		return self.value
+
+	def __getitem__(self,query :str):
+		c_dict = { "restriction" : "path",
+				"expiration" : "exp",
+				"dom" : "domain",
+				"secure" : "https",
+				"httpOnly" : "no_client",
+				}
+		try:
+			query = c_dict[query]
+		except KeyError:
+			pass
+
+		acc = ['name','value','https'.'no_client','exp','dom','path']
+		if not query in acc:
+			raise CookieError("Not such attribute for Cookies")
+		else:
+			return vars(self)[query]
 
 class Data:
 
