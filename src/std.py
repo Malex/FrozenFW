@@ -43,7 +43,9 @@ class COOKIE:
 			hto_str = ""
 
 		out_handle.set_headers("Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str))
-		cls.list.append(Cookie(name,value,expiration,restriction,domain,secure,httpOnly))
+		ret = Cookie(name,value,expiration,restriction,domain,secure,httpOnly)
+		cls.list.append(ret)
+		return ret
 
 	def __init__(self,name :str, value :str, expiration :int=0, restriction :str="/", domain :str="", secure :bool=False, httpOnly :bool=False):
 		self.name = name
