@@ -4,7 +4,7 @@ from sqlobject import *
 
 class SQL():
 	"Parent Class for SQL common operations"
-	
+
 	tables = {}
 
 	@staticmethod
@@ -13,7 +13,7 @@ class SQL():
 
 	def createTable(self,table_name :str,*str_cols,**other_cols):
 		self.tables[table_name] = type(table_name,(SQLObject,),zip(str_cols,(StringCol(),)*len(str_cols)).update(other_cols))
-	
+
 	def select(self,table_name :str,*args,**kwargs):
 		"""*args could be empty, unless you know what you are doing.
 		kwargs should contain the query column(s)"""

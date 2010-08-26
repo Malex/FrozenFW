@@ -24,7 +24,7 @@ class Conf:
 					self.conf[i] = f[i]
 		else:
 			self.parse()
-			
+
 			try:
 				self.update_conf(self.query("conf_chain"))
 			except ConfError:

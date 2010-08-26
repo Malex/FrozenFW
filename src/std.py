@@ -13,12 +13,12 @@ class COOKIE:
 	out_handle = None
 
 	@classmethod
-	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httponly :bool=False):
+	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
 		if not domain:
 			domain = cls.domain
 		else:
 			domain = "domain={};".format(domain)
-		
+
 		if not expiration:
 			expiration = cls.expiration
 		else:
@@ -43,6 +43,8 @@ class COOKIE:
 
 		out_handle.set_headers("Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str))
 
+	def __init__(self,name :str, value :str="", expiration :int=0, restriction :str="/", domain :str="", secure :bool=False, httpOnly :bool=False):
+		pass ##TODO
 
 class Data:
 
@@ -112,7 +114,7 @@ class Data:
 		""" conf in your configuration file (if any).
 		~ is a special character (accepted on Windows too)
 		to indicate your home directory  """
-		
+
 		self.wsgi = wsgi
 		if env:
 			os.environ = env
