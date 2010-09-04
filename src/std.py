@@ -6,7 +6,7 @@ from datetime import datetime
 class CookieError(Exception):
 	pass
 
-class COOKIE:
+class Cookie:
 	domain = ""
 	expiration = ""
 
