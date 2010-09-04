@@ -71,7 +71,7 @@ class COOKIE:
 		except KeyError:
 			pass
 
-		acc = ['name','value','https'.'no_client','exp','dom','path']
+		acc = ['name','value','https','no_client','exp','dom','path']
 		if not query in acc:
 			raise CookieError("Not such attribute for Cookies")
 		else:
