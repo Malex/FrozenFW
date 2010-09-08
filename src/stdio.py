@@ -36,8 +36,8 @@ class File():
 	@staticmethod
 	def get_contents(path :str) -> str:
 		""" Returns the file contents very fast """
-		t = File.open(path)
-		return t.read()
+		with File.open(path) as t:
+			return t.read()
 
 class Output():
 
@@ -58,7 +58,7 @@ class Output():
 
 	def set_headers(self, *args):
 		""" Appends headers in args to the default headers list. """
-		for k,v in [a.split(":") for a in args]:
+		for k,v in (a.split(":") for a in args):
 			headers.append(tuple(k.strip(),v.strip()))
 
 	def set_template(self,path :str):
@@ -74,7 +74,7 @@ class Output():
 			raise FileError("Template Var not found {}".format(t.group(2))) from e
 		else:
 			ret = [t.group(3)] * len(it)
-			ret = [x.format(**{t.group(2) : y}) for x,y in zip(ret,it)] #tnx chuzz 
+			ret = (x.format(**{t.group(2) : y}) for x,y in zip(ret,it)) #tnx chuzz 
 			s = s.replace(t.group(0),self.sep.join(ret))
 			return s
 

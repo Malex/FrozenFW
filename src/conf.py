@@ -45,17 +45,16 @@ class Conf:
 				t = re.match(r"(\w+?)\s*=\s*(.+?)\s*(?:#.*)?$",i)
 				if not t:
 					sys.stderr.write("Error on line {} : Not matched".format(C-1))
-					continue
 				else:
-					self.to_diz(t)
+					try:
+						self.to_diz(t)
+					except AssertionError as e:
+						sys.stderr.write(repr(e))
 
 	def to_diz(self,matchObj):
 		""" It puts parsed values into conf dictionary.
 		You should not use this method """
-		if not matchObj:
-			sys.stderr.write("Fatal error {to_diz}")
-			return
-
+		assert matchObj,"Fatal error {to_diz}"
 		k,v = matchObj.groups()
 		self.conf[k] = v
 
