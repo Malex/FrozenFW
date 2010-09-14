@@ -1,29 +1,21 @@
 import sys
-import atexit
 
-from .std import Data,Cookie
+from .Data import Data
+from .Cookie import Cookie
 from .stdio import Output
 from .functions import unquote,nl2br,htmlspecialchars,htmlentities
 from .conf import Conf,ConfError
 from .stdio import File,open,print,FileError
 
-conf = Conf("~/.frozenrc")
-
-data = Data(conf)
+conf = Conf("/etc/frozenrc")
 
 File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
 sys.stdout = Output(conf.query("template_file"))
 sys.stdout.set_headers(*tuple(conf.query("headers")))
 
+Cookie.out_handle = sys.stdout
+
 if conf.query("use_db"):
 	from .database import *
 	database = DB(conf.query("db_type"),conf.query("db_file"))
-
-@atexit.register
-def __do():
-	try:
-		sys.stdout.exit()
-		database.exit()
-	except:
-		pass
