@@ -3,7 +3,7 @@ O2 - XML driver
 or change to sqlalchemy?
 
 1 - Change submodules namimg (make subpackes for templaging and pluginning?) --- DOING
-2 - Plugin system (exec ? )
+2 - Plugin system (exec ? ) --- BrainStorming
 3 - Improve template system (transfer loop_exec in plugin, add include, var and if statements)
 4 - Improve Cookie system
 5 - Session class

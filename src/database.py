@@ -1,4 +1,4 @@
-from .stdio import File
+from .File import File
 import re
 from sqlobject import *
 

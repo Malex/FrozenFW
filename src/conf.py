@@ -2,7 +2,7 @@ import re
 import shelve
 import os
 import sys
-from .stdio import File
+from .File import File
 
 class ConfError(Exception):
 	pass

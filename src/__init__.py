@@ -2,10 +2,10 @@ import sys
 
 from .Data import Data
 from .Cookie import Cookie
-from .stdio import Output
+from .stdio import Output,print
 from .functions import unquote,nl2br,htmlspecialchars,htmlentities
 from .conf import Conf,ConfError
-from .stdio import File,open,print,FileError
+from .File import File,open,FileError
 
 conf = Conf("/etc/frozenrc")
 
