@@ -88,3 +88,9 @@ class Data:
 
 		if self.conf.query("verbose_server"):
 			self.rSERVER()
+
+	def __setattr__(self,name,value):
+		if name in ("GET","POST","SERVER","COOKIE"): ##TODO: insert session here too
+			raise AttributeError("Assignement not allowed on read-only attributes")
+		else:
+			super().__setattr__(name,value)

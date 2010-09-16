@@ -2,18 +2,18 @@ O1 - Improve sqlobject Wrapping
 O2 - XML driver
 or change to sqlalchemy?
 
-1 - Change submodules namimg (make subpackes for templaging and pluginning?) --- DOING
-2 - Plugin system (exec ? ) --- BrainStorming
+-- 1 - Change submodules namimg (make subpackes for templaging and pluginning?) --- Done. Templateing is a plugin; with its subplugins.
+- 2 - Plugin system (exec ? ) --- Done, but to improve (dynamic loading, optional sandboxing, etc)
 3 - Improve template system (transfer loop_exec in plugin, add include, var and if statements)
 4 - Improve Cookie system
 5 - Session class
-6 - Make data.(GET|POST|SERVER|COOKIE) read-only (throug __setattr__ overriding [use lazy evaluation?]) 
+-- 6 - Make data.(GET|POST|SERVER|COOKIE) read-only (throug __setattr__ overriding [use lazy evaluation?]) --- Done (and I'm lazy) 
 (besides add a SESSION attribute?)
 7 - Add templating aliasing and output formatting through files
 8 - Improve wsgi/init.py files to output different type of files, with the correct content-type header
-9 - make __builtins__ unaccessable for security reasons (maybe optional and settable by a conf option)
+-- 9 - make __builtins__ unaccessable for security reasons (maybe optional and settable by a conf option) --- Done
 10 - IE and not-common browsers detection if content-type is application/xhtml+xml, replacing it with text/html if necessary
-11 - Make all templating system a plugin (simply overwrite print function for blocking outputting)
+-- 11 - Make all templating system a plugin (simply overwrite print function for blocking outputting) --- DONE
 12 - improve Conf class (it has lots of issues, especially with # characters inside strings)
 13 - Add better doc strings for modules
 14 -  Add optional regexing way for parsing url requests (like django)

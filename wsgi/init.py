@@ -6,7 +6,7 @@ def app(environ,print_rep):
 	try:
 		with open((conf.query("base_dir")+data.SERVER['PATH_INFO']).replace("//","/")) as f:
 			rep_status = "200 OK"
-			exec(f.read())
+			exec(f.read().replace("__builtins__.","") if conf.query("secure_lock") else f.read())
 			headers = output.get_headers()
 			body = output.get_body()
 	except (FileError,IOError):
