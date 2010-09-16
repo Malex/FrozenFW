@@ -33,5 +33,14 @@ class Template(Output):
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
-	def get_body(self):
+	def get_body(self) -> str:
 		return self.templ_exec(self.data).format(*tuple(self.arg),**self.rep)
+
+	@property
+	def stats(self) -> tuple:
+		return self.f_hash.keys()
+	@stats.setter
+	def add_func(self,ref :object):
+		self.f_hash[ref.__name__] = ref
+
+sys.stdout = Template(conf.query("template_file"))

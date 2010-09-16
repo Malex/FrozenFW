@@ -1,4 +1,5 @@
 import sys
+import os
 
 from .Data import Data
 from .Cookie import Cookie
@@ -11,7 +12,7 @@ conf = Conf("/etc/frozenrc")
 
 File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
-sys.stdout = Output(conf.query("template_file"))
+sys.stdout = Output()
 sys.stdout.set_headers(*tuple(conf.query("headers")))
 
 Cookie.out_handle = sys.stdout
@@ -19,3 +20,10 @@ Cookie.out_handle = sys.stdout
 if conf.query("use_db"):
 	from .database import *
 	database = DB(conf.query("db_type"),conf.query("db_file"))
+
+for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
+	for i in touch:
+		if i.endswith(".py"):
+			with open("/".join((pwd,i))) as plug:
+				exec(plug.read())
+
