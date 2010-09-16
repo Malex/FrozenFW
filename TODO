@@ -8,7 +8,7 @@ or change to sqlalchemy?
 4 - Improve Cookie system
 5 - Session class
 -- 6 - Make data.(GET|POST|SERVER|COOKIE) read-only (throug __setattr__ overriding [use lazy evaluation?]) --- Done (and I'm lazy) 
-(besides add a SESSION attribute?)
+(besides add a SESSION attribute?) (why not make other dangerous attributes readonly?)
 7 - Add templating aliasing and output formatting through files
 8 - Improve wsgi/init.py files to output different type of files, with the correct content-type header
 -- 9 - make __builtins__ unaccessable for security reasons (maybe optional and settable by a conf option) --- Done
@@ -18,6 +18,6 @@ or change to sqlalchemy?
 13 - Add better doc strings for modules
 14 -  Add optional regexing way for parsing url requests (like django)
 15 - Support for rewriting urls by database queries (useful for forums and blogs)
-and many other features
+and many other features (use a base class to avoid accessing to private attributes?)
 
 Coming version 2.0
