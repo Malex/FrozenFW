@@ -1,5 +1,5 @@
 PYTHON="python3.1"
-DIR="/usr/lib/$(PYTHON)/site-packages/frozen"
+DIR="/home/malex/pymod/frozen"
 
 install:
 	cp -R src/* $(DIR)

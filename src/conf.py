@@ -1,6 +1,4 @@
 import re
-import shelve
-import os
 import sys
 from .File import File
 
@@ -15,22 +13,11 @@ class Conf:
 	def __init__(self,conf="~/etc/frozenrc"):
 
 		self.fconf = conf
-		if os.access("conf.db",os.R_OK):
-			if os.stat(File.parse(conf)).st_mtime > os.stat("conf.db").st_mtime:
-				self.parse()
-			else:
-				f = shelve.open("conf.db")
-				for i in f.keys():
-					self.conf[i] = f[i]
-		else:
-			self.parse()
-
-			try:
-				self.update_conf(self.query("conf_chain"))
-			except ConfError:
-				pass
-
-			Conf.compile_dict(self.conf)
+		self.parse()
+		try:
+			self.update_conf(self.query("conf_chain"))
+		except ConfError:
+			pass
 
 	def parse(self):
 		""" Open the configuration file and save its values
@@ -57,15 +44,6 @@ class Conf:
 		assert matchObj,"Fatal error {to_diz}"
 		k,v = matchObj.groups()
 		self.conf[k] = v
-
-	@staticmethod
-	def compile_dict(conf :dict,filename :str ="./conf.db"):
-		"""Compiles the configuration hash into a
-		fastest form for further uses """
-		db = shelve.open(File.parse(filename),writeback=True)
-		for i in conf.keys():
-			db[i] = conf[i]
-		db.close()
 
 	def query(self,key :str):
 		""" Returs a configuration value """

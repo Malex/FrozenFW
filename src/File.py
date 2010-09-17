@@ -13,14 +13,14 @@ class File():
 
 	@classmethod
 	def set_limits(cls,valid_path :str,blacklist :str,whitelist :str):
-	""" Set limits for open function """
+		""" Set limits for open function """
 		cls.valid_path = re.compile(File.parse(valid_path))
 		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
 		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
 
 	@classmethod
 	def check(cls,filename :str) -> bool:
-	""" Check if given filename is into limits. Used by open"""
+		""" Check if given filename is into limits. Used by open"""
 		if ( not cls.valid_path.match(filename) and not any([a.match(filename) for a in cls.whitelist])  ) or any([a.match(filename) for a in cls.blacklist]):
 			return False
 		else:
