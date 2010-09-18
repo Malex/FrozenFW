@@ -13,13 +13,13 @@ class Output():
 
 	@property
 	def headers(self): ##TODO: improve by creating and headers class
-		return self.headers
+		return self.__headers
 
 	@headers.setter
-	def set_headers(self, *args):
+	def headers(self, args :tuple):
 		""" Appends headers in args to the default headers list. """
 		for k,v in (a.split(":") for a in args):
-			self.__headers.append(tuple(k.strip(),v.strip()))
+			self.__headers.append((k.strip(),v.strip()))
 
 	def get_body(self):
 		return self.data

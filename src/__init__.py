@@ -13,7 +13,7 @@ conf = Conf("/etc/frozenrc")
 File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
 sys.stdout = Output()
-sys.stdout.set_headers(*tuple(conf.query("headers")))
+sys.stdout.headers = tuple(conf.query("headers"))
 
 Cookie.out_handle = sys.stdout
 
