@@ -6,9 +6,6 @@ class ConfError(Exception):
 	pass
 
 class Conf:
-
-	conf = {}
-
 	def __init__(self,file :str="~/etc/frozenrc"):
 		self.conf = self.parse(file)
 		try:
