@@ -5,7 +5,7 @@ from .Data import Data
 from .Cookie import Cookie
 from .stdio import Output,print
 from .functions import unquote,nl2br,htmlspecialchars,htmlentities
-from .conf import Conf,ConfError
+from .Conf import Conf,ConfError
 from .File import File,open,FileError
 
 conf = Conf("/etc/frozenrc")
