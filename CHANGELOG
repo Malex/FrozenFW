@@ -1,0 +1,4 @@
+- Changed submodules naming (capitalized names and splitted some modules)
+- Added pluggining system (maybe not the best way to implement it)
+- Made GET|POST|SERVER|COOKIE read-only
+- blocked __builtins__ access (to improve)
