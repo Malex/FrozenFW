@@ -3,7 +3,6 @@ import sys
 
 from .File import File,open,FileError
 
-
 class Output():
 
 	__headers = [("Content-Type","text/html")]
@@ -32,4 +31,3 @@ class Output():
 
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
-

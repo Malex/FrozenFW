@@ -15,5 +15,3 @@ def app(environ,print_rep):
 		body = "404 Not Found"
 	print_rep(rep_status,headers)
 	return [body]
-
-
