@@ -16,7 +16,12 @@ class Dispatcher():
 			raise ValueError("Not function/method interface found") from e
 		self.__list.append(i)
 
-#HOW TODO IT? (it should be runned by wsgi system to make a regular output
-#	def check(self,filename):
-#		for i in self.__list:
-#			i(filename)
+	def __add__(self,i):
+		self.lis = i
+
+	def check(self,filename):
+		for i in self.__list:
+			try:
+				return i(filename)
+			except:
+				continue

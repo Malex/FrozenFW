@@ -7,6 +7,7 @@ from .stdio import Output,print
 from .functions import unquote,nl2br,htmlspecialchars,htmlentities
 from .Conf import Conf,ConfError
 from .File import File,open,FileError
+from .Dispatcher import Dispatcher
 
 conf = Conf("/etc/frozenrc")
 
@@ -16,6 +17,8 @@ sys.stdout = Output()
 sys.stdout.headers = tuple(conf.query("headers"))
 
 Cookie.out_handle = sys.stdout
+
+dispatch = Dispatcher()
 
 if conf.query("use_db"):
 	from .database import *
