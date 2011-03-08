@@ -43,4 +43,12 @@ class Template(Output):
 	def add_func(self,ref :object):
 		self.f_hash[ref.__name__] = ref
 
+	def ret(self,filename :str) -> tuple:
+		if not filename.endswith(".py"):
+			raise Exception
+		exec(File.get_contents(filename))
+		return "200 OK",self.headers,self.get_body()
+
 sys.stdout = Template(conf.query("template_file"))
+
+dispatch+=sys.stdout.ret
