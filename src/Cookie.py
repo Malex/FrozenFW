@@ -7,10 +7,6 @@ class Cookie:
 	domain = ""
 	expiration = ""
 
-	out_handle = None
-	list = []
-
-	@classmethod
 	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
 		if not domain:
 			domain = cls.domain
@@ -39,10 +35,7 @@ class Cookie:
 		else:
 			hto_str = ""
 
-		out_handle.set_headers("Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str))
-		ret = Cookie(name,value,expiration,restriction,domain,secure,httpOnly)
-		cls.list.append(ret)
-		return ret
+		self.out = "Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str)
 
 	def __init__(self,name :str, value :str, expiration :int=0, restriction :str="/", domain :str="", secure :bool=False, httpOnly :bool=False):
 		self.name = name
@@ -52,6 +45,7 @@ class Cookie:
 		self.dom = domain
 		self.https = secure
 		self.no_client = httpOnly
+		self.set(name,value,expiration,restriction,domain,secure,httpOnly)
 
 	def __get__(self):
 		return self.value

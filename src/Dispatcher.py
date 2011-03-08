@@ -4,7 +4,7 @@ class Dispatcher():
 	def __init__(self,*args):
 		for i in args:
 			setattr(self,self.lis,i)
-	
+
 	@property
 	def lis(self):
 		raise AttributeError("Write-only attribute")
