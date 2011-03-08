@@ -1,4 +1,8 @@
 - Changed submodules naming (capitalized names and splitted some modules)
-- Added pluggining system (maybe not the best way to implement it)
+- Added pluggining system
 - Made GET|POST|SERVER|COOKIE read-only
-- blocked __builtins__ access (to improve)
+- Blocked __builtins__ access
+- Session Plugin
+- Templating system became a plugin
+- Improved Cookie system
+- A more "lazy" code and minor optimization
