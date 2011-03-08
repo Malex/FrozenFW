@@ -5,4 +5,5 @@
 - Session Plugin
 - Templating system became a plugin
 - Improved Cookie system
+- Added a Logger
 - A more "lazy" code and minor optimization

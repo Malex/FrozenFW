@@ -9,23 +9,29 @@ from .Conf import Conf,ConfError
 from .File import File,open,FileError
 from .Dispatcher import Dispatcher
 from .Headers import Headers,Header
+from .Logger import Logger,NOTICE,WARNING,ERROR
 
 conf = Conf("/etc/frozenrc")
 
-File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
+log = Logger(conf.query("log_file"),NOTICE)
 
-sys.stdout = Output()
-sys.stdout.headers = Headers(*tuple(conf.query("headers")))
+try:
+	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
-dispatch = Dispatcher()
+	sys.stdout = Output()
+	sys.stdout.headers = Headers(*tuple(conf.query("headers")))
 
-if conf.query("use_db"):
-	from .database import *
-	database = DB(conf.query("db_type"),conf.query("db_file"))
+	dispatch = Dispatcher()
 
-for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
-	for i in touch:
-		if i.endswith(".py"):
-			with open("/".join((pwd,i))) as plug:
-				exec(plug.read())
+	if conf.query("use_db"):
+		from .database import *
+		database = DB(conf.query("db_type"),conf.query("db_file"))
+
+	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
+		for i in touch:
+			if i.endswith(".py"):
+				with open("/".join((pwd,i))) as plug:
+					exec(plug.read())
+except BaseException as e:
+	log.write(e)
 
