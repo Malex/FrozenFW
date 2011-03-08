@@ -8,15 +8,14 @@ from .functions import unquote,nl2br,htmlspecialchars,htmlentities
 from .Conf import Conf,ConfError
 from .File import File,open,FileError
 from .Dispatcher import Dispatcher
+from .Headers import Headers,Header
 
 conf = Conf("/etc/frozenrc")
 
 File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
 sys.stdout = Output()
-sys.stdout.headers = tuple(conf.query("headers"))
-
-Cookie.out_handle = sys.stdout
+sys.stdout.headers = Headers(*tuple(conf.query("headers")))
 
 dispatch = Dispatcher()
 

@@ -14,5 +14,5 @@ class Session(Cookie):
 		super().__init__("pysessid",self.__id,expires,httpOnly=True)
 
 	@property
-	def id(self):
+	def id(self) -> str:
 		return self.__id

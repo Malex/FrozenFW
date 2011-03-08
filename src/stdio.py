@@ -2,23 +2,14 @@ import re
 import sys
 
 from .File import File,open,FileError
+from .Headers import Headers
 
 class Output():
 
-	__headers = [("Content-Type","text/html")]
+	headers = Headers()
 
 	def write(self,*args,**kwargs):
 		self.data += " ".join(args)
-
-	@property
-	def headers(self): ##TODO: improve by creating and headers class
-		return self.__headers
-
-	@headers.setter
-	def headers(self, args :tuple):
-		""" Appends headers in args to the default headers list. """
-		for k,v in (a.split(":") for a in args):
-			self.__headers.append((k.strip(),v.strip()))
 
 	def get_body(self):
 		return self.data
