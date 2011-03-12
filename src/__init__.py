@@ -7,7 +7,7 @@ from .stdio import Output,print
 from .functions import unquote,nl2br,htmlspecialchars,htmlentities
 from .Conf import Conf,ConfError
 from .File import File,open,FileError
-from .Dispatcher import Dispatcher
+from .Dispatcher import Dispatcher,Response
 from .Headers import Headers,Header
 from .Logger import Logger,NOTICE,WARNING,ERROR
 

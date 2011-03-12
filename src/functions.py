@@ -8,7 +8,7 @@ def unquote(s :str) -> str:
 
 def quote(s :str) -> str:
 	""" Converts special chars into their respective
-	hev values (%xx form). Besides it converts spaces into + """
+	hex values (%xx form). Besides it converts spaces into + """
 	return quote_plus(s)
 
 def htmlspecialchars(s :str) -> str:

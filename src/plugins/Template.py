@@ -47,7 +47,7 @@ class Template(Output):
 		if not filename.endswith(".py"):
 			raise Exception
 		exec(File.get_contents(filename))
-		return "200 OK",self.headers,self.get_body()
+		return Response("200 OK",self.headers,self.get_body())
 
 sys.stdout = Template(conf.query("template_file"))
 

@@ -39,7 +39,7 @@ class Logger():
 		handle.write(datetime.today().isoformat(' '))
 
 	def write(exc :BaseException):
-		warn = True if str(exc.__class__).find("Warning")!=-1 else False
+		warn = True if "Warning" in str(exc.__class__) else False
 		if self.level > WARNING and warn:
 			return
 		else:

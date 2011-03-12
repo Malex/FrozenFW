@@ -37,3 +37,6 @@ class Headers():
 	def __init__(self,*args):
 		for i in args:
 			self += i
+
+	def __get__(self):
+		return self.headers

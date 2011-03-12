@@ -2,7 +2,6 @@ O1 - Improve sqlobject Wrapping
 O2 - XML driver
 or change to sqlalchemy?
 
-1 - Fix Dispatching (DON'T USE EXCEPTIONS)
 - 2 - Plugin system (exec ? ) --- Done, but to improve (dynamic loading, optional sandboxing, etc)
 3 - Improve template system (transfer loop_exec in plugin, add include, var and if statements)
 - 4 - Improve Cookie system (to check)
