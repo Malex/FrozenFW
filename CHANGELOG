@@ -1,11 +1,11 @@
-- Changed submodules naming (capitalized names and splitted some modules)
-- Added pluggining system
-- Made GET|POST|SERVER|COOKIE read-only
-- Blocked __builtins__ access
-- Session Plugin
-- Templating system became a plugin
-- Improved Cookie system
-- Logger Added
-- Response class
+- Changed submodules naming (capitalized names and splitted some modules).
+- Added pluggining system.
+- Made GET|POST|SERVER|COOKIE read-only.
+- Blocked __builtins__ access for user script. Accessing it is still aviable for plugins. 
+- Session Plugin and data.SESSION var (read-only).
+- Templating system became a plugin.
+- Improved Cookie system.
+- Logger Added.
+- Response class.
 - Very better Conf class.
-- A more "lazy" code and minor optimization
+- A more "lazy" code and minor optimization.

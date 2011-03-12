@@ -90,7 +90,7 @@ class Data:
 			self.rSERVER()
 
 	def __setattr__(self,name,value):
-		if name in ("GET","POST","SERVER","COOKIE"): ##TODO: insert session here too
+		if name in ("GET","POST","SERVER","COOKIE","SESSION"):
 			raise AttributeError("Assignement not allowed on read-only attributes")
 		else:
 			super().__setattr__(name,value)

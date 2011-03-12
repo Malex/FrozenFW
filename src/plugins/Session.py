@@ -16,3 +16,13 @@ class Session(Cookie):
 	@property
 	def id(self) -> str:
 		return self.__id
+
+	@classmethod
+	def find_session(cls,cookies :dict) -> list:
+		ret = []
+		for i in cookies.keys():
+			if i == "pysessid":
+				ret.append(coockies[i])
+		return ret
+
+super(Data,data).__setattr__('SESSION',Session.find_session(data.COOKIE))
