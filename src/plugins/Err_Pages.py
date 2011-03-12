@@ -1,5 +1,5 @@
 
-def state(stat :str,head :list,body :str, filename :str) -> list:
+def state(stat :str,head :Headers,body :str, filename :str) -> list:
 	if stat.startswith("200"):
 		return Response(stat,head,body)
 	else:

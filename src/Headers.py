@@ -38,5 +38,5 @@ class Headers():
 		for i in args:
 			self += i
 
-	def __get__(self):
+	def get(self):
 		return self.headers

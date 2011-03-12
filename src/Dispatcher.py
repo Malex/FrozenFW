@@ -1,7 +1,9 @@
+from .Headers import Headers
+
 class Response():
 	__ready = False
 
-	def __init__(stat :str, head :list, body :str, ready :bool=False):
+	def __init__(stat :str, head :Headers, body :str, ready :bool=False):
 		""" Use ready only if you are SURE your data are ready to be sent to client """
 		self.stat = stat
 		self.head = head
@@ -18,7 +20,7 @@ class Response():
 		else:
 			self.__ready = value
 
-	def __get__(self) -> tuple:
+	def get(self) -> tuple:
 		return self.stat,self.head,self.body
 
 
@@ -46,13 +48,13 @@ class Dispatcher():
 
 	def check(self,filename :str):
 		for i in self.__list:
-			tmp = self.rep.__get__()
+			tmp = self.rep.get()
 			t2 = i(*tmp,filename)
 			if t2.ready:
 				self.reset()
 				return t2
 			else:
-				self.rep = Response(t2.__get__())
+				self.rep = Response(*t2.get())
 				continue
 
 	def reset(self):

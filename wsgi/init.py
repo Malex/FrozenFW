@@ -5,9 +5,9 @@ def app(environ,print_rep):
 		data = Data(conf,environ,True)
 		output = sys.stdout
 		rep_status,headers,body = dispatch((conf.query("base_dir")+data.SERVER['PATH_INFO']).replace("//","/"))
-		print_rep(rep_status,headers)
+		print_rep(rep_status,headers.get())
 		return [body]
-	except BaseException as e:
+	except BaseException as e: #TODO: fix here to use other pages too
 		log.write(e)
 		print_rep("500 Internal Server Error",["Content-Type: text/html"])
-		return "<h1>Internal Server Error</h1>"
+		return ["<h1>Internal Server Error</h1>"]
