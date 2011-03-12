@@ -29,7 +29,7 @@ try:
 
 	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
 		for i in touch:
-			if i.endswith(".py"):
+			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):
 				with open("/".join((pwd,i))) as plug:
 					exec(plug.read())
 except BaseException as e:
