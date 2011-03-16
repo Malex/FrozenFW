@@ -47,7 +47,7 @@ class Template(Output):
 		if not filename.endswith(".py"):
 			raise Exception
 		exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
-		return Response("200 OK",head+self.headers,self.get_body())
+		return Response("200 OK",head+self.headers,self.get_body(),filename)
 
 sys.stdout = Template(conf.query("template_file"))
 

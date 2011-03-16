@@ -8,4 +8,5 @@
 - Logger Added.
 - Response class.
 - Very better Conf class.
+- Url Parsing added.
 - A more "lazy" code and minor optimization.

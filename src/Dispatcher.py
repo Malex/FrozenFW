@@ -3,11 +3,12 @@ from .Headers import Headers
 class Response():
 	__ready = False
 
-	def __init__(stat :str, head :Headers, body :str, ready :bool=False):
+	def __init__(stat :str, head :Headers, body :str, filename :str, ready :bool=False):
 		""" Use ready only if you are SURE your data are ready to be sent to client """
 		self.stat = stat
 		self.head = head
 		self.body = body
+		self.filename = filename
 		self.ready = ready
 
 	@property
@@ -21,14 +22,14 @@ class Response():
 			self.__ready = value
 
 	def get(self) -> tuple:
-		return self.stat,self.head,self.body
+		return self.stat,self.head,self.body,self.filename
 
 
 class Dispatcher():
 	__list = []
 
 	def __init__(self,*args):
-		self.rep = Response("",[],"")
+		self.rep = Response("",[],"","")
 		for i in args:
 			setattr(self,self.lis,i)
 
@@ -46,10 +47,13 @@ class Dispatcher():
 	def __add__(self,i):
 		self.lis = i
 
-	def check(self,filename :str):
+	def __call__(self,filename):
+		self.rep = Response("",[],"",filename)
+
+	def check(self):
 		for i in self.__list:
 			tmp = self.rep.get()
-			t2 = i(*tmp,filename)
+			t2 = i(*tmp)
 			if t2.ready:
 				self.reset()
 				return t2
@@ -58,4 +62,4 @@ class Dispatcher():
 				continue
 
 	def reset(self):
-		self.rep = Response("",[],"")
+		self.rep = Response("",[],"","")
