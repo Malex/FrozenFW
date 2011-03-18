@@ -23,10 +23,6 @@ try:
 
 	dispatch = Dispatcher()
 
-	if conf.query("use_db"):
-		from .database import *
-		database = DB(conf.query("db_type"),conf.query("db_file"))
-
 	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
 		for i in touch:
 			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):

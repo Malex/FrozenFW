@@ -9,4 +9,5 @@
 - Response class.
 - Very better Conf class.
 - Url Parsing added.
+- Database module has gone: use a plugin instead.
 - A more "lazy" code and minor optimization.

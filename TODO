@@ -5,6 +5,7 @@ or change to sqlalchemy?
 - 2 - Plugin system (exec ? ) --- Done, but to improve (dynamic loading, optional sandboxing, etc)
 3 - Improve template system (transfer loop_exec in plugin, add include, var and if statements)
 - 4 - Improve Cookie system (to check)
+5 - Plugin for mongodb.
 6 - Make other dangerous attributes readonly
 7 - Add templating aliasing and output formatting through files
 8 - Improve wsgi/init.py files to output different type of files, with the correct content-type header
