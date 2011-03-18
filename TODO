@@ -1,11 +1,10 @@
-O1 - Improve sqlobject Wrapping
-O2 - XML driver
-or change to sqlalchemy?
+O2 - XML db plugin (should use the same interface)
+	=> write the common db interface
 
 - 2 - Plugin system (exec ? ) --- Done, but to improve (dynamic loading, optional sandboxing, etc)
 3 - Improve template system (transfer loop_exec in plugin, add include, var and if statements)
 - 4 - Improve Cookie system (to check)
-5 - Plugin for mongodb.
+- 5 - Plugin for mongodb. (IMPROVE!!!!)
 6 - Make other dangerous attributes readonly
 7 - Add templating aliasing and output formatting through files
 8 - Improve wsgi/init.py files to output different type of files, with the correct content-type header
