@@ -15,7 +15,7 @@ class Response():
 	def ready(self) -> bool:
 		return self.__ready
 	@ready.setter
-	def set_check(self, value :bool):
+	def ready(self, value :bool):
 		if value!=True and value!=False:
 			raise ValueError("Bool value needed")
 		else:

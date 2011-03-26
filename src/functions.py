@@ -22,8 +22,8 @@ def htmlspecialchars(s :str) -> str:
             "&" : "amp"
             }
 
-	for i in diz.keys()[::-1]:
-		s.replace(i,"&"+diz[i]+";")
+	for i in diz.keys():
+		s = s.replace(i,"&"+diz[i]+";")
 
 	return s
 

@@ -10,25 +10,26 @@ class LoggerException(ValueError):
 class Logger():
 	__handle = ""
 
+	@property
+	def handle(self) -> str:
+		return self.__handle
+	@handle.setter
+	def handle(self,filename :str):
+		with open(filename,'a'):
+			pass
+		self.__handle = filename
+
 	def __init__(self,filename :str="",lv=WARNING):
 		if filename:
 			self.handle = filename
 		self.level=lv
 
-	@property
-	def handle(self) -> str:
-		return __handle
-	@handle.setter
-	def set_log(self,filename :str):
-		with open(filename,'a'):
-			pass
-		self.__handle = filename
 
 	@property
 	def level(self) -> int:
 		return self.__lv
 	@level.setter
-	def set_level(self,value :int):
+	def level(self,value :int):
 		if NOTICE <= value <= ERROR:
 			self.__lv = value
 		else:
@@ -36,9 +37,9 @@ class Logger():
 
 	@staticmethod
 	def write_time(handle):
-		handle.write(datetime.today().isoformat(' '))
+		handle.write(datetime.datetime.today().isoformat(' '))
 
-	def write(exc :BaseException):
+	def write(self,exc :BaseException):
 		warn = True if "Warning" in str(exc.__class__) else False
 		if self.level > WARNING and warn:
 			return
@@ -53,7 +54,7 @@ class Logger():
 																					}
 																				))
 
-	def notice(message :str):
+	def notice(self,message :str):
 		with open(self.handle,'a') as w:
 			Logger.write_time(w)
 			w.write(" {}\n".format(message))

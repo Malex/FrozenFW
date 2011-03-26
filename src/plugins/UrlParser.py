@@ -26,10 +26,10 @@ class UrlParse():
 	def re(self) -> RegDict:
 		return self.__re
 	@re.setter
-	def set_re(self,reg :str,rep :str):
+	def re(self,reg :str,rep :str):
 		self.__re += {reg : rep}
 	@re.deleter
-	def del_re(self,reg):
+	def re(self,reg):
 		self.__re -= reg
 
 	def get(self,url :str):

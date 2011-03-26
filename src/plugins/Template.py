@@ -40,7 +40,7 @@ class Template(Output):
 	def stats(self) -> tuple:
 		return self.f_hash.keys()
 	@stats.setter
-	def add_func(self,ref :object):
+	def stats(self,ref :object):
 		self.f_hash[ref.__name__] = ref
 
 	def ret(self,stat :str, head :Headers, body :str, filename :str) -> tuple:

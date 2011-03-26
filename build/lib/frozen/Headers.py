@@ -24,7 +24,7 @@ class Headers():
 	def headers(self) -> list:
 		return self.__headers
 	@headers.setter
-	def setter(self,what):
+	def headers(self,what):
 		self.__headers.append(Header(what))
 
 	def __add__(self,header :str) -> object:
