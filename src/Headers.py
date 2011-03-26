@@ -27,10 +27,10 @@ class Headers():
 	def setter(self,what):
 		self.__headers.append(Header(what))
 
-	def __add__(self,header :str) -> Headers:
+	def __add__(self,header :str) -> object:
 		self.headers = header
 		return self
-	def __sub__(self,header :str) -> Headers:
+	def __sub__(self,header :str) -> object:
 		self.__headers.remove(Header(header)) #TODO: improve through methods
 		return self
 
