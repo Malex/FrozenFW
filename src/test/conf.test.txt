@@ -1,5 +1,0 @@
-
-allow_miao = "lol"
-if not __name__=="__main__":
-	works = True
-conf_chain = "./lol.txt"
