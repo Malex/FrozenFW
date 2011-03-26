@@ -40,9 +40,8 @@ class File():
 def open(filename :str,mode :chr='r',*args,**kwargs):
 	__doc__ = __builtins__['open'].__doc__
 	filename = File.parse(filename)
-	_handle = __builtins__['open'](filename,mode,*args,**kwargs)
 	if File.check(filename):
-		return _handle
+		return __builtins__['open'](filename,mode,*args,**kwargs)
 	else:
 		raise FileError("File not in limits")
 
