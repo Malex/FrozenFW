@@ -11,4 +11,5 @@
 - Url Parsing added.
 - Database module has gone: use a plugin instead.
 - Draft for mongodb plugin.
+- Sandboxing now avaible.
 - A more "lazy" code and minor optimization.

@@ -10,10 +10,11 @@ from .File import File,open,FileError
 from .Dispatcher import Dispatcher,Response
 from .Headers import Headers,Header
 from .Logger import Logger,NOTICE,WARNING,ERROR
+from .Sandbox import Sandbox,EXEC,IMPORT
 
 conf = Conf("/etc/frozenrc")
 
-log = Logger(conf.query("log_file"),NOTICE)
+log = Logger(conf.query("log_file"),eval(conf.query("log_level")))
 
 try:
 	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
@@ -23,11 +24,13 @@ try:
 
 	dispatch = Dispatcher()
 
+	sandbox = Sandbox(conf.query("sand_vars")conf.query("sand_limits"),log)
+
 	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
 		for i in touch:
 			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):
-				with open("/".join((pwd,i))) as plug:
-					exec(plug.read())
+				sandbox("/".join((pwd,i)),EXEC)
+
 except BaseException as e:
 	log.write(e)
 
