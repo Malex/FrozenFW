@@ -1,5 +1,5 @@
 import unittest,os
-from ..Conf import *
+from frozen.Conf import *
 
 class TestConf(unittest.TestCase):
 
