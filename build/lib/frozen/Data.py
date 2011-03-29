@@ -1,6 +1,8 @@
-import os
 import sys
 from .functions import unquote,quote
+
+class DataError(Exception):
+	pass
 
 class Data:
 
@@ -21,7 +23,7 @@ class Data:
 		""" This function insert GET values (if any)
 		in GET dictionary """
 
-		tmp = os.getenv("QUERY_STRING")
+		tmp = self.env.get("QUERY_STRING",False)
 
 		if tmp:
 			for i in tmp.split("&"):
@@ -33,17 +35,12 @@ class Data:
 		in POST dictionary """
 
 		try:
-			tmp = int(os.getenv("CONTENT_LENGTH",0))
-		except ValueError: #to prevent bad headers
-			tmp = 0
+			tmp = int(self.env.get("CONTENT_LENGTH",0))
+		except ValueError as e: ##to avoid bad headers
+			raise DataError("Not valid headers") from e
 
 		if tmp>=1:
-			if self.wsgi:
-				buf = os.getenv("wsgi.input")
-			else:
-				buf = sys.stdin
-
-			for i in sys.stdin.read(tmp).split("&"):
+			for i in self.env.get("wsgi.input").read(tmp).split("&"):
 				k,v = i.strip().split("=")
 				self.POST[unquote(k)] = unquote(v)
 
@@ -51,7 +48,7 @@ class Data:
 		""" This function insert COOKIEs values (if any)
 		in COOKIE dictionary """
 
-		tmp = os.getenv("HTTP_COOKIE")
+		tmp = self.env.get("HTTP_COOKIE",False)
 
 		if tmp:
 			for i in tmp.split(";"):
@@ -63,18 +60,15 @@ class Data:
 		in SERVER dictionary """
 
 		for i in self.server_varList:
-			k = os.getenv(i)
+			k = self.env.get(i,"Unknown")
 			self.SERVER[i] = k
 
-	def __init__(self,conf,env :dict={}, wsgi :bool=False):
+	def __init__(self,conf,env :dict={}):
 		""" conf in your configuration file (if any).
 		~ is a special character (accepted on Windows too)
 		to indicate your home directory  """
 
-		self.wsgi = wsgi
-		if env:
-			os.environ = env
-
+		self.env = env
 		self.conf = conf
 
 		if self.conf.query("query_string_enabled"):

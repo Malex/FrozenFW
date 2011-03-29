@@ -7,15 +7,11 @@ class Cookie:
 	domain = ""
 	expiration = ""
 
-	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
-		if not domain:
-			domain = cls.domain
-		else:
+	def set(self,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
+		if domain:
 			domain = "domain={};".format(domain)
 
-		if not expiration:
-			expiration = cls.expiration
-		else:
+		if expiration:
 			try:
 				if type(expiration) is int:
 					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration))

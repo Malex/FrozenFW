@@ -29,5 +29,4 @@ class Conf:
 
 	def update_conf(self,path :str):
 		""" Add Conf values from another conf file. Note that values may be overridden """
-		t = self.parse(path)
-		self.conf.update(t)
+		self.conf.update(self.parse(path))
