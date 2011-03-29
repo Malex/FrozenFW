@@ -5,7 +5,7 @@ IMPORT = 1
 EXEC = 2
 
 class Sandbox():
-	__vars = {}
+	__vars = []
 	__new_limits = []
 
 	def __init__(self,allowed_vars :list=None,new_limits :list=None,log=None):
@@ -16,27 +16,30 @@ class Sandbox():
 		self.log = log
 
 	@property
-	def allowed_vars(self) -> dict:
+	def allowed_vars(self) -> list:
 		return self.__vars
 	@allowed_vars.setter
 	def allowed_vars(self,lis :list):
 		for i in lis:
-			self.__vars.update(i,globals()[i])
+			self.__vars.append(i)
 
 	@property
 	def new_limits(self) -> list:
 		return self.__new_limits
 	@new_limits.setter
 	def new_limits(self,lis :list):
-		self.__new_limits.append(*lis)
+		self.__new_limits = lis
 
-	def __call__(self,filename :str,mode = EXEC):
+	def __call__(self,filename :str,mode = EXEC,glob :dict=globals()):
 		if mode == EXEC:
-			a,b,c = File.valid_path,File.blacklist,File.whitelist
+			a,b,c = File.valid_path.pattern,[u.pattern for u in File.blacklist],[v.pattern for v in File.whitelist]
 			File.set_limits(*tuple(self.new_limits))
-			exec(File.get_contents(filename),self.__vars)
+			p_dict = {}
+			for i in self.__vars:
+				p_dict[i] = glob[i]
+			exec(File.get_contents(filename),p_dict)
 			File.set_limits(a,b,c)
-			globals().update(self.__vars)
+			glob.update(p_dict)
 			return
 		elif mode == IMPORT:
 			if self.log:

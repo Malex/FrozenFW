@@ -29,7 +29,7 @@ try:
 	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
 		for i in touch:
 			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):
-				sandbox("/".join((pwd,i)),EXEC)
+				sandbox("/".join((pwd,i)),EXEC,globals())
 
 except BaseException as e:
 	log.write(e)

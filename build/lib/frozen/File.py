@@ -21,10 +21,10 @@ class File():
 	@classmethod
 	def check(cls,filename :str) -> bool:
 		""" Check if given filename is into limits. Used by open"""
-		if ( not cls.valid_path.match(filename) and not any([a.match(filename) for a in cls.whitelist])  ) or any([a.match(filename) for a in cls.blacklist]):
-			return False
-		else:
+		if ( cls.valid_path.match(filename) or any(a.match(filename) for a in cls.whitelist)  ) and ( (not any(a.match(filename) for a in cls.blacklist)) or any(a.match(filename) for a in cls.whitelist)):
 			return True
+		else:
+			return False
 
 	@staticmethod
 	def parse(f :str) -> str:
