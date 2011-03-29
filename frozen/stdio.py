@@ -14,11 +14,5 @@ class Output():
 	def get_body(self):
 		return self.data
 
-	def exit(self):
-		for i in self.get_headers():
-			sys.__stdout__.write(":".join(i)+"\r\n")
-		sys.__stdout__.write("\r\n")
-		sys.__stdout__.write(self.get_body())
-
 def print(*args,**kwargs):
 	sys.stdout.write(*args,**kwargs)
