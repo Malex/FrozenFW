@@ -1,0 +1,38 @@
+### Example of conf.py . It uses python3.1 syntax
+
+#These options are very important. Be careful. If you disable one of this, almost every webapp will stop working
+query_string_enabled = True #allow data.GET vars
+stdin_support_enabled = True #allow data.POST vars
+allow_cookies = True #allow data.COOKIE vars (Cookie class is still avaible if this option is set False)
+verbose_server = True #allow data.SERVER vars
+
+base_dir = "/www/" #Dir where pages are. In most cases this should match allowed_dir var
+
+template_file = "~/www/template.html" #Template File to use (for Template.py plugin
+headers = ["Content-Type : text/html"] #List of headers to send as standard. These may be overridden by plugins.
+
+#These options specify which paths are allowed and which are not. This improves security, avoiding LFI at system level.
+allowed_dir = r"/www/" #This regex should match paths you want to allow accessing to
+blacklist = [r"/\..+",r"/www/[0-9]{3}\.html"] #Don't let access to some paths is very important. In this case hidden files/dir aren't allowed, besides err pages (see below) are forbidden.
+whitelist = [r".*\.bashrc"] #A list of exceptions to previuos rules. If a path matches a whitelist regex, it is allowed, no matter if it was prevoiusly blacklisted or so on
+
+log_file = "/var/log/frozen.log" #File where we'll write uncaught exceptions, warnings or notice (this depends on the following option
+log_level = NOTICE #Avaible option are NOTICE, WARNING and ERROR. We suggest to use NOTICE.
+
+#These vars says to sandbox which paths and which vars to block while executing plugins.
+#In most case plugins only need access to Response class and to dispatch vars.
+#See each plugin documentation for more info.
+sand_vars = [ "dispatch","Response"]
+sand_limits = [ allowed_dir,blacklist,whitelist ] #In this case I didn't block access to other files. And you probably won't need it. But in several situations this option may be necessary
+
+plugin_dir = "/var/plugins/frozen/" #This string specify the dir where plugins are. This can be chosen at installing time (see installing doc for info)
+
+load_plugins = [ "UrlParser", "Session", "Exists", "Database", "Err_Pages", "Template" ] #Plugins to load at enviroment initialization
+
+Err_pages = { "404" : "/www/404.html",
+				"403" : "/www/403.html",
+			}
+
+secure_lock = True #This forbids accessing to __builtins__ in user files. We suggest not to disable it
+
+url_dispatch = {} #A redirecting method for url
