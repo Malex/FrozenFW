@@ -11,6 +11,7 @@ from .Dispatcher import Dispatcher,Response
 from .Headers import Headers,Header
 from .Logger import Logger,NOTICE,WARNING,ERROR,LoggerException
 from .Sandbox import Sandbox,EXEC,IMPORT
+from .Plugins import Plugins
 
 conf = Conf("/etc/frozenrc")
 
@@ -26,10 +27,12 @@ try:
 
 	sandbox = Sandbox(conf.query("sand_vars"),conf.query("sand_limits"),log)
 
+	plugins = Plugins()
 	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
 		for i in touch:
 			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):
-				sandbox("/".join((pwd,i)),EXEC,globals())
+				plugins.load_plugin(i)
+	plugins.exec(sandox,globals())
 
 except BaseException as e:
 	log.write(e)
