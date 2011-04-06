@@ -10,6 +10,7 @@ O2 - XML db plugin (should use the same interface)
 8 - Improve wsgi/init.py files to output different type of files, with the correct content-type header
 9 - Implement IMPORT sandbox
 10 - IE and not-common browsers detection if content-type is application/xhtml+xml, replacing it with text/html if necessary
+11 -  check whether File.(black|white)list could be a set instead of list of sets
 13 - Add better doc strings for modules
 15 - Support for rewriting urls by database queries (useful for forums and blogs)
 and many other features (use a base class to avoid accessing to private attributes?)

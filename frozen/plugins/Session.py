@@ -25,4 +25,15 @@ class Session(Cookie):
 				ret.append(coockies[i])
 		return ret
 
-super(Data,data).__setattr__('SESSION',Session.find_session(data.COOKIE))
+## Line commented since changes in Data.Data
+#super(Data,data).__setattr__('SESSION',Session.find_session(data.COOKIE))
+
+Data.__session = []
+Data.SESSION = property(lambda self : self.__session)
+
+old_init = Data.__init__
+def new_init(self,*args,**kwargs):
+	old_init(self,*args,**kwargs)
+	if self.conf.query("allow_session"):
+		self.__session = Session.find_session(self.COOKIE)
+Data.__init__ = new_init

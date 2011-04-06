@@ -6,10 +6,10 @@ class DataError(Exception):
 
 class Data:
 
-	GET = {}
-	POST = {}
-	COOKIE = {}
-	SERVER = {}
+	__get = {}
+	__post = {}
+	__cookie = {}
+	__server = {}
 
 	server_varList = ['SERVER_NAME','GATEWAY_INTERFACE','SERVER_SOFTWARE',
 'SERVER_PROTOCOL','SERVER_ADDR','REQUEST_METHOD', 'PATH_INFO',
@@ -18,6 +18,22 @@ class Data:
 'HTTP_USER_AGENT','HTTP_ACCEPT','HTTP_ACCEPT_ENCODING',
 'HTTP_ACCEPT_LANGUAGE','HTTP_USER_AGENT','HTTP_ACCEPT_CHARSET',
 'HTTP_CONNECTION','HTTP_HOST','HTTP_REFERER', ]
+
+	@property
+	def GET(self) -> dict:
+		return self.__get
+
+	@property
+	def POST(self) -> dict:
+		return self.__post
+
+	@property
+	def SERVER(self) -> dict:
+		return self.__server
+
+	@property
+	def COOKIE(self) -> dict:
+		return self.__cookie
 
 	def rGET(self):
 		""" This function insert GET values (if any)
@@ -28,7 +44,7 @@ class Data:
 		if tmp:
 			for i in tmp.split("&"):
 				k,v = i.strip().split("=")
-				self.GET[unquote(k)] = unquote(v)
+				self.__get[unquote(k)] = unquote(v)
 
 	def rPOST(self):
 		""" This function insert POST values (if any)
@@ -42,7 +58,7 @@ class Data:
 		if tmp>=1:
 			for i in self.env.get("wsgi.input").read(tmp).split("&"):
 				k,v = i.strip().split("=")
-				self.POST[unquote(k)] = unquote(v)
+				self.__post[unquote(k)] = unquote(v)
 
 	def rCOOKIE(self):
 		""" This function insert COOKIEs values (if any)
@@ -53,7 +69,7 @@ class Data:
 		if tmp:
 			for i in tmp.split(";"):
 				k,v = i.strip().split("=")
-				self.COOKIE[unquote(k)] = unquote(v)
+				self.__cookie[unquote(k)] = unquote(v)
 
 	def rSERVER(self):
 		""" This function insert SERVER vars values (if any)
@@ -61,7 +77,7 @@ class Data:
 
 		for i in self.server_varList:
 			k = self.env.get(i,"Unknown")
-			self.SERVER[i] = k
+			self.__server[i] = k
 
 	def __init__(self,conf,env :dict={}):
 		""" conf in your configuration file (if any).
@@ -83,8 +99,9 @@ class Data:
 		if self.conf.query("verbose_server"):
 			self.rSERVER()
 
-	def __setattr__(self,name,value):
-		if name in ("GET","POST","SERVER","COOKIE","SESSION"):
-			raise AttributeError("Assignement not allowed on read-only attributes")
-		else:
-			super().__setattr__(name,value)
+## I use property instead. But I leave it here since I'm not sure what to do.
+#	def __setattr__(self,name,value):
+#		if name in ("GET","POST","SERVER","COOKIE","SESSION"):
+#			raise AttributeError("Assignement not allowed on read-only attributes")
+#		else:
+#			super().__setattr__(name,value)
