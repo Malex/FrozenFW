@@ -2,7 +2,7 @@ O2 - XML db plugin (should use the same interface)
 	=> write the common db interface
 
 - 2 - Plugin system --- Done, but to improve 
-3 - Improve template system (transfer loop_exec in plugin, add include, var and if statements)
+3 - Improve template system (add include, var and if statements)
 - 4 - Improve Cookie system (to check)
 - 5 - Plugin for mongodb. (IMPROVE!!!!)
 6 - Make other dangerous attributes readonly

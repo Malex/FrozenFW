@@ -1,7 +1,5 @@
 import re
-import sys
 
-from .File import File,open,FileError
 from .Headers import Headers
 
 class Output():
@@ -14,5 +12,7 @@ class Output():
 	def get_body(self):
 		return self.data
 
+output = Output()
+
 def print(*args,**kwargs):
-	sys.stdout.write(*args,**kwargs)
+	output.write(*args,**kwargs)

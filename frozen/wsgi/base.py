@@ -1,9 +1,8 @@
-import sys
 import os
 
 from .Data import Data,DataError
 from .Cookie import Cookie,CookieError
-from .stdio import Output,print
+from .stdio import Output,print,output
 from .functions import unquote,nl2br,htmlspecialchars,htmlentities
 from .Conf import Conf,ConfError
 from .File import File,open,FileError
@@ -20,8 +19,7 @@ log = Logger(conf.query("log_file"),eval(conf.query("log_level")))
 try:
 	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
-	sys.stdout = Output()
-	sys.stdout.headers = Headers(*tuple(conf.query("headers")))
+	output.headers = Headers(*tuple(conf.query("headers")))
 
 	dispatch = Dispatcher()
 

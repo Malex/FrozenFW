@@ -13,4 +13,6 @@
 - Draft for mongodb plugin.
 - Sandboxing now avaible.
 - File limits now use shell-like wildcards, no more "magic" regex.
+- sys.stdout not used now.
+- A more flexible plugin syntax.
 - A more "lazy" code and minor optimization.

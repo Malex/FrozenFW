@@ -1,54 +1,69 @@
-import re
+import html.parser
+
+class __Parser(html.parser.HTMLParser):
+	subs = []
+
+	def handle_pi(self,data):
+		data = data.strip()
+		if data.startswith('?'):
+			data = data[1:]
+		if data.startswith("python "):
+			self.subs.append(data[7:])
 
 class Template(Output):
 
 	rep = {}
 	arg = []
 
-	templ_reg = re.compile(r"@!([\w_]+)\s*#(.+?)#\s*(.+)@!end\s+\1\s*#\2#",re.S)
-	f_hash = {}
-	sep = '\n'
+	__s = ''
 
 	def __init__(self,path :str="template.html"):
 		try:
 			self.set_template(path)
+			self.parser = __Parser()
 		except FileError as e:
 			raise FileError("Not Valid Template {}".format(path)) from e
 
 	def set_template(self,path :str):
-		""" Set template file. This file must be in File limits (use whitelist if you need """
+		""" Set template file. This file must be in File limits (use whitelist if you need) """
 		self.data = File.get_contents(path)
 
 	def templ_exec(self,s :str) -> str:
-		t = self.templ_reg.search(s)
-		while t:
-			try:
-				s = self.f_hash[t.group(1)](s,t)
-			except KeyError:
-				s = s.replace(t.group(0),t.group(0).replace('@','&at;'))
-			t = self.templ_reg.search(s)
-		return s
+		self.parser.feed(s)
+		to_exec = self.parser.subs
+		self.parser.subs = []
+		for i in to_exec:
+			t = self.exec(i)
+			s = s.replace("<?python {}".format(i),s)
+		return ret
+
+	def exec(self,s :str) -> str:
+		exec(s,self.func_dict.update(**{'print' : self.print,'repl' : self.rep}))
+		t = self.__s
+		self.__s = ''
+		return t
+
+	def print(self,*args,**kwargs):
+		sep = kwargs['sep'] if 'sep' in kwargs.keys() else ''
+		self.__s = sep.join(args)
 
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
+	def __add__(self,f :callable):
+		self.func_dict[f.__name__] = f
+		return self
+
 	def get_body(self) -> str:
 		return self.templ_exec(self.data).format(*tuple(self.arg),**self.rep)
 
-	@property
-	def stats(self) -> tuple:
-		return self.f_hash.keys()
-	@stats.setter
-	def stats(self,ref :object):
-		self.f_hash[ref.__name__] = ref
-
-	def ret(self,stat :str, head :Headers, body :str, filename :str) -> tuple:
+	def ret(self,stat :str, head :Headers, body :str, filename :str):
 		if not filename.endswith(".py"):
-			raise Exception
+			return Response(stat,head,body,filename)
 		exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
 		return Response("200 OK",head+self.headers,self.get_body(),filename)
 
-sys.stdout = Template(conf.query("template_file"))
+output = Template(conf.query("template_file"))
 
-dispatch+=sys.stdout.ret
+dispatch += output.ret
