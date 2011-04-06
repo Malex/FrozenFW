@@ -1,27 +1,29 @@
-import re
+import glob
 
-from os.path import expanduser,normcase
+from os.path import expanduser,normcase,expandvars
 
 class FileError(Exception):
 	pass
 
 class File():
 
-	valid_path = re.compile(r".+")
+	valid_path = glob.glob("*")
 	blacklist = []
 	whitelist = []
 
 	@classmethod
 	def set_limits(cls,valid_path :str,blacklist :str,whitelist :str):
-		""" Set limits for open function """
-		cls.valid_path = re.compile(File.parse(valid_path))
-		cls.blacklist = [re.compile(File.parse(a)) for a in blacklist]
-		cls.whitelist = [re.compile(File.parse(b)) for b in whitelist]
+		""" Set limits for open function.
+		Please note that hidden files must be like, for instance, path/to/.*rc"""
+		cls.valid_path = set(glob.glob(File.parse(valid_path)))
+		cls.blacklist = [set(glob.glob(File.parse(a))) for a in blacklist]
+		cls.whitelist = [set(glob.glob(File.parse(b))) for b in whitelist]
 
 	@classmethod
 	def check(cls,filename :str) -> bool:
 		""" Check if given filename is into limits. Used by open"""
-		if ( cls.valid_path.match(filename) or any(a.match(filename) for a in cls.whitelist)  ) and ( (not any(a.match(filename) for a in cls.blacklist)) or any(a.match(filename) for a in cls.whitelist)):
+		t = set(glob.glob(filename))
+		if ( t <= cls.valid_path or any(t<=a for a in cls.whitelist)  ) and ( (not any(t<=a for a in cls.blacklist)) or any(t<=a for a in cls.whitelist)):
 			return True
 		else:
 			return False
@@ -29,7 +31,7 @@ class File():
 	@staticmethod
 	def parse(f :str) -> str:
 		""" Converts the File string. Replace ~ with Home Directory (use ~user for different user) and on Windows replace / with \\"""
-		return normcase(expanduser(f))
+		return normcase(expandvars(expanduser(f)))
 
 	@staticmethod
 	def get_contents(path :str) -> str:

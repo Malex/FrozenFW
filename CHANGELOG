@@ -12,4 +12,5 @@
 - Database module has gone: use a plugin instead.
 - Draft for mongodb plugin.
 - Sandboxing now avaible.
+- File limits now use shell-like wildcards, no more "magic" regex.
 - A more "lazy" code and minor optimization.

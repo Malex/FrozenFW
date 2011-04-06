@@ -32,13 +32,13 @@ class Sandbox():
 
 	def __call__(self,filename :str,mode = EXEC,glob :dict=globals()):
 		if mode == EXEC:
-			a,b,c = File.valid_path.pattern,[u.pattern for u in File.blacklist],[v.pattern for v in File.whitelist]
+			a,b,c = File.valid_path,File.blacklist,File.whitelist
 			File.set_limits(*tuple(self.new_limits))
 			p_dict = {}
 			for i in self.__vars:
 				p_dict[i] = glob[i]
 			exec(File.get_contents(filename),p_dict)
-			File.set_limits(a,b,c)
+			File.valid_path,File.blacklist,File.whitelist = a,b,c
 			glob.update(p_dict)
 			return
 		elif mode == IMPORT:
