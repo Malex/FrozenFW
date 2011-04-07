@@ -38,7 +38,7 @@ class Template(Output):
 		return ret
 
 	def exec(self,s :str) -> str:
-		exec(s,self.func_dict.update(**{'print' : self.print,'repl' : self.rep}))
+		exec(s,self.func_dict.update(**{'print' : self.print,'repl' : self.rep,"Template" : Template,}))
 		t = self.__s
 		self.__s = ''
 		return t
