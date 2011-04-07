@@ -2,5 +2,9 @@
 *.swp
 *.swo
 *.db
-*frozen.egg-info*/*
 *.txt*
+*.egg-info
+*~
+build/
+dist/
+docs/_build/

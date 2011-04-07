@@ -1,0 +1,10 @@
+include README
+include AUTHORS
+include CHANGELOG
+include LICENSE
+include TODO
+
+recursive-include frozen *
+
+#recursive-include docs *
+#prune docs/_build
