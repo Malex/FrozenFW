@@ -4,6 +4,8 @@ include CHANGELOG
 include LICENSE
 include TODO
 
+recursive-include files *
+
 recursive-include frozen *
 
 #recursive-include docs *

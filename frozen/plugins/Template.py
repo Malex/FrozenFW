@@ -66,4 +66,6 @@ class Template(Output):
 
 output = Template(conf.query("template_file"))
 
+sandbox = Sandbox(sandox.allowed_vars.append("Template"),sandbox.new_limits,log)
+
 dispatch += output.ret
