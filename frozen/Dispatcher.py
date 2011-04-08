@@ -24,6 +24,10 @@ class Response():
 	def get(self) -> tuple:
 		return self.stat,self.head,self.body,self.filename
 
+	def __iter__(self):
+		for i in self.get():
+			yield i
+
 
 class Dispatcher():
 	__list = []
@@ -35,6 +39,7 @@ class Dispatcher():
 
 	@property
 	def lis(self):
+		return self.__list
 		raise AttributeError("Write-only attribute")
 	@lis.setter
 	def lis(self,i):
@@ -46,9 +51,12 @@ class Dispatcher():
 
 	def __add__(self,i):
 		self.lis = i
+		return self
 
 	def __call__(self,filename):
-		self.rep = Response("",[],"",filename)
+		self.reset()
+		self.rep.filename = filename
+		return self.check()
 
 	def check(self):
 		for i in self.__list:
@@ -60,6 +68,7 @@ class Dispatcher():
 			else:
 				self.rep = Response(*t2.get())
 				continue
+		return self.rep
 
 	def reset(self):
 		self.rep = Response("",[],"","")

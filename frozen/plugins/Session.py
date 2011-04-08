@@ -1,4 +1,4 @@
-from ..Cookie import *
+from frozen.Cookie import *
 import random
 from string import ascii_letters,digits
 

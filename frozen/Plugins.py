@@ -13,7 +13,7 @@ class Plugin():
 		self._file = filename
 
 	def exec(self,sandbox,glob :dict):
-		sandbox(self._filename,EXEC,glob)
+		sandbox(self._file,EXEC,glob)
 
 class Plugins():
 

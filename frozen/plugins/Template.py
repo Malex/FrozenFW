@@ -1,6 +1,6 @@
 import html.parser
 
-class __Parser(html.parser.HTMLParser):
+class _Parser(html.parser.HTMLParser):
 	subs = []
 
 	def handle_pi(self,data):
@@ -20,7 +20,7 @@ class Template(Output):
 	def __init__(self,path :str="template.html"):
 		try:
 			self.set_template(path)
-			self.parser = __Parser()
+			self.parser = _Parser()
 		except FileError as e:
 			raise FileError("Not Valid Template {}".format(path)) from e
 
@@ -51,7 +51,7 @@ class Template(Output):
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
-	def __add__(self,f :callable):
+	def __add__(self,f):
 		self.func_dict[f.__name__] = f
 		return self
 
@@ -62,10 +62,10 @@ class Template(Output):
 		if not filename.endswith(".py"):
 			return Response(stat,head,body,filename)
 		exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
-		return Response("200 OK",head+self.headers,self.get_body(),filename)
+		return Response("200 OK",head+self.headers,self.get_body(),filename,ready=True)
 
 output = Template(conf.query("template_file"))
 
-sandbox = Sandbox(sandox.allowed_vars.append("Template"),sandbox.new_limits,log)
+sandbox = Sandbox(sandbox.allowed_vars.append("Template"),sandbox.new_limits,log)
 
 dispatch += output.ret

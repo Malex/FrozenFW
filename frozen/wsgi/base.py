@@ -1,4 +1,4 @@
-import os
+import glob
 
 from ..Data import Data,DataError
 from ..Cookie import Cookie,CookieError
@@ -26,10 +26,9 @@ try:
 	sandbox = Sandbox(conf.query("sand_vars"),conf.query("sand_limits"),log)
 
 	plugins = Plugins()
-	for pwd,cd,touch in os.walk(conf.query("plugin_dir")):
-		for i in touch:
-			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):
-				plugins.load_plugin(i)
+	for i in glob.glob("{}/*".format(conf.query("plugin_dir"))):
+		if i.endswith(".py") and i.split("/")[-1][:-3] in conf.query("load_plugins"):
+			plugins.load_plugin(i)
 	plugins.exec(sandbox,globals())
 
 except BaseException as e:

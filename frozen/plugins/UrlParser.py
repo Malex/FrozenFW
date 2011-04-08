@@ -3,7 +3,7 @@ import re
 class RegDict(dict):
 	regs = {}
 
-	def __init__(self,regs :dict):
+	def __init__(self,regs :dict={}):
 		self.regs = regs
 
 	def parse(self,url :str) -> str:
@@ -11,19 +11,20 @@ class RegDict(dict):
 			if re.match(i,url):
 				return re.sub(i,regs[i],url)
 
-	def __add__(self,what :dict) -> RegDict:
+	def __add__(self,what :dict):
 		return self.regs.update(**what)
-	def __sub__(self,reg :str) -> RegDict:
+	def __sub__(self,reg :str):
 		return RegDict(self.regs.pop(reg))
 
 class UrlParse():
-	__re = None
+	__re = RegDict()
 
-	def __init__(self,replace :RegDict):
-		self.re = replace
+	def __init__(self,replace):
+		for k,v in replace.items():
+			self.re = k,v
 
 	@property
-	def re(self) -> RegDict:
+	def re(self):
 		return self.__re
 	@re.setter
 	def re(self,reg :str,rep :str):

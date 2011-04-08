@@ -52,8 +52,8 @@ class Data:
 
 		try:
 			tmp = int(self.env.get("CONTENT_LENGTH",0))
-		except ValueError as e: ##to avoid bad headers
-			raise DataError("Not valid headers") from e
+		except ValueError as e: ##skip POST if there are no POST var
+			return
 
 		if tmp>=1:
 			for i in self.env.get("wsgi.input").read(tmp).split("&"):
