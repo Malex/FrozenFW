@@ -3,7 +3,7 @@ from .Headers import Headers
 class Response():
 	__ready = False
 
-	def __init__(stat :str, head :Headers, body :str, filename :str, ready :bool=False):
+	def __init__(self, stat :str, head :Headers, body :str, filename :str, ready :bool=False):
 		""" Use ready only if you are SURE your data are ready to be sent to client """
 		self.stat = stat
 		self.head = head

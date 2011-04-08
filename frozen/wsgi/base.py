@@ -30,7 +30,7 @@ try:
 		for i in touch:
 			if i.endswith(".py") and i[:-3] in conf.query("load_plugins"):
 				plugins.load_plugin(i)
-	plugins.exec(sandox,globals())
+	plugins.exec(sandbox,globals())
 
 except BaseException as e:
 	log.write(e)

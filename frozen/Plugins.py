@@ -17,7 +17,7 @@ class Plugin():
 
 class Plugins():
 
-	def __init__(self,plugs :list):
+	def __init__(self,plugs :list=[]):
 		self.__plugins = [Plugin(a) for a in plugs]
 
 	def load_plugin(self,filename :str):

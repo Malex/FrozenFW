@@ -5,6 +5,7 @@ from .Headers import Headers
 class Output():
 
 	headers = Headers()
+	data = ""
 
 	def write(self,*args,**kwargs):
 		self.data += " ".join(args)

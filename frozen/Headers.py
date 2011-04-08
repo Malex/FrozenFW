@@ -5,7 +5,7 @@ class Header():
 
 	def __init__(self, name :str , value :str = False):
 		if not value:
-			self.name,self.value = [a.strip() for a in value.split(":")]
+			self.name,self.value = [a.strip() for a in name.split(":")]
 		else:
 			self.name = name
 			self.value = value
