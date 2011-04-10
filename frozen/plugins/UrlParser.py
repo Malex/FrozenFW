@@ -10,6 +10,7 @@ class RegDict(dict):
 		for i in self.regs.keys():
 			if re.match(i,url):
 				return re.sub(i,regs[i],url)
+		return url
 
 	def __add__(self,what :dict):
 		return self.regs.update(**what)

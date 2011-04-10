@@ -63,9 +63,9 @@ class Logger():
 					with open("{}/{}".format(self.dir,self.verbose_f),'a') as w:
 						Logger.write_time(w)
 						w.write('\n')
-						traceback.print_tb(exc.__traceback__,file=w)
+						traceback.print_exc(file=w)
 
 	def notice(self,message :str):
-		with open(self.handle,'a') as w:
+		with open("{}/{}".format(self.dir,self.error_name),'a') as w:
 			Logger.write_time(w)
 			w.write(" {}\n".format(message))

@@ -58,8 +58,8 @@ class Template(Output):
 	def get_body(self) -> str:
 		return self.templ_exec(self.data).format(*tuple(self.arg),**self.rep)
 
-	def ret(self,stat :str, head :Headers, body :str, filename :str):
-		if not filename.endswith(".py"):
+	def ret(self,stat :str, head , body :str, filename :str):
+		if not filename.endswith(".py") or (stat and stat[:3]!="200"):
 			return Response(stat,head,body,filename)
 		exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
 		return Response("200 OK",head+self.headers,self.get_body(),filename,ready=True)

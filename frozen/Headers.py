@@ -34,6 +34,10 @@ class Headers():
 		self.__headers.remove(Header(header)) #TODO: improve through methods
 		return self
 
+	def __iter__(self):
+		for i in self.headers:
+			yield (i.name,i.value)
+
 	def __init__(self,*args):
 		for i in args:
 			self += i
