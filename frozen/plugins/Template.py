@@ -35,7 +35,7 @@ class Template(Output):
 		for i in to_exec:
 			t = self.exec(i)
 			s = s.replace("<?python {}".format(i),s)
-		return ret
+		return s
 
 	def exec(self,s :str) -> str:
 		exec(s,self.func_dict.update(**{'print' : self.print,'repl' : self.rep,"Template" : Template,}))
@@ -48,6 +48,7 @@ class Template(Output):
 		self.__s = sep.join(args)
 
 	def write(self,*args,**kwargs):
+		log.notice("I was called")
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
@@ -58,14 +59,18 @@ class Template(Output):
 	def get_body(self) -> str:
 		return self.templ_exec(self.data).format(*tuple(self.arg),**self.rep)
 
-	def ret(self,stat :str, head , body :str, filename :str):
-		if not filename.endswith(".py") or (stat and stat[:3]!="200"):
-			return Response(stat,head,body,filename)
-		exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
-		return Response("200 OK",head+self.headers,self.get_body(),filename,ready=True)
+def ret(stat :str, head , body :str, filename :str):
+	if not filename.endswith(".py") or (stat and stat[:3]!="200"):
+		return Response(stat,head,body,filename)
+	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
+	log.notice(output.rep)
+	return Response("200 OK",head,output.get_body(),filename,ready=True)
 
 output = Template(conf.query("template_file"))
 
 sandbox = Sandbox(sandbox.allowed_vars.append("Template"),sandbox.new_limits,log)
 
-dispatch += output.ret
+dispatch += ret
+
+def print(*args,**kwargs):
+	output.write(*args,**kwargs)

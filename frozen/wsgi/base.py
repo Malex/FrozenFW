@@ -2,7 +2,7 @@ import glob
 
 from ..Data import Data,DataError
 from ..Cookie import Cookie,CookieError
-from ..stdio import Output,print,output
+from ..stdio import Output,output,print
 from ..functions import unquote,nl2br,htmlspecialchars,htmlentities
 from ..Conf import Conf,ConfError
 from ..File import File,open,FileError
@@ -19,7 +19,7 @@ log = Logger(conf.query("log_file"),eval(conf.query("log_level")),verbose=True)
 try:
 	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
-	output.headers = Headers(*tuple(conf.query("headers")))
+#	output.headers = Headers(*tuple(conf.query("headers")))
 
 	dispatch = Dispatcher()
 
