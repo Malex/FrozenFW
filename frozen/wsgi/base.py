@@ -14,7 +14,7 @@ from ..Plugins import Plugins
 
 conf = Conf("/etc/frozenrc")
 
-log = Logger(conf.query("log_file"),eval(conf.query("log_level")))
+log = Logger(conf.query("log_file"),eval(conf.query("log_level")),verbose=True)
 
 try:
 	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
