@@ -7,14 +7,19 @@ class _Parser(html.parser.HTMLParser):
 		data = data.strip()
 		if data.startswith('?'):
 			data = data[1:]
-		if data.startswith("python "):
-			self.subs.append(data[7:])
+		if data.startswith("python"):
+			data = data[6:]
+		if data.endswith('?'):
+			data = data[:-1]
+		log.notice(data)
+		self.subs.append(data)
 
 class Template(Output):
 
 	rep = {}
 	arg = []
 
+	func_dict = {}
 	__s = ''
 
 	def __init__(self,path :str="template.html"):
@@ -48,7 +53,6 @@ class Template(Output):
 		self.__s = sep.join(args)
 
 	def write(self,*args,**kwargs):
-		log.notice("I was called")
 		self.arg.extend(list(args))
 		self.rep.update(kwargs)
 
@@ -63,7 +67,6 @@ def ret(stat :str, head , body :str, filename :str):
 	if not filename.endswith(".py") or (stat and stat[:3]!="200"):
 		return Response(stat,head,body,filename)
 	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
-	log.notice(output.rep)
 	return Response("200 OK",head,output.get_body(),filename,ready=True)
 
 output = Template(conf.query("template_file"))
