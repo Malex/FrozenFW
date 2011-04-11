@@ -11,7 +11,6 @@ class _Parser(html.parser.HTMLParser):
 			data = data[6:]
 		if data.endswith('?'):
 			data = data[:-1]
-		log.notice(data)
 		self.subs.append(data)
 
 class Template(Output):
@@ -39,7 +38,7 @@ class Template(Output):
 		self.parser.subs = []
 		for i in to_exec:
 			t = self.exec(i)
-			s = s.replace("<?python {}".format(i),s)
+			s = s.replace("<?python {}?>".format(i),s)
 		return s
 
 	def exec(self,s :str) -> str:
