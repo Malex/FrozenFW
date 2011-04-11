@@ -1,4 +1,5 @@
 import html.parser
+import re
 
 class _Parser(html.parser.HTMLParser):
 	subs = []
@@ -37,19 +38,20 @@ class Template(Output):
 		to_exec = self.parser.subs
 		self.parser.subs = []
 		for i in to_exec:
-			t = self.exec(i)
-			s = s.replace("<?python {}?>".format(i),s)
+			t = self.exec(i.strip())
+			log.notice(i.strip())
+			s = re.sub(r"<\?python\s*{}\s*\?>".format(re.escape(i.strip())),t,s,count=1)
 		return s
 
 	def exec(self,s :str) -> str:
-		exec(s,self.func_dict.update(**{'print' : self.print,'repl' : self.rep,"Template" : Template,}))
+		exec(s,{},self.func_dict)
 		t = self.__s
 		self.__s = ''
 		return t
 
 	def print(self,*args,**kwargs):
 		sep = kwargs['sep'] if 'sep' in kwargs.keys() else ''
-		self.__s = sep.join(args)
+		self.__s += sep.join(args)
 
 	def write(self,*args,**kwargs):
 		self.arg.extend(list(args))

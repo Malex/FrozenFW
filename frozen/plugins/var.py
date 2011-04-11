@@ -1,5 +1,5 @@
 
 def var(name,value=""):
-	repl[name] = value
+	output.rep[name]=value
 
 output += var
