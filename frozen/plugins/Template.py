@@ -39,7 +39,6 @@ class Template(Output):
 		self.parser.subs = []
 		for i in to_exec:
 			t = self.exec(i.strip())
-			log.notice(i.strip())
 			s = re.sub(r"<\?python\s*{}\s*\?>".format(re.escape(i.strip())),t,s,count=1)
 		return s
 
