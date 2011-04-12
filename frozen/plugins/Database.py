@@ -2,12 +2,10 @@ import pymongo
 
 class DB():
 
-	__conn = None
-	tables = {}
-
 	def __init__(self,server :str="localhost", port :int=27107,db :str="test-database"):
-		self.__conn = Connection(server,port)
+		self.__conn = pymongo.Connection(server,port)
 		self.db = self.__conn[db]
+		self.tables = {}
 
 	def create_table(self,name :str):
 		""" Creates a table and return it """

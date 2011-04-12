@@ -1,7 +1,6 @@
 import re
 
 class RegDict(dict):
-	regs = {}
 
 	def __init__(self,regs :dict={}):
 		self.regs = regs
@@ -18,9 +17,9 @@ class RegDict(dict):
 		return RegDict(self.regs.pop(reg))
 
 class UrlParse():
-	__re = RegDict()
 
 	def __init__(self,replace):
+		self.__re = RegDict()
 		for k,v in replace.items():
 			self.re = k,v
 

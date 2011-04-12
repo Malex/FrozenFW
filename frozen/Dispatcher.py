@@ -1,10 +1,10 @@
 from .Headers import Headers
 
 class Response():
-	__ready = False
 
 	def __init__(self, stat :str, head :Headers, body :str, filename :str, ready :bool=False):
 		""" Use ready only if you are SURE your data are ready to be sent to client """
+		self.__ready = False
 		self.stat = stat
 		self.head = head
 		self.body = body
@@ -30,9 +30,9 @@ class Response():
 
 
 class Dispatcher():
-	__list = []
 
 	def __init__(self,*args):
+		self.__list = []
 		self.rep = Response("",[],"","")
 		for i in args:
 			setattr(self,self.lis,i)

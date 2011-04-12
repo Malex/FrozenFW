@@ -4,8 +4,6 @@ class CookieError(Exception):
 	pass
 
 class Cookie:
-	domain = ""
-	expiration = ""
 
 	def set(self,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
 		if domain:

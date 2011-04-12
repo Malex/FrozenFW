@@ -1,7 +1,5 @@
 
 class Header():
-	name = ""
-	value = ""
 
 	def __init__(self, name :str , value :str = False):
 		if not value:
@@ -17,8 +15,6 @@ class Header():
 		return str(self)
 
 class Headers():
-
-	__headers = []
 
 	@property
 	def headers(self) -> list:
@@ -39,6 +35,7 @@ class Headers():
 			yield (i.name,i.value)
 
 	def __init__(self,*args):
+		self.__headers = []
 		for i in args:
 			self += i
 

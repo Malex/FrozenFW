@@ -4,7 +4,8 @@ from .Headers import Headers
 
 class Output():
 
-	data = ""
+	def __init__(self):
+		self.data = ""
 
 	def write(self,*args,**kwargs):
 		self.data += " ".join(args)

@@ -15,4 +15,5 @@
 - File limits now use shell-like wildcards, no more "magic" regex.
 - sys.stdout not used now.
 - A more flexible plugin syntax.
+- Useless class attribute deleted.
 - A more "lazy" code and minor optimization.

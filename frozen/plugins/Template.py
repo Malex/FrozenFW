@@ -1,5 +1,6 @@
 import html.parser
 import re
+import glob
 
 class _Parser(html.parser.HTMLParser):
 	subs = []
@@ -28,6 +29,16 @@ class Template(Output):
 			self.parser = _Parser()
 		except FileError as e:
 			raise FileError("Not Valid Template {}".format(path)) from e
+
+		sand_templ = Sandbox(["print","repl","Template","output"],conf.query("sand_limits"),log)
+		t_plug = Plugins()
+		for i in glob.glob("/".join((conf.query("plugin_dir"),"template"))):
+			if i == "/".join((conf.query("plugin_dir"),"template")):
+				continue
+			t_plug.load_plugin(i)
+		tmp = t_plug.exec(sand_templ,{ "print" : self.print, "repl" : self.rep, "Template" : Template, "output" : self })
+		log.notice(tmp)
+		globals()['output'] = tmp['output']
 
 	def set_template(self,path :str):
 		""" Set template file. This file must be in File limits (use whitelist if you need) """
@@ -66,7 +77,7 @@ class Template(Output):
 def ret(stat :str, head , body :str, filename :str):
 	if not filename.endswith(".py") or (stat and stat[:3]!="200"):
 		return Response(stat,head,body,filename)
-	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename))
+	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename),globals())
 	return Response("200 OK",head,output.get_body(),filename,ready=True)
 
 output = Template(conf.query("template_file"))

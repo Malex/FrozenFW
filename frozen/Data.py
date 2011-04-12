@@ -6,11 +6,6 @@ class DataError(Exception):
 
 class Data:
 
-	__get = {}
-	__post = {}
-	__cookie = {}
-	__server = {}
-
 	server_varList = ['SERVER_NAME','GATEWAY_INTERFACE','SERVER_SOFTWARE',
 'SERVER_PROTOCOL','SERVER_ADDR','REQUEST_METHOD', 'PATH_INFO',
 'PATH_TRANSLATED','SCRIPT_NAME','REMOTE_HOST','REMOTE_ADDR',
@@ -87,6 +82,12 @@ class Data:
 		self.env = env
 		self.conf = conf
 
+
+		self.__get = {}
+		self.__post = {}
+		self.__cookie = {}
+		self.__server = {}
+
 		if self.conf.query("query_string_enabled"):
 			self.rGET()
 
@@ -98,6 +99,13 @@ class Data:
 
 		if self.conf.query("verbose_server"):
 			self.rSERVER()
+
+	def update(self,env :dict):
+		t = Data(self.conf,env)
+		self.__get = t.GET
+		self.__post = t.POST
+		self.__cookie = t.COOKIE
+		self.__server = t.SERVER
 
 ## I use property instead. But I leave it here since I'm not sure what to do.
 #	def __setattr__(self,name,value):

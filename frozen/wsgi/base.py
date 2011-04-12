@@ -21,6 +21,8 @@ try:
 
 #	output.headers = Headers(*tuple(conf.query("headers")))
 
+	data = Data(conf,{})
+
 	dispatch = Dispatcher()
 
 	sandbox = Sandbox(conf.query("sand_vars"),conf.query("sand_limits"),log)

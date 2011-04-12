@@ -3,8 +3,8 @@
 *.swo
 *.db
 *.txt*
-*.egg-info
+*.egg-info/*
 *~
-build/
-dist/
-docs/_build/
+build/*
+dist/*
+docs/_build/*

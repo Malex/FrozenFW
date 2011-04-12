@@ -12,8 +12,8 @@ class Plugin():
 			raise PluginError("Plugin {} does not exist".format(filename))
 		self._file = filename
 
-	def exec(self,sandbox,glob :dict):
-		sandbox(self._file,EXEC,glob)
+	def exec(self,sandbox,glob :dict) -> dict:
+		return sandbox(self._file,EXEC,glob)
 
 class Plugins():
 
@@ -27,6 +27,8 @@ class Plugins():
 	def plugins(self) -> list:
 		return self.__plugins
 
-	def exec(self,sandbox,glob :dict):
+	def exec(self,sandbox,glob :dict) -> dict:
+		to_ret = {}
 		for i in self.plugins:
-			i.exec(sandbox,glob)
+			to_ret.update(i.exec(sandbox,glob))
+		return to_ret

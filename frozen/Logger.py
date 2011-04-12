@@ -9,8 +9,6 @@ class LoggerException(ValueError):
 	pass
 
 class Logger():
-	__dir = ""
-	verbose_f = ""
 
 	@property
 	def dir(self) -> str:

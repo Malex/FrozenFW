@@ -5,10 +5,11 @@ IMPORT = 1
 EXEC = 2
 
 class Sandbox():
-	__vars = []
-	__new_limits = []
 
 	def __init__(self,allowed_vars :list=None,new_limits :list=None,log=None):
+		self.__vars = []
+		self.__new_limits = []
+
 		if allowed_vars:
 			self.allowed_vars = allowed_vars
 		if new_limits:
@@ -30,7 +31,7 @@ class Sandbox():
 	def new_limits(self,lis :list):
 		self.__new_limits = lis
 
-	def __call__(self,filename :str,mode = EXEC,glob :dict=globals()):
+	def __call__(self,filename :str,mode = EXEC,glob :dict={}) -> dict:
 		if mode == EXEC:
 			a,b,c = File.valid_path,File.blacklist,File.whitelist
 			File.set_limits(*tuple(self.new_limits))
@@ -39,8 +40,7 @@ class Sandbox():
 				p_dict[i] = glob[i]
 			exec(File.get_contents(filename),p_dict)
 			File.valid_path,File.blacklist,File.whitelist = a,b,c
-			glob.update(p_dict)
-			return
+			return glob.update(p_dict)
 		elif mode == IMPORT:
 			if self.log:
 				self.log.notice("IMPORT not implemented yet. Skipping istruction")

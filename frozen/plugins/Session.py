@@ -5,9 +5,9 @@ from string import ascii_letters,digits
 avaiable_chars = ascii_letters+digits
 
 class Session(Cookie):
-	__id = ""
 
 	def __init__(self, expires :int =60 ):
+		self.__id = ""
 		i = (random.randint(a,65) for a in xrange(0,65))
 		for j in i:
 			self.__id += str(avaiable_chars[j])
