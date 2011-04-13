@@ -17,28 +17,16 @@ class _Parser(html.parser.HTMLParser):
 
 class Template(Output):
 
-	rep = {}
-	arg = []
-
-	func_dict = {}
-	__s = ''
-
 	def __init__(self,path :str="template.html"):
 		try:
+			self.rep = {}
+			self.arg = []
+			self.__s = ''
+			self.func_dict = {}
 			self.set_template(path)
 			self.parser = _Parser()
 		except FileError as e:
 			raise FileError("Not Valid Template {}".format(path)) from e
-
-		sand_templ = Sandbox(["print","repl","Template","output"],conf.query("sand_limits"),log)
-		t_plug = Plugins()
-		for i in glob.glob("/".join((conf.query("plugin_dir"),"template"))):
-			if i == "/".join((conf.query("plugin_dir"),"template")):
-				continue
-			t_plug.load_plugin(i)
-		tmp = t_plug.exec(sand_templ,{ "print" : self.print, "repl" : self.rep, "Template" : Template, "output" : self })
-		log.notice(tmp)
-		globals()['output'] = tmp['output']
 
 	def set_template(self,path :str):
 		""" Set template file. This file must be in File limits (use whitelist if you need) """
@@ -68,6 +56,7 @@ class Template(Output):
 		self.rep.update(kwargs)
 
 	def __add__(self,f):
+		log.notice("called")
 		self.func_dict[f.__name__] = f
 		return self
 
@@ -81,6 +70,18 @@ def ret(stat :str, head , body :str, filename :str):
 	return Response("200 OK",head,output.get_body(),filename,ready=True)
 
 output = Template(conf.query("template_file"))
+
+sand_templ = Sandbox(["print","repl","Template","output"],conf.query("sand_limits"),log)
+t_plug = Plugins()
+for i in glob.glob("/".join((conf.query("plugin_dir"),"template/*"))):
+	if i == "/".join((conf.query("plugin_dir"),"template")):
+		continue
+	log.notice(i)
+	t_plug.load_plugin(i)
+t_dict = t_plug.exec(sand_templ,{ "print" : output.print, "repl" : output.rep, "Template" : Template, "output" : output })
+output = t_dict['output']
+
+del t_dict,t_plug,sand_templ
 
 sandbox = Sandbox(sandbox.allowed_vars.append("Template"),sandbox.new_limits,log)
 

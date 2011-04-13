@@ -28,7 +28,6 @@ class Plugins():
 		return self.__plugins
 
 	def exec(self,sandbox,glob :dict) -> dict:
-		to_ret = {}
 		for i in self.plugins:
-			to_ret.update(i.exec(sandbox,glob))
-		return to_ret
+			glob.update(i.exec(sandbox,glob))
+		return glob

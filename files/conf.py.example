@@ -16,7 +16,7 @@ headers = ["Content-Type : text/html"] #List of headers to send as standard. The
 #These options specify which paths are allowed and which are not. This improves security, avoiding LFI at system level.
 allowed_dir = "/home/malex/www/*" #This regex should match paths you want to allow accessing to
 blacklist = ["/.*",] #Don't let access to some paths is very important. In this case hidden files/dir aren't allowed, besides err pages (see below) are forbidden.
-whitelist = ["/*/.bashrc","/home/malex/frozen/frozen/plugins/*",] #A list of exceptions to previuos rules. If a path matches a whitelist regex, it is allowed, no matter if it was prevoiusly blacklisted or so on
+whitelist = ["/*/.bashrc","/home/malex/frozen/frozen/plugins/*","/home/malex/frozen/frozen/plugins/template/*"] #A list of exceptions to previuos rules. If a path matches a whitelist regex, it is allowed, no matter if it was prevoiusly blacklisted or so on
 
 log_file = "/var/log/frozen" #File where we'll write uncaught exceptions, warnings or notice (this depends on the following option
 log_level = "NOTICE" #Avaible option are NOTICE, WARNING and ERROR. We suggest to use NOTICE.
@@ -24,12 +24,12 @@ log_level = "NOTICE" #Avaible option are NOTICE, WARNING and ERROR. We suggest t
 #These vars says to sandbox which paths and which vars to block while executing plugins.
 #In most case plugins only need access to Response class and to dispatch vars.
 #See each plugin documentation for more info.
-sand_vars = [ "dispatch","Response","output","sandbox","log","conf","Data","Headers","Output","File","FileError","Sandbox","print" ]
+sand_vars = [ "dispatch","Response","output","sandbox","log","conf","data","Data","Headers","Output","File","FileError","Sandbox","print","Plugins", ]
 sand_limits = [ allowed_dir,blacklist,whitelist ] #In this case I didn't block access to other files. And you probably won't need it. But in several situations this option may be necessary
 
-plugin_dir = "/home/malex/frozen/frozen/plugins/" #This string specify the dir where plugins are. This can be chosen at installing time (see installing doc for info)
+plugin_dir = "/home/malex/frozen/frozen/plugins" #This string specify the dir where plugins are. This can be chosen at installing time (see installing doc for info)
 
-load_plugins = [ "UrlParser", "Session", "Exists", "Database", "Err_Pages", "Template", "loop", "include", "var", ] #Plugins to load at enviroment initialization
+load_plugins = [ "UrlParser", "Session", "Exists", "Database", "Template", "Err_Pages" ] #Plugins to load at enviroment initialization
 
 Err_pages = { "404" : "/home/malex/www/404.html",
 				"403" : "/home/malex/www/403.html",

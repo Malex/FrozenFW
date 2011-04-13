@@ -40,7 +40,8 @@ class Sandbox():
 				p_dict[i] = glob[i]
 			exec(File.get_contents(filename),p_dict)
 			File.valid_path,File.blacklist,File.whitelist = a,b,c
-			return glob.update(p_dict)
+			glob.update(p_dict)
+			return glob
 		elif mode == IMPORT:
 			if self.log:
 				self.log.notice("IMPORT not implemented yet. Skipping istruction")
