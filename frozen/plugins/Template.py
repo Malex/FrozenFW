@@ -3,7 +3,10 @@ import re
 import glob
 
 class _Parser(html.parser.HTMLParser):
-	subs = []
+
+	def __init__(self):
+		self.subs = []
+		super().__init__()
 
 	def handle_pi(self,data):
 		data = data.strip()
@@ -56,7 +59,6 @@ class Template(Output):
 		self.rep.update(kwargs)
 
 	def __add__(self,f):
-		log.notice("called")
 		self.func_dict[f.__name__] = f
 		return self
 
@@ -73,10 +75,9 @@ output = Template(conf.query("template_file"))
 
 sand_templ = Sandbox(["print","repl","Template","output"],conf.query("sand_limits"),log)
 t_plug = Plugins()
-for i in glob.glob("/".join((conf.query("plugin_dir"),"template/*"))):
+for i in glob.iglob("/".join((conf.query("plugin_dir"),"template/*"))):
 	if i == "/".join((conf.query("plugin_dir"),"template")):
 		continue
-	log.notice(i)
 	t_plug.load_plugin(i)
 t_dict = t_plug.exec(sand_templ,{ "print" : output.print, "repl" : output.rep, "Template" : Template, "output" : output })
 output = t_dict['output']

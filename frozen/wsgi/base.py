@@ -1,5 +1,3 @@
-import glob
-
 from ..Data import Data,DataError
 from ..Cookie import Cookie,CookieError
 from ..stdio import Output,output,print
