@@ -7,6 +7,8 @@ class FileError(Exception):
 
 class File():
 
+	base_dir = ""
+
 	valid_path = glob.glob("*")
 	blacklist = []
 	whitelist = []
@@ -31,7 +33,8 @@ class File():
 	@staticmethod
 	def parse(f :str) -> str:
 		""" Converts the File string. Replace ~ with Home Directory (use ~user for different user) and on Windows replace / with \\"""
-		return normcase(expandvars(expanduser(f)))
+		t = normcase(expandvars(expanduser(f)))
+		return t if t.startswith('/') or t[1:3]=':\\' else "{}/{}".format(File.base_dir,t)
 
 	@staticmethod
 	def get_contents(path :str) -> str:

@@ -73,16 +73,14 @@ def ret(stat :str, head , body :str, filename :str):
 
 output = Template(conf.query("template_file"))
 
-sand_templ = Sandbox(["print","repl","Template","output"],conf.query("sand_limits"),log)
 t_plug = Plugins()
 for i in glob.iglob("/".join((conf.query("plugin_dir"),"template/*"))):
 	if i == "/".join((conf.query("plugin_dir"),"template")):
 		continue
 	t_plug.load_plugin(i)
-t_dict = t_plug.exec(sand_templ,{ "print" : output.print, "repl" : output.rep, "Template" : Template, "output" : output })
-output = t_dict['output']
+output = (t_plug.exec(Sandbox(["print","repl","Template","output"],conf.query("sand_limits"),log),{ "print" : output.print, "repl" : output.rep, "Template" : Template, "output" : output }))['output']
 
-del t_dict,t_plug,sand_templ
+del t_plug
 
 sandbox = Sandbox(sandbox.allowed_vars.append("Template"),sandbox.new_limits,log)
 

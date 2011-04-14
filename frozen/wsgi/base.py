@@ -15,6 +15,8 @@ conf = Conf("/etc/frozenrc")
 log = Logger(conf.query("log_file"),eval(conf.query("log_level")),verbose=True)
 
 try:
+
+	File.base_dir = conf.query("base_dir")
 	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
 #	output.headers = Headers(*tuple(conf.query("headers")))
