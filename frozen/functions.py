@@ -11,20 +11,26 @@ def quote(s :str) -> str:
 	hex values (%xx form). Besides it converts spaces into + """
 	return quote_plus(s)
 
+diz = { "\"" : "quot",
+        "<" : "lt",
+        ">" : "gt",
+        "'" : "#039",
+        "&" : "amp"
+       }
+
 def htmlspecialchars(s :str) -> str:
 	""" Replace common special chars with their
 	iso-8859-1 equivalent sequences """
 
-	diz = { "\"" : "quot",
-            "<" : "lt",
-            ">" : "gt",
-            "'" : "#039",
-            "&" : "amp"
-            }
-
 	for i in diz.keys():
 		s = s.replace(i,"&"+diz[i]+";")
+	return s
 
+def to_html(s :str) -> str:
+	""" Do the opposite of htmlspecialchars """
+
+	for k,v in diz.items():
+		s = s.replace("&{};".format(v),k)
 	return s
 
 def htmlentities(s :str) -> str:

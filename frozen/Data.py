@@ -1,5 +1,5 @@
 import sys
-from .functions import unquote,quote
+from .functions import unquote,quote,htmlentities
 
 class DataError(Exception):
 	pass
@@ -39,7 +39,7 @@ class Data:
 		if tmp:
 			for i in tmp.split("&"):
 				k,v = i.strip().split("=")
-				self.__get[unquote(k)] = unquote(v)
+				self.__get[unquote(k)] = htmlentities(unquote(v))
 
 	def rPOST(self):
 		""" This function insert POST values (if any)
@@ -53,7 +53,7 @@ class Data:
 		if tmp>=1:
 			for i in self.env.get("wsgi.input").read(tmp).split("&"):
 				k,v = i.strip().split("=")
-				self.__post[unquote(k)] = unquote(v)
+				self.__post[unquote(k)] = htmlentities(unquote(v))
 
 	def rCOOKIE(self):
 		""" This function insert COOKIEs values (if any)
@@ -64,7 +64,7 @@ class Data:
 		if tmp:
 			for i in tmp.split(";"):
 				k,v = i.strip().split("=")
-				self.__cookie[unquote(k)] = unquote(v)
+				self.__cookie[unquote(k)] = htmlentities(unquote(v))
 
 	def rSERVER(self):
 		""" This function insert SERVER vars values (if any)
