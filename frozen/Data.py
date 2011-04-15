@@ -51,7 +51,7 @@ class Data:
 			return
 
 		if tmp>=1:
-			for i in self.env.get("wsgi.input").read(tmp).split("&"):
+			for i in str(self.env.get("wsgi.input").read(tmp)).split("&"):
 				k,v = i.strip().split("=")
 				self.__post[unquote(k)] = htmlentities(unquote(v))
 
