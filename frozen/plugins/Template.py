@@ -69,7 +69,7 @@ def ret(stat :str, head , body :str, filename :str):
 	if not filename.endswith(".py") or (stat and stat[:3]!="200"):
 		return Response(stat,head,body,filename)
 	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename),globals())
-	return Response("200 OK",head,output.get_body(),filename,ready=True)
+	return Response("200 OK",head,output.get_body(),filename)
 
 output = Template(conf.query("template_file"))
 

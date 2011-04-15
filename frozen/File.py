@@ -34,7 +34,7 @@ class File():
 	def parse(f :str) -> str:
 		""" Converts the File string. Replace ~ with Home Directory (use ~user for different user) and on Windows replace / with \\"""
 		t = normcase(expandvars(expanduser(f)))
-		return t if t.startswith('/') or t[1:3]=':\\' else "{}/{}".format(File.base_dir,t)
+		return t if t.startswith('/') or t[1:3]==':\\' else "{}/{}".format(File.base_dir,t)
 
 	@staticmethod
 	def get_contents(path :str) -> str:

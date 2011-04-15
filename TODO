@@ -1,13 +1,10 @@
 O2 - XML db plugin (should use the same interface)
 	=> write the common db interface
 
-- 2 - Plugin system --- Done, but to improve 
 3 - Improve template system (add if and alias functions) -- Include, loop and var added, to test.
 - 4 - Improve Cookie system (to check)
 - 5 - Plugin for mongodb. (IMPROVE!!!!)
 6 - Make other dangerous attributes readonly
-7 - Add output formatting through files -- No need of alias: use include and var instead.
-8 - Improve wsgi/init.py files to output different type of files, with the correct content-type header
 9 - Implement IMPORT sandbox
 10 - IE and not-common browsers detection if content-type is application/xhtml+xml, replacing it with text/html if necessary
 11 -  check whether File.(black|white)list could be a set instead of list of sets

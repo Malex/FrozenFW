@@ -63,7 +63,6 @@ class Dispatcher():
 			tmp = self.rep.get()
 			t2 = i(*tmp)
 			if t2.ready:
-				self.reset()
 				return t2
 			else:
 				self.rep = Response(*t2.get())

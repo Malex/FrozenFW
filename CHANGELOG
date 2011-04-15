@@ -16,4 +16,5 @@
 - sys.stdout not used now.
 - A more flexible plugin syntax.
 - Useless class attribute deleted.
+- Can output different files with correct content-type.
 - A more "lazy" code and minor optimization.
