@@ -24,12 +24,12 @@ log_level = "NOTICE" #Avaible option are NOTICE, WARNING and ERROR. We suggest t
 #These vars says to sandbox which paths and which vars to block while executing plugins.
 #In most case plugins only need access to Response class and to dispatch vars.
 #See each plugin documentation for more info.
-sand_vars = [ "dispatch","Response","output","sandbox","log","conf","data","Data","Headers","Output","File","FileError","Sandbox","print","Plugins","to_html" ]
+sand_vars = [ "dispatch","Response","output","sandbox","DB","log","conf","data","Data","Headers","Output","File","FileError","Sandbox","print","Plugins","to_html" ]
 sand_limits = [ allowed_dir,blacklist,whitelist ] #In this case I didn't block access to other files. And you probably won't need it. But in several situations this option may be necessary
 
 plugin_dir = "/home/malex/frozen/frozen/plugins" #This string specify the dir where plugins are. This can be chosen at installing time (see installing doc for info)
 
-load_plugins = [ "UrlParser", "Session", "Exists", "Database", "Template", "Getfile", "Err_Pages" ] #Plugins to load at enviroment initialization
+load_plugins = [ "UrlParser", "Session", "Exists", "MongoDB", "Template", "Getfile", "Err_Pages" ] #Plugins to load at enviroment initialization
 
 Err_pages = { "404" : "/home/malex/www/404.html",
 				"403" : "/home/malex/www/403.html",

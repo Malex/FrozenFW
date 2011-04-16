@@ -66,6 +66,7 @@ class Template(Output):
 		return self.templ_exec(self.data).format(*tuple(self.arg),**self.rep)
 
 def ret(stat :str, head , body :str, filename :str):
+	raise Exception("lol")
 	if not filename.endswith(".py") or (stat and stat[:3]!="200"):
 		return Response(stat,head,body,filename)
 	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename),globals())

@@ -29,6 +29,10 @@ class Response():
 			yield i
 
 
+class DispatcherError(Exception):
+	def __init__(self,s,name,e):
+		super().__init__(self,s.format(name,repr(e)))
+
 class Dispatcher():
 
 	def __init__(self,*args):
@@ -61,7 +65,10 @@ class Dispatcher():
 	def check(self):
 		for i in self.__list:
 			tmp = self.rep.get()
-			t2 = i(*tmp)
+			try:
+				t2 = i(*tmp)
+			except BaseException as e:
+				raise DispatcherError("In function {}: {}",i.__name__,e).with_traceback(None) from e.with_traceback(None)
 			if t2.ready:
 				return t2
 			else:
