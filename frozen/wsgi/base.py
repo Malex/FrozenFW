@@ -9,6 +9,7 @@ from ..Headers import Headers,Header
 from ..Logger import Logger,NOTICE,WARNING,ERROR,LoggerException
 from ..Sandbox import Sandbox,EXEC,IMPORT
 from ..Plugins import Plugins
+from ..Database import DB
 
 conf = Conf("/etc/frozenrc")
 

@@ -1,5 +1,4 @@
 O2 - XML db plugin (should use the same interface)
-	=> write the common db interface
 
 3 - Improve template system (add if and alias functions) -- Include, loop and var added, to test.
 - 4 - Improve Cookie system (to check)

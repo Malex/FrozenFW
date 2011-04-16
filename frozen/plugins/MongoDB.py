@@ -1,6 +1,6 @@
 import pymongo
 
-class DB():
+class DB(DB):
 
 	def __init__(self,server :str="localhost", port :int=27107,db :str="test-database"):
 		self.__conn = pymongo.Connection(server,port)
