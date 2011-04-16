@@ -17,4 +17,7 @@
 - A more flexible plugin syntax.
 - Useless class attribute deleted.
 - Can output different files with correct content-type.
+- Template subplugins finally working (var, loop, include).
+- Low-level write plugin added in Template.
+- getvar and isset added.
 - A more "lazy" code and minor optimization.

@@ -1,6 +1,5 @@
 O2 - XML db plugin (should use the same interface)
 
-3 - Improve template system (add if and alias functions) -- Include, loop and var added, to test.
 - 4 - Improve Cookie system (to check)
 - 5 - Plugin for mongodb. (IMPROVE!!!!)
 6 - Make other dangerous attributes readonly
@@ -9,7 +8,7 @@ O2 - XML db plugin (should use the same interface)
 11 -  check whether File.(black|white)list could be a set instead of list of sets
 13 - Add better doc strings for modules
 15 - Support for rewriting urls by database queries (useful for forums and blogs)
-and many other features (use a base class to avoid accessing to private attributes?)
+16 - Fix > issue in Template
 
 -- fix eval in base script
 
