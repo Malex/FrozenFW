@@ -3,7 +3,7 @@ class Header():
 
 	def __init__(self, name :str , value :str = False):
 		if not value:
-			self.name,self.value = [a.strip() for a in name.split(":")]
+			self.name,self.value = tuple(a.strip() for a in name.split(":"))
 		else:
 			self.name = name
 			self.value = value
@@ -27,7 +27,7 @@ class Headers():
 		self.headers = header
 		return self
 	def __sub__(self,header :str) -> object:
-		self.__headers.remove(Header(header)) #TODO: improve through methods
+		self.remove(header)
 		return self
 
 	def __iter__(self):
@@ -41,3 +41,8 @@ class Headers():
 
 	def get(self):
 		return self.headers
+
+	def remove(self,name):
+		for i in self.__headers:
+			if i.name == name:
+				self.__headers.remove(i)

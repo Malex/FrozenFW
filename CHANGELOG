@@ -20,4 +20,5 @@
 - Template subplugins finally working (var, loop, include).
 - Low-level write plugin added in Template.
 - getvar and isset added.
+- Header checking for IE and browsers which does not support xhtml.
 - A more "lazy" code and minor optimization.
