@@ -11,6 +11,6 @@ class methods.
 
 It requires Python >=3.1
 
-Python2.6 backward compability has been gone since it doesn't allow
+Python2.6 backward compability has gone since it doesn't allow
 function annotations and other good features.
 FrozenFW 0.1 is still py2.6 compatible, even though no more supported.
