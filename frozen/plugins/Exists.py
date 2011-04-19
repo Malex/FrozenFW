@@ -6,8 +6,7 @@ def do(stat :str, head , body :str, filename :str) -> list:
 	else:
 		try:
 			File.get_contents(filename)
-		except FileError as e:
-			log.notice(e)
+		except FileError:
 			return Response("403 Forbidden",Headers("Content-Type: text/hmtl"),"<h1>403 Forbiddden</h1>",filename)
 		else:
 			return Response(stat,head,body,filename)
