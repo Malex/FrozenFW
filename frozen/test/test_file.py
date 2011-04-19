@@ -6,6 +6,7 @@ from frozen.File import *
 class FileTest(unittest.TestCase):
 
 	def setUp(self):
+		File.base_dir = "./"
 		File.set_limits("./*",["*.py"],["frozen/File.py"])
 
 	def test_limit(self):

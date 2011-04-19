@@ -1,3 +1,5 @@
+import os.path
+
 from ..Data import Data,DataError
 from ..Cookie import Cookie,CookieError
 from ..stdio import Output,output,print
@@ -30,7 +32,7 @@ try:
 
 	plugins = Plugins()
 	for i in conf.query("load_plugins"):
-		plugins.load_plugin("{}/{}.py".format(conf.query("plugin_dir"),i))
+		plugins.load_plugin("{}.py".format(os.path.join(conf.query("plugin_dir"),i)))
 	plugins.exec(sandbox,globals())
 
 except BaseException as e:
