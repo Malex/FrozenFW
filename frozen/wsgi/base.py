@@ -33,8 +33,6 @@ try:
 		plugins.load_plugin("{}.py".format(os.path.join(conf.query("plugin_dir"),i)))
 	plugins.exec(sandbox,globals())
 
-#	output.headers = Headers(*tuple(conf.query("headers")))
-
 except BaseException as e:
 	log.write(e)
 
