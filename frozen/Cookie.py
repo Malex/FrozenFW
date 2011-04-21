@@ -1,14 +1,18 @@
 from datetime import datetime
+from .functions import quote
+from .Headers import Headers
 
 class CookieError(Exception):
 	pass
 
 class Cookie:
 
-	def set(self,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
+	out = Headers()
+
+	@classmethod
+	def set(cls,name :str,value :str="",expiration :int=0,restriction :str="/",domain :str="",secure :bool=False,httpOnly :bool=False):
 		if domain:
 			domain = "domain={};".format(domain)
-
 		if expiration:
 			try:
 				if type(expiration) is int:
@@ -24,12 +28,12 @@ class Cookie:
 			sec_str = "secure ;"
 		else:
 			sec_str = ""
-		if httponly:
+		if httpOnly:
 			hto_str = "HttpOnly ;"
 		else:
 			hto_str = ""
 
-		self.out = "Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,path,domain,sec_str,hto_str)
+		cls.out += "Set-Cookie: {}={};{}path={};{}{}{}".format(quote(name),quote(value),expiration,quote(restriction),quote(domain),sec_str,hto_str)
 
 	def __init__(self,name :str, value :str, expiration :int=0, restriction :str="/", domain :str="", secure :bool=False, httpOnly :bool=False):
 		self.name = name
@@ -41,10 +45,10 @@ class Cookie:
 		self.no_client = httpOnly
 		self.set(name,value,expiration,restriction,domain,secure,httpOnly)
 
-	def __get__(self):
+	def __get__(self) -> str:
 		return self.value
 
-	def __getitem__(self,query :str):
+	def __getitem__(self,query :str) -> object:
 		c_dict = { "restriction" : "path",
 				"expiration" : "exp",
 				"dom" : "domain",

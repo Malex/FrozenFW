@@ -21,4 +21,5 @@
 - Low-level write plugin added in Template.
 - getvar and isset added.
 - Header checking for IE and browsers which does not support xhtml.
+- Useful methods (__iter__, __contains__ ans so on) added to Headers class.
 - A more "lazy" code and minor optimization.

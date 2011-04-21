@@ -16,13 +16,13 @@ class Response():
 		return self.__ready
 	@ready.setter
 	def ready(self, value :bool):
-		if value!=True and value!=False:
+		if type(value) is not bool:
 			raise ValueError("Bool value needed")
 		else:
 			self.__ready = value
 
 	def get(self) -> tuple:
-		return self.stat,self.head,self.body,self.filename
+		return (self.stat,self.head,self.body,self.filename)
 
 	def __iter__(self):
 		for i in self.get():
@@ -37,7 +37,7 @@ class Dispatcher():
 
 	def __init__(self,*args):
 		self.__list = []
-		self.rep = Response("",[],"","")
+		self.reset()
 		for i in args:
 			setattr(self,self.lis,i)
 
@@ -77,4 +77,4 @@ class Dispatcher():
 		return self.rep
 
 	def reset(self):
-		self.rep = Response("",[],"","")
+		self.rep = Response("",Headers(),"","")

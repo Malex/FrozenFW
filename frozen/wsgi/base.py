@@ -22,8 +22,6 @@ try:
 	File.base_dir = conf.query("base_dir")
 	File.set_limits(conf.query("allowed_dir"),conf.query("blacklist"),conf.query("whitelist"))
 
-#	output.headers = Headers(*tuple(conf.query("headers")))
-
 	data = Data(conf,{})
 
 	dispatch = Dispatcher()
@@ -34,6 +32,8 @@ try:
 	for i in conf.query("load_plugins"):
 		plugins.load_plugin("{}.py".format(os.path.join(conf.query("plugin_dir"),i)))
 	plugins.exec(sandbox,globals())
+
+#	output.headers = Headers(*tuple(conf.query("headers")))
 
 except BaseException as e:
 	log.write(e)

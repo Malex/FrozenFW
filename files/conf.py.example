@@ -29,7 +29,7 @@ sand_limits = [ allowed_dir,blacklist,whitelist ] #In this case I didn't block a
 
 plugin_dir = "/home/malex/www/plugins" #This string specify the dir where plugins are. This can be chosen at installing time (see installing doc for info)
 
-load_plugins = [ "UrlParser", "Session", "Exists", "MongoDB", "Template", "Getfile", "Err_Pages" ] #Plugins to load at enviroment initialization
+load_plugins = [ "UrlParser", "Session", "Exists", "MongoDB", "Template", "Getfile", "Err_Pages", "SetHeaders" ] #Plugins to load at enviroment initialization
 
 Err_pages = { "404" : "/home/malex/www/404.html",
 				"403" : "/home/malex/www/403.html",

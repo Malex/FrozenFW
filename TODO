@@ -1,6 +1,5 @@
 O2 - XML db plugin (should use the same interface)
 
-- 4 - Improve Cookie system (to check)
 - 5 - Plugin for mongodb. (IMPROVE!!!!)
 6 - Make other dangerous attributes readonly
 9 - Implement IMPORT sandbox

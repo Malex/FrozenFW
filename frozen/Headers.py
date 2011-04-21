@@ -11,9 +11,6 @@ class Header():
 	def __str__(self) -> str:
 		return "{}: {}\r\n".format(self.name,self.value)
 
-	def __repr__(self) -> str:
-		return str(self)
-
 class Headers():
 
 	@property
@@ -32,7 +29,13 @@ class Headers():
 
 	def __iter__(self):
 		for i in self.headers:
-			yield (i.name,i.value)
+			yield i.name,i.value
+
+	def __contains__(self,w :str) -> bool:
+		for k,v in self.__iter__():
+			if k==w:
+				return True
+		return False
 
 	def __init__(self,*args):
 		self.__headers = []

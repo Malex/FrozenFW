@@ -8,6 +8,6 @@ def getfile(stat,head,body,filename):
 	else:
 		with open(File.parse(filename),'rb') as r:
 			ctype,cenc = mimetypes.guess_type(File.parse(filename))
-			return Response("200 OK",Headers("Content-Type: {}".format(ctype),"Content-Encoding: {}".format(cenc)),r.read(),filename,ready=True)
+			return Response("200 OK",Headers("Content-Type: {}".format(ctype),"Content-Encoding: {}".format(cenc)),r.read(),filename,)
 
 dispatch += getfile
