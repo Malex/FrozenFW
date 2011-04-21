@@ -19,7 +19,9 @@ blacklist = ["/.*","/home/malex/www/googa*"] #Don't let access to some paths is 
 whitelist = ["/*/.bashrc","/home/malex/www/plugins"] #A list of exceptions to previuos rules. If a path matches a whitelist regex, it is allowed, no matter if it was prevoiusly blacklisted or so on
 
 log_file = "/var/log/frozen" #File where we'll write uncaught exceptions, warnings or notice (this depends on the following option
-log_level = "NOTICE" #Avaible option are NOTICE, WARNING and ERROR. We suggest to use NOTICE.
+from frozen.Logger import NOTICE
+log_level = NOTICE #Avaible option are NOTICE, WARNING and ERROR. We suggest to use NOTICE.
+del NOTICE
 
 #These vars says to sandbox which paths and which vars to block while executing plugins.
 #In most case plugins only need access to Response class and to dispatch vars.
