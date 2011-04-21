@@ -43,15 +43,13 @@ class Dispatcher():
 
 	@property
 	def lis(self):
-		return self.__list
 		raise AttributeError("Write-only attribute")
 	@lis.setter
 	def lis(self,i):
-		try:
-			i.__call__
-		except AttributeError as e:
-			raise ValueError("Not function/method interface found") from e
-		self.__list.append(i)
+		if not hasattr(i,'__call__'):
+			raise ValueError("Not function/method interface found")
+		else:
+			self.__list.append(i)
 
 	def __add__(self,i):
 		self.lis = i

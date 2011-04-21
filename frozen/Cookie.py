@@ -16,10 +16,10 @@ class Cookie:
 		if expiration:
 			try:
 				if type(expiration) is int:
-					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration))
+					expiration = quote("expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(datetime.utcfromtimestamp(expiration)))
 				elif type(expiration) is str:
 					t = datetime.strptime(expiration,"%a, %d-%b-%Y %H:%M:%S UTC")
-					expiration = "expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(t)
+					expiration = quote("expires={:%a, %d-%b-%Y %H:%M:%S UTC};".format(t))
 				else:
 					raise CookieError("Not valid type for expiration: {!r}".format(expiration))
 			except Exception as e:
@@ -43,7 +43,9 @@ class Cookie:
 		self.dom = domain
 		self.https = secure
 		self.no_client = httpOnly
-		self.set(name,value,expiration,restriction,domain,secure,httpOnly)
+
+	def send(self):
+		self.set(self.name,self.value,self.exp,self.path,self.dom,self.https,self.no_client)
 
 	def __get__(self) -> str:
 		return self.value
@@ -60,8 +62,4 @@ class Cookie:
 		except KeyError:
 			pass
 
-		acc = ['name','value','https','no_client','exp','dom','path']
-		if not query in acc:
-			raise CookieError("Not such attribute for Cookies")
-		else:
-			return vars(self)[query]
+		return vars(self)[query]

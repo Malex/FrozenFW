@@ -68,7 +68,14 @@ class Template(Output):
 def ret(stat :str, head , body :str, filename :str):
 	if not filename.endswith(".py") or (stat and stat[:3]!="200"):
 		return Response(stat,head,body,filename)
-	exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename),globals())
+	try:
+		exec(File.get_contents(filename).replace("__builtins__",'') if conf.query("secure_lock") else File.get_contents(filename),globals())
+	except BaseException as e:
+		if conf.query("debug_user_script"):
+			import traceback
+			return Response("500 Internal Server Error",head,traceback.format_exc(),filename)
+		else:
+			log.notice(e)
 	return Response("200 OK",head,output.get_body(),filename)
 
 output = Template(conf.query("template_file"))

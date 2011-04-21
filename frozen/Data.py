@@ -101,11 +101,7 @@ class Data:
 			self.rSERVER()
 
 	def update(self,env :dict):
-		t = Data(self.conf,env)
-		self.__get = t.GET
-		self.__post = t.POST
-		self.__cookie = t.COOKIE
-		self.__server = t.SERVER
+		self.__init__(self.conf,env)
 
 ## I use property instead. But I leave it here since I'm not sure what to do.
 #	def __setattr__(self,name,value):

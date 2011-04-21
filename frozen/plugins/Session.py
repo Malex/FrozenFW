@@ -1,4 +1,3 @@
-from frozen.Cookie import *
 import random
 from string import ascii_letters,digits
 
@@ -6,9 +5,9 @@ avaiable_chars = ascii_letters+digits
 
 class Session(Cookie):
 
-	def __init__(self, expires :int =60 ):
+	def __init__(self, expires :int=60):
 		self.__id = ""
-		i = (random.randint(a,65) for a in xrange(0,65))
+		i = (random.randint(0,61) for a in range(0,62))
 		for j in i:
 			self.__id += str(avaiable_chars[j])
 		super().__init__("pysessid",self.__id,expires,httpOnly=True)
@@ -17,23 +16,23 @@ class Session(Cookie):
 	def id(self) -> str:
 		return self.__id
 
-	@classmethod
-	def find_session(cls,cookies :dict) -> list:
-		ret = []
-		for i in cookies.keys():
-			if i == "pysessid":
-				ret.append(coockies[i])
-		return ret
+	@staticmethod
+	def find_session(cookies :dict) -> str:
+		if "pysessid" in cookies.keys():
+			return cookies['pysessid']
+		else:
+			return ''
 
 ## Line commented since changes in Data.Data
 #super(Data,data).__setattr__('SESSION',Session.find_session(data.COOKIE))
-
-Data.__session = []
-Data.SESSION = property(lambda self : self.__session)
 
 old_init = Data.__init__
 def new_init(self,*args,**kwargs):
 	old_init(self,*args,**kwargs)
 	if self.conf.query("allow_session"):
-		self.__session = Session.find_session(self.COOKIE)
+		self.SESSION = Session.find_session(self.COOKIE)
 Data.__init__ = new_init
+
+data = Data(data.conf,data.env)
+
+sandbox = Sandbox(sandbox.allowed_vars.append("Session"),sandbox.new_limits,sandbox.log)
