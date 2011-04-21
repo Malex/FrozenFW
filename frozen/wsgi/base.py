@@ -15,7 +15,7 @@ from ..Database import DB
 
 conf = Conf("/etc/frozenrc")
 
-log = Logger(conf.query("log_file"),eval(conf.query("log_level")),verbose=True)
+log = Logger(conf.query("log_file"),conf.query("log_level"),verbose=True)
 
 try:
 

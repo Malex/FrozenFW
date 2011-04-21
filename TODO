@@ -1,13 +1,13 @@
-O2 - XML db plugin (should use the same interface)
+2.1 TODO list
+1 - XML db plugin
+- 2 - Plugin for mongodb. (IMPROVE!!!!)
+3 - Make other dangerous attributes readonly
+4 - Implement IMPORT sandbox
+5 - Use IMPORT instead of exec for plugins
+6 -  check whether File.(black|white)list could be a set instead of list of sets
+7 - Add better doc strings for modules
+8 - Support for rewriting urls by database queries (useful for forums and blogs)
+9 - Fix > issue in Template
+-- See issues list on github for other changes
 
-- 5 - Plugin for mongodb. (IMPROVE!!!!)
-6 - Make other dangerous attributes readonly
-9 - Implement IMPORT sandbox
-11 -  check whether File.(black|white)list could be a set instead of list of sets
-13 - Add better doc strings for modules
-15 - Support for rewriting urls by database queries (useful for forums and blogs)
-16 - Fix > issue in Template
-
--- fix eval in base script
-
-Coming version 2.0
+Coming version 2.1

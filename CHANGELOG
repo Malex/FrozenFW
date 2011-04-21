@@ -1,8 +1,9 @@
+FrozenFW 2.0:
 - Changed submodules naming (capitalized names and splitted some modules).
 - Added pluggining system.
 - Made GET|POST|SERVER|COOKIE read-only.
 - Blocked __builtins__ access for user script. Accessing it is still aviable for plugins. 
-- Session Plugin and data.SESSION var (read-only).
+- Session Plugin and data.SESSION var.
 - Templating system became a plugin.
 - Improved Cookie system.
 - Logger Added.
