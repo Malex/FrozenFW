@@ -1,5 +1,3 @@
-import re
-import sys
 import imp
 from .File import File
 

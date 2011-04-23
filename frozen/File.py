@@ -1,7 +1,7 @@
 import fnmatch
 import os
 
-from os.path import expanduser,normcase,expandvars,isfile,join
+from os.path import expanduser,normcase,expandvars,normpath,isfile,join
 
 class FileError(Exception):
 	pass
@@ -46,7 +46,7 @@ class File():
 	@staticmethod
 	def parse(f :str) -> str:
 		""" Converts the File string. Replace ~ with Home Directory (use ~user for different user) and on Windows replace / with \\"""
-		t = normcase(expandvars(expanduser(f)))
+		t = normpath(normcase(expandvars(expanduser(f))))
 		return t if t.startswith('/') or t[1:3]==':\\' else join(File.base_dir,t)
 
 	@staticmethod
